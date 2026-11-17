@@ -1,0 +1,86 @@
+/* Carte d'infographie (resume d'equipe ou de joueur) : moitie haute de la camera du bas. */
+.card-layer {
+  position: absolute;
+  z-index: 11;
+  left: 2%;
+  right: 2%;
+  top: 1.5%;
+  height: 48%;
+  container-type: size;
+  pointer-events: none;
+}
+.card-layer[hidden] { display: none; }
+.card {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  grid-template-rows: auto auto 1fr;
+  gap: 2.4cqh;
+  padding: 3.4cqh 3cqw;
+  overflow: hidden;
+  box-sizing: border-box;
+  border: 1px solid rgba(255,181,191, 0.55);
+  border-radius: 3cqh;
+  background: linear-gradient(115deg, rgba(25,6,9, 0.78), rgba(44,16,21, 0.7));
+  backdrop-filter: blur(6px);
+  box-shadow: 0 0 4cqh rgba(255,164,176, 0.22), inset 0 1px rgba(255, 255, 255, 0.08);
+  color: #f7fbff;
+  font-family: "Barlow", sans-serif;
+  opacity: 0;
+  transform: translateY(6cqh) scale(0.985);
+  transition: opacity 380ms ease, transform 380ms ease;
+}
+.card.is-in { opacity: 1; transform: none; }
+
+.card__head { display: flex; align-items: center; gap: 2.4cqw; min-width: 0; }
+.card__logo { height: 14cqh; width: 14cqh; object-fit: contain; flex: none; }
+.card__photo { height: 16cqh; width: 22cqh; object-fit: cover; object-position: top; border-radius: 2cqh; flex: none; background: rgba(255,255,255,0.06); }
+.card__titles { min-width: 0; flex: 1; }
+.card__title {
+  font: 700 13cqh/1 "Barlow Condensed", sans-serif;
+  letter-spacing: 0.02em; text-transform: uppercase;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.card__sub { font-size: 6.4cqh; color: #eed2d7; margin-top: 1cqh; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.card__first { font: 600 7cqh/1 "Barlow Condensed", sans-serif; letter-spacing: 0.12em; text-transform: uppercase; color: #eed2d7; }
+.card--player .card__title { font-size: 11cqh; }
+.card__total { color: #fff; margin-top: 0.4cqh; }
+.card--player { grid-template-rows: none; grid-template-columns: 30cqw 1fr; gap: 3cqw; }
+.card__side { position: relative; min-height: 0; }
+.card__side .card__photo { position: absolute; inset: 0; width: 100%; height: 100%; }
+.card__side .card__teamlogo { position: absolute; right: 1cqw; bottom: 1cqh; height: 12cqh; width: 12cqh; filter: drop-shadow(0 0 1cqh rgba(0,0,0,0.6)); }
+.card__main { display: grid; grid-template-rows: auto auto 1fr; gap: 2.4cqh; min-width: 0; min-height: 0; }
+.card--player .products { grid-template-columns: 1fr; }
+
+.card__hits { display: flex; align-items: center; gap: 3cqw; }
+.hits__big { display: flex; align-items: baseline; gap: 1cqw; flex: none; }
+.hits__big b { font: 700 15cqh/1 "Barlow Condensed", sans-serif; color: #fff; }
+.hits__big span { font-size: 5cqh; text-transform: uppercase; letter-spacing: 0.1em; color: #eed2d7; }
+.hits__detail { flex: 1; min-width: 0; display: grid; gap: 1.2cqh; }
+.hits__bar { display: flex; height: 3.2cqh; gap: 0.4cqw; border-radius: 2cqh; overflow: hidden; }
+.seg { display: block; flex-basis: 0; min-width: 1cqw; }
+.seg[hidden] { display: none; }
+.is-auto { --c: #ffb5bf; } .is-mem { --c: #e08591; } .is-ssp { --c: #ff829f; }
+.seg { background: var(--c); }
+.hits__legend { display: flex; gap: 3cqw; font-size: 5cqh; color: #c8d4ee; }
+.leg[hidden] { display: none; }
+.leg b { color: var(--c); font-weight: 700; font-size: 6cqh; }
+
+.card__body { min-height: 0; }
+.players { display: grid; grid-template-columns: repeat(5, 1fr); gap: 1.6cqw; height: 100%; }
+.player { display: grid; grid-template-rows: 1fr auto auto; gap: 0.6cqh; min-height: 0; padding: 1cqh 0.6cqw 1.2cqh; border-radius: 1.8cqh; background: rgba(255, 255, 255, 0.07); text-align: center; overflow: hidden; }
+.player img { width: 100%; height: 100%; min-height: 0; object-fit: cover; object-position: top; border-radius: 1.2cqh; }
+.avatar { display: grid; place-items: center; border-radius: 1.2cqh; background: linear-gradient(135deg, rgba(255,181,191,0.25), rgba(224,94,111,0.3)); font-size: 16cqh; line-height: 1; min-height: 0; overflow: hidden; }
+.card__side .avatar { position: absolute; inset: 0; font-size: 30cqh; }
+.player__name { font-size: 4.6cqh; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.player__hits { font-size: 4.6cqh; color: #ffb5bf; }
+
+.products { display: grid; grid-template-columns: 1fr 1fr; gap: 1.2cqh 2cqw; align-content: start; }
+.row { position: relative; display: flex; align-items: center; gap: 1.4cqw; min-width: 0; height: 10cqh; padding: 0 1.4cqw; font-size: 5.6cqh; border-radius: 1.4cqh; overflow: hidden; background: rgba(255, 255, 255, 0.06); }
+.row__bar { position: absolute; left: 0; top: 0; bottom: 0; background: linear-gradient(90deg, rgba(255,181,191, 0.3), rgba(255,181,191, 0.05)); z-index: 0; }
+.row > :not(.row__bar) { position: relative; z-index: 1; }
+.row__name { flex: 1; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-weight: 600; }
+.row__val { color: #ffb5bf; font-weight: 700; flex: none; }
+
+#randoms { transition: opacity 300ms ease; }
+body.card-on #randoms { opacity: 0 !important; }

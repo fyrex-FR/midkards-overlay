@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MidKards — Habillage live</title>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=Barlow:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{--ink:#e8eefc;--dim:#c4b3b6;--line:#402328;--bg:#160a0c;--card:#261115;
+        --cy:#ffa4b0;--vi:#d9596a;--pk:#ff4872;--ok:#3ddc97;--warn:#ffb454}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);
+       font:16px/1.6 Barlow,-apple-system,"Segoe UI",system-ui,sans-serif;
+       padding:40px 22px 80px}
+  .wrap{max-width:760px;margin:0 auto}
+  h1{font-family:"Barlow Condensed",sans-serif;font-size:40px;letter-spacing:.04em;
+     text-transform:uppercase;margin:0 0 6px;
+     background:linear-gradient(90deg,var(--cy),var(--vi) 55%,var(--pk));
+     -webkit-background-clip:text;background-clip:text;color:transparent}
+  .lead{color:var(--dim);margin:0 0 34px}
+  .step{border:1px solid var(--line);border-radius:12px;background:var(--card);
+        padding:20px 22px;margin-bottom:16px}
+  .step h2{font-family:"Barlow Condensed",sans-serif;font-size:21px;letter-spacing:.06em;
+           text-transform:uppercase;margin:0 0 10px;display:flex;align-items:center;gap:11px}
+  .num{width:28px;height:28px;flex:0 0 auto;border-radius:50%;display:grid;place-items:center;
+       background:linear-gradient(135deg,var(--cy),var(--vi));color:#21070c;font-size:15px}
+  a.big{display:inline-block;margin-top:6px;padding:12px 20px;border-radius:9px;
+        background:linear-gradient(90deg,var(--cy),var(--vi));color:#21070c;
+        font-weight:700;text-decoration:none}
+  a.ghost{color:var(--cy)}
+  ul{margin:8px 0 0;padding-left:22px} li{margin:5px 0}
+  code{background:#110709;border:1px solid var(--line);border-radius:5px;
+       padding:2px 6px;font-size:14px}
+  .path{display:flex;gap:8px;align-items:center;margin:8px 0}
+  .path code{flex:1 1 auto;overflow:auto;white-space:nowrap;padding:8px 10px}
+  button{border:1px solid var(--line);background:#3b1a20;color:var(--ink);
+         border-radius:7px;padding:8px 12px;font:inherit;cursor:pointer;white-space:nowrap}
+  button:hover{border-color:var(--cy)}
+  .warn{border-left:3px solid var(--warn);background:#1a1408;padding:12px 16px;
+        border-radius:8px;margin-top:14px}
+  .warn b{color:var(--warn)}
+  .stack{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:13px;
+         background:#110709;border:1px solid var(--line);border-radius:9px;
+         padding:14px 16px;margin-top:12px;line-height:1.8}
+  .stack .cam{color:var(--ok)} .stack .src{color:var(--cy)}
+  nav.nav-outils{display:flex;gap:6px;margin:0 0 26px;flex-wrap:wrap}
+  nav.nav-outils a{padding:6px 12px;border-radius:999px;border:1px solid var(--line);
+    background:var(--card);color:var(--dim);font-size:12.5px;text-decoration:none}
+  nav.nav-outils a:hover{border-color:var(--cy);color:var(--ink)}
+  nav.nav-outils a.est-ici{border-color:var(--cy);background:rgba(255,164,176,.09);
+    color:var(--ink);pointer-events:none}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <nav class="nav-outils">
+    <a href="index.html" class="est-ici">Accueil</a>
+    <a href="reglages">Réglages</a>
+    <a href="regie">Roue spot</a>
+    <a href="dbtk">DBTK</a>
+    <a href="cartes">Cartes</a>
+    <a href="sports">Éditeur de roue</a>
+  </nav>
+
+  <h1>MidKards</h1>
+  <p class="lead">
+    Ton habillage de live, heberge. Rien a installer, rien a telecharger :
+    deux adresses a coller dans OBS, une fois pour toutes.
+  </p>
+
+  <div class="step">
+    <h2><span class="num">1</span> Les deux sources OBS</h2>
+    <p style="margin:0 0 6px">
+      Dans ta scene, ajoute deux sources <b>Navigateur</b>. Laisse
+      <b>Fichier local</b> DECOCHE et colle l'adresse dans le champ URL.
+      Largeur <b>1080</b>, hauteur <b>1920</b>.
+    </p>
+
+    <p style="margin:14px 0 4px"><b>Source du bas</b> — nomme-la <code>Fond arene</code></p>
+    <div class="path"><code id="u1">/fond</code>
+      <button data-copy="u1">Copier</button></div>
+
+    <p style="margin:14px 0 4px"><b>Source du haut</b> — nomme-la <code>Cadre</code></p>
+    <div class="path"><code id="u2">/cadre</code>
+      <button data-copy="u2">Copier</button></div>
+
+    <p style="margin:16px 0 0"><b>Pour les deux :</b></p>
+    <ul>
+      <li><b>Decoche</b> « Eteindre la source lorsqu'elle n'est pas visible ».</li>
+      <li>Respecte l'ordre des sources, c'est lui qui fait tout marcher :</li>
+    </ul>
+    <div class="stack">
+<span class="src">Cadre</span>            &larr; tout en HAUT<br>
+<span class="cam">Camera break</span><br>
+<span class="cam">Camera animateur</span><br>
+<span class="src">Fond arene</span>       &larr; tout en BAS
+    </div>
+    <p style="margin:12px 0 0;color:var(--dim);font-size:14px">
+      Tes cameras sont prises en sandwich : elles apparaissent dans les fenetres
+      du cadre, qui sont transparentes.
+    </p>
+  </div>
+
+  <div class="step">
+    <h2><span class="num">2</span> Regle l'habillage</h2>
+    <p style="margin:0">
+      Textes, reseaux, polices, tailles, effets : tout se regle sur une page,
+      avec l'apercu en direct.
+    </p>
+    <a class="big" href="reglages">Ouvrir la page de reglages</a>
+    <p style="margin:12px 0 0;color:var(--dim);font-size:14px">
+      Tu veux juste voir le rendu ? <a class="ghost" href="apercu">Ouvrir l'apercu</a>
+    </p>
+    <p style="margin:10px 0 0;color:var(--dim);font-size:14px">
+      En pleine vente, utilise plutot la <a class="ghost" href="regie">roue
+      spot</a> : une page a part, faite pour le telephone, ou chaque equipe
+      tapee s'enregistre toute seule et l'overlay suit sans recharger.
+    </p>
+    <p style="margin:10px 0 0;color:var(--dim);font-size:14px">
+      Envie d'un sport de plus que NBA et NFL ? <a class="ghost" href="sports">Ouvrir
+      l'editeur de roue</a>.
+    </p>
+    <div class="warn">
+      <b>Pour enregistrer en direct</b>, il faut ouvrir cette page depuis ton
+      lien personnel, celui qui se termine par <code>#k=…</code>. Garde-le pour
+      toi : il donne le droit de modifier ton overlay. Sans lui, la page
+      fonctionne quand meme, mais elle ne peut qu'exporter un fichier.
+    </div>
+  </div>
+
+  <div class="step">
+    <h2><span class="num">3</span> Modifier pendant le live</h2>
+    <p style="margin:0">
+      Ouvre ton lien de reglages depuis ton telephone, change ce que tu veux,
+      <b>Enregistrer en ligne</b>. Ton overlay se met a jour tout seul en
+      quelques secondes, sans toucher a OBS.
+    </p>
+    <p style="margin:12px 0 0;color:var(--dim);font-size:14px">
+      Si le reseau lache, l'overlay continue avec la derniere configuration
+      chargee. Il ne se videra pas en pleine soiree.
+    </p>
+  </div>
+</div>
+<script>
+  (function () {
+    var base = location.origin;
+    document.getElementById("u1").textContent = base + "/fond";
+    document.getElementById("u2").textContent = base + "/cadre";
+    document.addEventListener("click", function (e) {
+      var b = e.target.closest("button[data-copy]");
+      if (!b) return;
+      var txt = document.getElementById(b.dataset.copy).textContent;
+      navigator.clipboard.writeText(txt).then(function () {
+        var old = b.textContent; b.textContent = "Copie !";
+        setTimeout(function () { b.textContent = old; }, 1400);
+      });
+    });
+  })();
+</script>
+</body>
+</html>

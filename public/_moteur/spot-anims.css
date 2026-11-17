@@ -1,0 +1,564 @@
+/* ==========================================================================
+   MIDKARDS — Animations du spot attribue (voir spot-anims.js)
+
+   Une horloge par scene, --d : les pourcentages des keyframes sont des
+   instants de la scene. Unites : vw/vh, la source a la taille du canvas OBS
+   (1080 x 1920) ; dans les SVG, 1 unite = 1 pixel du canvas.
+   Couleurs : celles du site (--sk-*, frame.css).
+
+   Le reflet du ballon rejoue ses animations avec un leger retard (--retard) :
+   c'est ce qui dessine sa trainee.
+
+   Compatible OBS : le navigateur d'OBS rend mal les filtres (drop-shadow)
+   sur des elements SVG qui bougent, la 3D (preserve-3d, backface) et le
+   texte en degrade (background-clip: text) — traines, carres qui
+   clignotent. Ici, aucun des trois : les lueurs sont des traits plus
+   larges et translucides dessines sous les vrais, le retournement de
+   carte est en 2D, les cris sont en couleur pleine avec text-shadow,
+   comme le catcheur qui, lui, passe bien.
+   ========================================================================== */
+
+/* --- commun ------------------------------------------------------------- */
+.spot-anim {
+  position: fixed;
+  inset: 0;
+  z-index: 40;
+  overflow: hidden;
+  pointer-events: none;
+  font-family: "Barlow Condensed", sans-serif;
+  background: radial-gradient(circle at 50% 40%,
+    rgba(16,2,3, 0.78) 0%, rgba(37,5,10, 0.45) 40%, transparent 75%);
+  animation: sa-scene var(--d) linear both;
+}
+@keyframes sa-scene {
+  0%   { opacity: 0; }
+  4%, 90% { opacity: 1; }
+  100% { opacity: 0; }
+}
+.sa-svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+/* Le nom de l'equipe et la punchline. */
+.sa-textes {
+  position: absolute;
+  left: 10vw;
+  right: 10vw;
+  top: var(--textes-top, 50%);
+  z-index: 5;
+  display: grid;
+  justify-items: center;
+  gap: 1.1vh;
+  text-align: center;
+}
+.sa-textes__nom {
+  color: #ffffff;
+  font: 800 6.4vw/1 "Barlow Condensed", sans-serif;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  text-shadow: 0 0 1.4vw var(--sk-bleu, #eb0e37), 0 0.3vw 0.8vw #000;
+  animation: sa-pop 0.5s cubic-bezier(0.2, 0.8, 0.3, 1.3) var(--t-nom) both;
+}
+.sa-textes__punch {
+  padding: 0.8vh 2.2vw;
+  border-radius: 3vw;
+  color: #ffffff;
+  font: 800 3.9vw/1.1 "Barlow Condensed", sans-serif;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  background: linear-gradient(90deg, var(--sk-violet, #e01631), var(--sk-magenta, #e01631));
+  box-shadow: 0 0 2vw rgba(224,22,49, 0.55), inset 0 0 0 0.15vw rgba(255, 255, 255, 0.35);
+  animation: sa-pop-penche 0.6s cubic-bezier(0.2, 0.8, 0.3, 1.4) var(--t-punch) both;
+}
+@keyframes sa-pop {
+  0%   { opacity: 0; transform: scale(0.4); }
+  100% { opacity: 1; transform: scale(1); }
+}
+@keyframes sa-pop-penche {
+  0%   { opacity: 0; transform: rotate(-10deg) scale(0); }
+  100% { opacity: 1; transform: rotate(-2deg) scale(1); }
+}
+
+/* Les cris facon BD : blanc, contour violet et lueur. */
+.sa-cri {
+  position: absolute;
+  z-index: 6;
+  white-space: nowrap;
+  font: italic 900 11vw/1.05 "Barlow Condensed", sans-serif;
+  letter-spacing: 0.02em;
+  color: #ffffff;
+  text-shadow:
+    0.45vw 0.45vw 0 var(--sk-violet, #e01631),
+    -0.2vw -0.2vw 0 var(--sk-violet, #e01631),
+    0.2vw -0.2vw 0 var(--sk-violet, #e01631),
+    -0.2vw 0.2vw 0 var(--sk-violet, #e01631),
+    0 0 2vw rgba(255,22,77, 0.85);
+  opacity: 0;
+  animation: sa-cri 1s cubic-bezier(0.2, 0.8, 0.3, 1.2) var(--t-cri, 0s) both;
+}
+@keyframes sa-cri {
+  0%   { opacity: 0; transform: translate(-50%, -50%) rotate(-20deg) scale(0.2); }
+  35%  { opacity: 1; transform: translate(-50%, -50%) rotate(-8deg) scale(1.25); }
+  55%  { transform: translate(-50%, -50%) rotate(-6deg) scale(1); }
+  80%  { opacity: 1; transform: translate(-50%, -50%) rotate(-6deg) scale(1); }
+  100% { opacity: 0; transform: translate(-50%, -62%) rotate(-6deg) scale(1.1); }
+}
+
+/* Le logo devoile, sur un halo doux. */
+.sa-revel {
+  position: absolute;
+  left: 50%;
+  top: 33%;
+  z-index: 3;
+  width: 42vw;
+  height: 35vw;
+  margin: -17.5vw 0 0 -21vw;
+  animation: sa-revel-in 0.8s cubic-bezier(0.2, 0.8, 0.3, 1.2) var(--t-revel) both;
+}
+.sa-revel::before {
+  content: "";
+  position: absolute;
+  inset: -22%;
+  z-index: -1;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(224,22,49, 0.6), rgba(235,14,55, 0.28) 45%, transparent 70%);
+  animation: sa-halo 1.4s ease-in-out var(--t-revel) infinite alternate both;
+}
+@keyframes sa-revel-in {
+  0%   { opacity: 0; transform: translate(var(--revel-dx, 0), var(--revel-dy, 0)) scale(0.12) rotate(-25deg); }
+  60%  { opacity: 1; transform: scale(1.12) rotate(4deg); }
+  80%  { transform: scale(0.96) rotate(-1deg); }
+  100% { opacity: 1; transform: none; }
+}
+@keyframes sa-halo {
+  from { opacity: 0.6; transform: scale(0.92); }
+  to   { opacity: 1; transform: scale(1.08); }
+}
+.sa-revel__logo,
+.sa-carte__logo {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: grid;
+  place-items: center;
+}
+.sa-revel__logo img,
+.sa-carte__logo img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  filter: drop-shadow(0 0 1.6vw rgba(235,14,55, 0.85));
+}
+.sa-revel__logo-sigle,
+.sa-carte__logo-sigle {
+  color: #ffffff;
+  font: 900 9vw/1 "Barlow Condensed", sans-serif;
+  text-shadow: 0 0 2vw var(--sk-bleu, #eb0e37);
+}
+
+/* --- 1. le shooteur (5,6 s) ----------------------------------------------
+   0 → 1,3 s   il arrive en dribblant (4 rebonds)
+   1,3 → 1,9   il se ramasse, saute, le ballon au-dessus de la tete
+   1,9 → 2,65  le ballon fait la cloche jusqu'au cercle
+   2,65        SWISH : filet, eclair, onde de choc, le logo jaillit (2,7 s)
+   3 → 4,8     il fete ca en sautant, bras en l'air */
+.spot-anim--shooteur {
+  --t-revel: 2.68s;
+  --revel-dx: 24vw;
+  --revel-dy: 16.6vh;
+  --t-cri: 2.6s;
+  --t-nom: 3.05s;
+  --t-punch: 3.3s;
+  --textes-top: 43.5%;
+}
+
+/* Le sol : un trait neon et un leger reflet dessous. */
+.sa-terrain { animation: sa-terrain var(--d) ease-out both; }
+@keyframes sa-terrain {
+  0%   { opacity: 0; }
+  9%, 100% { opacity: 1; }
+}
+.sa-parquet { fill: url(#sa-parquet); }
+.sa-sol { stroke: #ffffff; stroke-width: 5; stroke-linecap: round; }
+.sa-sol-halo { stroke: var(--sk-magenta, #e01631); stroke-width: 18; stroke-linecap: round; stroke-opacity: 0.35; }
+
+/* Le panier, vu de face. */
+.sa-panier { animation: sa-panier var(--d) cubic-bezier(0.2, 0.8, 0.3, 1) both; }
+@keyframes sa-panier {
+  0%   { opacity: 0; transform: translateY(-260px); }
+  13%, 100% { opacity: 1; transform: translateY(0); }
+}
+.sa-poteau { stroke: #ffecef; stroke-width: 12; stroke-linecap: round; }
+.sa-planche { fill: rgba(39,10,14, 0.88); stroke: #ffffff; stroke-width: 5; }
+.sa-planche-halo { fill: none; stroke: var(--sk-bleu, #eb0e37); stroke-width: 18; stroke-opacity: 0.35; }
+.sa-cible { fill: none; stroke: var(--sk-magenta, #e01631); stroke-width: 4; }
+.sa-cercle { fill: none; stroke: #ff7a12; stroke-width: 9; }
+.sa-cercle-halo { fill: none; stroke: #ff7a12; stroke-width: 22; stroke-opacity: 0.3; }
+.sa-filet {
+  fill: none;
+  stroke: #ffffff;
+  stroke-width: 2.5;
+  stroke-opacity: 0.9;
+  stroke-linecap: round;
+  animation: sa-filet var(--d) linear both;
+}
+@keyframes sa-filet {
+  0%, 47%  { transform: none; }
+  49.5%    { transform: scaleY(1.5) skewX(7deg); }
+  52%      { transform: scaleY(0.82) skewX(-4deg); }
+  55%      { transform: scaleY(1.12) skewX(2deg); }
+  58%, 100% { transform: none; }
+}
+.sa-eclair {
+  fill: #ffffff;
+  transform-origin: 800px 960px;
+  animation: sa-eclair var(--d) ease-out both;
+}
+@keyframes sa-eclair {
+  0%, 46.5% { opacity: 0; transform: scale(0.2); }
+  48%       { opacity: 0.95; transform: scale(1); }
+  56%, 100% { opacity: 0; transform: scale(3.4); }
+}
+.sa-onde {
+  fill: none;
+  stroke: #ffffff;
+  stroke-width: 5;
+  transform-origin: 800px 958px;
+  animation: sa-onde var(--d) ease-out both;
+}
+@keyframes sa-onde {
+  0%, 47%   { opacity: 0; transform: scale(0.3); }
+  48.5%     { opacity: 1; transform: scale(0.6); }
+  60%, 100% { opacity: 0; transform: scale(3.6); }
+}
+
+/* Le ballon : X et Y sur deux groupes, chacun avec ses courbes. */
+.sa-ballon { fill: url(#sa-cuir); stroke: #3a1500; stroke-width: 2; }
+.sa-ballon-coutures { fill: none; stroke: #3a1500; stroke-width: 3; }
+.sa-ballon-x { animation: sa-ballon-x var(--d) var(--retard, 0s) both; }
+.sa-trace { opacity: 0.3; }
+.sa-trace .sa-ballon-coutures { display: none; }
+@keyframes sa-ballon-x {
+  0%    { transform: translateX(-94px); animation-timing-function: cubic-bezier(0.25, 0.6, 0.4, 1); }
+  23.2% { transform: translateX(496px); animation-timing-function: ease-in-out; }
+  25.9% { transform: translateX(455px); }
+  27.7% { transform: translateX(455px); }
+  33.9% { transform: translateX(456px); animation-timing-function: linear; }
+  47.3% { transform: translateX(800px); }
+  53.6% { visibility: visible; transform: translateX(806px); }
+  56%, 100% { visibility: hidden; transform: translateX(806px); }
+}
+.sa-ballon-y { animation: sa-ballon-y var(--d) var(--retard, 0s) both; }
+@keyframes sa-ballon-y {
+  0%    { transform: translateY(1245px); animation-timing-function: ease-in; }
+  2.9%  { transform: translateY(1316px); animation-timing-function: ease-out; }
+  5.8%  { transform: translateY(1245px); animation-timing-function: ease-in; }
+  8.7%  { transform: translateY(1316px); animation-timing-function: ease-out; }
+  11.6% { transform: translateY(1245px); animation-timing-function: ease-in; }
+  14.5% { transform: translateY(1316px); animation-timing-function: ease-out; }
+  17.4% { transform: translateY(1245px); animation-timing-function: ease-in; }
+  20.3% { transform: translateY(1316px); animation-timing-function: ease-out; }
+  23.2% { transform: translateY(1245px); animation-timing-function: ease-in-out; }
+  25.9% { transform: translateY(1194px); }
+  27.7% { transform: translateY(1180px); animation-timing-function: cubic-bezier(0.2, 0.7, 0.4, 1); }
+  33.9% { transform: translateY(949px); animation-timing-function: cubic-bezier(0.2, 0.7, 0.4, 1); }
+  40.5% { transform: translateY(720px); animation-timing-function: cubic-bezier(0.6, 0, 0.8, 0.4); }
+  47.3% { transform: translateY(952px); animation-timing-function: linear; }
+  53.6%, 100% { transform: translateY(1065px); }
+}
+.sa-ballon-r { animation: sa-ballon-r var(--d) linear var(--retard, 0s) both; }
+@keyframes sa-ballon-r {
+  0%    { transform: rotate(0); }
+  23.2% { transform: rotate(200deg); }
+  33.9% { transform: rotate(220deg); }
+  53.6%, 100% { transform: rotate(-340deg); }
+}
+
+/* Le bonhomme baton. Chaque membre tourne autour de son articulation. */
+.sa-bonhomme-x { animation: sa-bonhomme-x var(--d) var(--retard, 0s) both; }
+@keyframes sa-bonhomme-x {
+  0%    { transform: translateX(-160px); animation-timing-function: cubic-bezier(0.25, 0.6, 0.4, 1); }
+  23.2%, 100% { transform: translateX(430px); }
+}
+.sa-bonhomme-y { animation: sa-bonhomme-y var(--d) var(--retard, 0s) both; }
+@keyframes sa-bonhomme-y {
+  0%, 23.2% { transform: translateY(0); }
+  25.9% { transform: translateY(14px); }
+  27.7% { transform: translateY(0); animation-timing-function: ease-out; }
+  33.9% { transform: translateY(-120px); animation-timing-function: ease-in; }
+  37.5% { transform: translateY(0); }
+  53.6% { transform: translateY(0); animation-timing-function: ease-out; }
+  58.9% { transform: translateY(-50px); animation-timing-function: ease-in; }
+  64.3% { transform: translateY(0); animation-timing-function: ease-out; }
+  69.6% { transform: translateY(-50px); animation-timing-function: ease-in; }
+  75%   { transform: translateY(0); animation-timing-function: ease-out; }
+  80.4% { transform: translateY(-50px); animation-timing-function: ease-in; }
+  85.7%, 100% { transform: translateY(0); }
+}
+/* Son ombre au sol : elle le suit et retrecit quand il saute. */
+.sa-ombre {
+  fill: rgba(0, 0, 0, 0.45);
+  transform-origin: 0 1342px;
+  animation: sa-ombre var(--d) both;
+}
+@keyframes sa-ombre {
+  0%    { transform: translateX(-160px) scaleX(1); animation-timing-function: cubic-bezier(0.25, 0.6, 0.4, 1); }
+  23.2% { transform: translateX(430px) scaleX(1); }
+  27.7% { transform: translateX(430px) scaleX(1.1); animation-timing-function: ease-out; }
+  33.9% { transform: translateX(430px) scaleX(0.5); animation-timing-function: ease-in; }
+  37.5%, 53.6% { transform: translateX(430px) scaleX(1); }
+  58.9% { transform: translateX(430px) scaleX(0.7); }
+  64.3% { transform: translateX(430px) scaleX(1); }
+  69.6% { transform: translateX(430px) scaleX(0.7); }
+  75%   { transform: translateX(430px) scaleX(1); }
+  80.4% { transform: translateX(430px) scaleX(0.7); }
+  85.7%, 100% { transform: translateX(430px) scaleX(1); }
+}
+.sa-membre { stroke: #ffffff; stroke-width: 11; stroke-linecap: round; }
+/* La lueur du bonhomme : le meme trait, plus large et translucide, dessous. */
+.sa-halo { fill: none; stroke: var(--sk-magenta, #e01631); stroke-width: 26; stroke-linecap: round; stroke-opacity: 0.32; }
+.sa-tete { fill: #280a0e; stroke: #ffffff; stroke-width: 9; }
+.sa-bandeau { fill: none; stroke: var(--sk-magenta, #e01631); stroke-width: 8; stroke-linecap: round; }
+.sa-jambe-a { animation: sa-jambe-a var(--d) ease-in-out var(--retard, 0s) both; }
+.sa-jambe-b { animation: sa-jambe-b var(--d) ease-in-out var(--retard, 0s) both; }
+.sa-bras-a  { animation: sa-bras-a var(--d) ease-in-out var(--retard, 0s) both; }
+.sa-bras-b  { animation: sa-bras-b var(--d) ease-in-out var(--retard, 0s) both; }
+@keyframes sa-jambe-a {
+  0% { transform: rotate(-32deg); } 5.8% { transform: rotate(32deg); }
+  11.6% { transform: rotate(-32deg); } 17.4% { transform: rotate(32deg); }
+  23.2% { transform: rotate(0); } 25.9% { transform: rotate(-22deg); }
+  27.7% { transform: rotate(0); } 33.9% { transform: rotate(-14deg); }
+  37.5%, 53.6% { transform: rotate(0); } 58.9% { transform: rotate(-18deg); }
+  64.3% { transform: rotate(0); } 69.6% { transform: rotate(-18deg); }
+  75% { transform: rotate(0); } 80.4% { transform: rotate(-18deg); }
+  85.7%, 100% { transform: rotate(0); }
+}
+@keyframes sa-jambe-b {
+  0% { transform: rotate(32deg); } 5.8% { transform: rotate(-32deg); }
+  11.6% { transform: rotate(32deg); } 17.4% { transform: rotate(-32deg); }
+  23.2% { transform: rotate(0); } 25.9% { transform: rotate(22deg); }
+  27.7% { transform: rotate(0); } 33.9% { transform: rotate(14deg); }
+  37.5%, 53.6% { transform: rotate(0); } 58.9% { transform: rotate(18deg); }
+  64.3% { transform: rotate(0); } 69.6% { transform: rotate(18deg); }
+  75% { transform: rotate(0); } 80.4% { transform: rotate(18deg); }
+  85.7%, 100% { transform: rotate(0); }
+}
+/* Le bras qui dribble pousse le ballon a chaque rebond, puis shoote. */
+@keyframes sa-bras-a {
+  0% { transform: rotate(-50deg); } 2.9% { transform: rotate(-32deg); }
+  5.8% { transform: rotate(-50deg); } 8.7% { transform: rotate(-32deg); }
+  11.6% { transform: rotate(-50deg); } 14.5% { transform: rotate(-32deg); }
+  17.4% { transform: rotate(-50deg); } 20.3% { transform: rotate(-32deg); }
+  23.2% { transform: rotate(-50deg); } 25.9% { transform: rotate(-85deg); }
+  27.7% { transform: rotate(-95deg); } 33.9% { transform: rotate(-165deg); }
+  37.5% { transform: rotate(-150deg); } 45% { transform: rotate(-40deg); }
+  53.6% { transform: rotate(-155deg); } 58.9% { transform: rotate(-175deg); }
+  64.3% { transform: rotate(-150deg); } 69.6% { transform: rotate(-175deg); }
+  75% { transform: rotate(-150deg); } 80.4% { transform: rotate(-175deg); }
+  85.7%, 100% { transform: rotate(-155deg); }
+}
+@keyframes sa-bras-b {
+  0% { transform: rotate(30deg); } 5.8% { transform: rotate(-10deg); }
+  11.6% { transform: rotate(30deg); } 17.4% { transform: rotate(-10deg); }
+  23.2% { transform: rotate(20deg); } 25.9% { transform: rotate(-70deg); }
+  27.7% { transform: rotate(-85deg); } 33.9% { transform: rotate(-155deg); }
+  37.5% { transform: rotate(-120deg); } 45% { transform: rotate(25deg); }
+  53.6% { transform: rotate(155deg); } 58.9% { transform: rotate(175deg); }
+  64.3% { transform: rotate(150deg); } 69.6% { transform: rotate(175deg); }
+  75% { transform: rotate(150deg); } 80.4% { transform: rotate(175deg); }
+  85.7%, 100% { transform: rotate(155deg); }
+}
+.sa-cri--swish { left: 72%; top: 39%; }
+
+/* --- 2. la pince (6,8 s) ---------------------------------------------------
+   0 → 0,4 s    la borne MIDKARDS CLAW apparait
+   0,4 → 1,6    la pince se promene sur son rail et hesite
+   1,75 → 2,4   elle descend sur le tas, se referme sur la carte qui brille
+   2,7 → 3,6    elle remonte... la carte glisse (OUPS !), rattrapee
+   3,75 → 4,25  la carte jaillit de la borne en se retournant : ATTRAPE !
+                (4,25 s : le logo est la) ; la borne s'efface */
+.spot-anim--pince {
+  --t-nom: 4.45s;
+  --t-punch: 4.7s;
+  --textes-top: 47.5%;
+}
+
+/* La borne. */
+.sa-borne,
+.sa-avant { animation: sa-borne var(--d) both; }
+/* Le cable de la pince ne depasse pas le rail : decoupe CSS fixe sur le SVG
+   (la vitre, x 190-890, y 440-1320 du canvas), plutot qu'un clipPath SVG
+   sur un groupe anime. */
+.sa-avant { z-index: 2; clip-path: inset(22.9% 17.6% 31.25% 17.6%); }
+@keyframes sa-borne {
+  0%   { opacity: 0; transform: translateY(4vh) scale(0.96); }
+  5.9%, 55.1% { opacity: 1; transform: none; }
+  63%, 100% { opacity: 0; transform: scale(1.04); }
+}
+.sa-caisse { fill: rgba(26,6,9, 0.7); stroke: url(#sa-cadre-neon); stroke-width: 8; }
+.sa-caisse-halo { fill: none; stroke: var(--sk-magenta, #e01631); stroke-width: 26; stroke-opacity: 0.3; }
+.sa-vitre { fill: none; stroke: rgba(255, 255, 255, 0.18); stroke-width: 2; }
+.sa-lit { fill: rgba(224,22,49, 0.25); }
+.sa-tas-carte { stroke: rgba(255, 255, 255, 0.8); stroke-width: 4; }
+.sa-tas-q {
+  fill: #ffffff;
+  fill-opacity: 0.85;
+  font: 900 92px "Barlow Condensed", sans-serif;
+  text-anchor: middle;
+}
+.sa-fronton { fill: url(#sa-enseigne); }
+.sa-fronton-texte {
+  fill: #ffffff;
+  font: italic 900 78px "Barlow Condensed", sans-serif;
+  letter-spacing: 6px;
+  text-anchor: middle;
+}
+.sa-rail { stroke: url(#sa-cadre-neon); stroke-width: 12; stroke-linecap: round; }
+
+/* La pince : le chariot roule sur le rail, la descente tire le cable. */
+.sa-chariot { animation: sa-chariot var(--d) both; }
+@keyframes sa-chariot {
+  0%, 5.9% { transform: translateX(300px); animation-timing-function: ease-in-out; }
+  13.2%    { transform: translateX(760px); animation-timing-function: ease-in-out; }
+  19.1%    { transform: translateX(420px); animation-timing-function: ease-in-out; }
+  21.6%    { transform: translateX(568px); animation-timing-function: ease-in-out; }
+  23.5%, 100% { transform: translateX(540px); }
+}
+.sa-chariot-bloc {
+  fill: url(#sa-metal-rail);
+  stroke: var(--sk-magenta, #e01631);
+  stroke-width: 3;
+}
+.sa-descente { animation: sa-descente var(--d) both; }
+@keyframes sa-descente {
+  0%, 25.7% { transform: translateY(0); animation-timing-function: cubic-bezier(0.45, 0, 0.3, 1); }
+  35.3%     { transform: translateY(515px); }
+  37.5%     { transform: translateY(515px); }
+  39.7%     { transform: translateY(505px); animation-timing-function: ease-in-out; }
+  45.6%     { transform: translateY(330px); }
+  47.1%     { transform: translateY(360px); }
+  48.5%     { transform: translateY(300px); animation-timing-function: ease-in-out; }
+  52.9%, 100% { transform: translateY(40px); }
+}
+.sa-cable { fill: url(#sa-metal); }
+.sa-moyeu { fill: url(#sa-metal); stroke: #ffffff; stroke-width: 3; }
+.sa-moyeu-neon { fill: var(--sk-magenta, #e01631); }
+.sa-voyant { fill: #ffa4b0; }
+.sa-griffe {
+  fill: none;
+  stroke: url(#sa-metal);
+  stroke-width: 13;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.sa-griffe-g { animation: sa-griffe-g var(--d) both; }
+.sa-griffe-d { animation: sa-griffe-d var(--d) both; }
+@keyframes sa-griffe-g {
+  0%, 35.3% { transform: rotate(26deg); }
+  39.7%, 52.9% { transform: rotate(-6deg); }
+  55.1%, 100% { transform: rotate(30deg); }
+}
+@keyframes sa-griffe-d {
+  0%, 35.3% { transform: rotate(-26deg); }
+  39.7%, 52.9% { transform: rotate(6deg); }
+  55.1%, 100% { transform: rotate(-30deg); }
+}
+
+/* La carte gagnante : elle brille dans le tas, suit la pince, puis jaillit
+   au premier plan en se retournant. */
+.sa-proie {
+  position: absolute;
+  left: 42.13vw;
+  top: 56.77vh;
+  z-index: 1;
+  width: 15.74vw;
+  height: 22.22vw;
+  animation: sa-proie var(--d) both;
+}
+@keyframes sa-proie {
+  0%        { opacity: 0; transform: translateY(4vh); }
+  5.9%, 37.5% { opacity: 1; transform: translateY(0) rotate(0); }
+  39.7%     { transform: translateY(-0.52vh) rotate(0); animation-timing-function: ease-in-out; }
+  45.6%     { transform: translateY(-9.64vh) rotate(-3deg); animation-timing-function: ease-in; }
+  47.1%     { transform: translateY(-4.4vh) rotate(15deg); animation-timing-function: cubic-bezier(0.2, 0.8, 0.3, 1.4); }
+  48.5%     { transform: translateY(-11.2vh) rotate(-6deg); animation-timing-function: ease-in-out; }
+  52.9%     { transform: translateY(-24.74vh) rotate(0) scale(1); }
+  55.1%     { transform: translateY(-24.74vh) scale(1); animation-timing-function: cubic-bezier(0.2, 0.8, 0.3, 1.3); }
+  62.5%, 100% { opacity: 1; transform: translateY(-29vh) scale(1.9); }
+}
+/* Retournement en 2D : la carte se referme (scaleX 0), change de face,
+   se rouvre. La 3D (rotateY + backface) clignote dans OBS. */
+.sa-proie__tourne {
+  position: absolute;
+  inset: 0;
+  animation: sa-tourne var(--d) both;
+}
+@keyframes sa-tourne {
+  0%, 55.1% { transform: scaleX(1); animation-timing-function: ease-in; }
+  58.8%     { transform: scaleX(0); animation-timing-function: ease-out; }
+  62.5%, 100% { transform: scaleX(1); }
+}
+.sa-proie__dos,
+.sa-proie__face {
+  position: absolute;
+  inset: 0;
+  border-radius: 1.2vw;
+}
+.sa-proie__dos  { animation: sa-dos var(--d) step-end both; }
+.sa-proie__face { animation: sa-face var(--d) step-end both; }
+@keyframes sa-dos  { 0% { visibility: visible; } 58.8%, 100% { visibility: hidden; } }
+@keyframes sa-face { 0% { visibility: hidden; } 58.8%, 100% { visibility: visible; } }
+.sa-proie__dos {
+  display: grid;
+  place-items: center;
+  color: #ffffff;
+  font: 900 9vw/1 "Barlow Condensed", sans-serif;
+  border: 0.5vw solid #ffffff;
+  background:
+    repeating-linear-gradient(45deg, rgba(255, 255, 255, 0.1) 0 1vw, transparent 1vw 2vw),
+    linear-gradient(160deg, #ffd23d, #e01631 55%, #e01631);
+  text-shadow: 0 0 2vw #ffffff;
+}
+/* La carte qui brille : un halo dessous, qui pulse (opacite seulement). */
+.sa-proie::before {
+  content: "";
+  position: absolute;
+  inset: -1.5vw;
+  border-radius: 2vw;
+  background: radial-gradient(closest-side, rgba(255, 210, 61, 0.85), rgba(224,22,49, 0.45) 60%, transparent);
+  animation: sa-elue 0.7s ease-in-out infinite alternate, sa-elue-fin var(--d) step-end both;
+}
+@keyframes sa-elue-fin { 0% { visibility: visible; } 55.1%, 100% { visibility: hidden; } }
+@keyframes sa-elue {
+  from { opacity: 0.35; }
+  to   { opacity: 1; }
+}
+.sa-proie__face {
+  padding: 1.4vw;
+  overflow: hidden;
+  border: 0.5vw solid transparent;
+  background:
+    linear-gradient(180deg, #410f16, #20060a) padding-box,
+    linear-gradient(135deg, var(--sk-magenta, #e01631), var(--sk-bleu, #eb0e37), #ffa4b0, var(--sk-magenta, #e01631)) border-box;
+  box-shadow: 0 0 2.5vw rgba(224,22,49, 0.8), 0 1vw 2vw rgba(0, 0, 0, 0.6);
+}
+.sa-proie__face::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(115deg, transparent 30%, rgba(255, 255, 255, 0.35) 45%, rgba(255,164,176, 0.25) 52%, transparent 65%);
+  background-size: 260% 100%;
+  animation: sa-reflet 1.8s ease-in-out infinite;
+}
+@keyframes sa-reflet {
+  from { background-position: 120% 0; }
+  to   { background-position: -20% 0; }
+}
+.sa-cri--oups { left: 70%; top: 40%; font-size: 8vw; --t-cri: 3.05s; }
+.sa-cri--attrape { left: 50%; top: 17%; --t-cri: 4.2s; }

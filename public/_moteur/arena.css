@@ -1,0 +1,116 @@
+/* ==========================================================================
+   MIDKARDS — Couche de FOND (sous les cameras dans OBS)
+
+   ARCHITECTURE IMAGE D'ABORD.
+   Le decor d'arene est une IMAGE, pas du CSS. Une salle credible demande des
+   gradins, de la profondeur et une vraie lumiere : des degrades n'y arrivent
+   pas, ils font du faux. Cette couche se charge donc d'afficher l'image et de
+   lui donner de la vie (respiration lumineuse, halos qui derivent), pas de
+   dessiner la salle.
+
+   Sans image, on affiche un fond sombre propre et neutre. Volontairement
+   neutre : mieux vaut un fond sobre qu'un decor rate.
+
+   PERF : on n'anime que transform et opacity.
+   ========================================================================== */
+
+body { background: #0c0506; }
+
+.arena {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  background: linear-gradient(180deg, #0c0506 0%, #160a0c 45%, #0e0607 100%);
+}
+
+/* --------------------------------------------------------------------------
+   L'image de decor
+   -------------------------------------------------------------------------- */
+.photo {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  opacity: 0;                    /* activee par le JS si une image est fournie */
+}
+
+/* Respiration lumineuse. DESACTIVEE PAR DEFAUT, et ce n'est pas un detail :
+   animer l'echelle du decor fait changer 100 % des pixels a chaque image, ce
+   qui empeche l'encodeur de reutiliser le fond d'une image sur l'autre. A
+   1080x1920 et 3500 kbps (les reglages Whatnot), soit 0,056 bit par pixel, ce
+   debit est vole aux cartes — la seule chose qui compte a l'ecran.
+   Volontairement plus discrete qu'avant pour ceux qui l'activent quand meme. */
+.photo.is-alive {
+  animation: photo-breathe 30s ease-in-out infinite;
+}
+@keyframes photo-breathe {
+  0%, 100% { transform: scale(1);     filter: brightness(0.985); }
+  50%      { transform: scale(1.006); filter: brightness(1.03); }
+}
+
+/* --------------------------------------------------------------------------
+   Halos qui derivent, POSES SUR l'image.
+   Ils simulent les lyres qui balayent la salle sans pretendre les dessiner :
+   ce ne sont que des taches de lumiere diffuse, ce qui est exactement ce
+   qu'on percoit d'un projecteur dans une salle enfumee.
+   -------------------------------------------------------------------------- */
+.bloom {
+  position: absolute;
+  width: 70%;
+  height: 42%;
+  border-radius: 50%;
+  mix-blend-mode: screen;
+  filter: blur(0px);             /* jamais anime : un blur anime coute cher */
+  opacity: 0;
+}
+.bloom--a {
+  left: -12%;
+  top: 4%;
+  background: radial-gradient(closest-side ellipse,
+    rgba(255,164,176, 0.30), rgba(255,164,176, 0.08) 55%, transparent 80%);
+  animation: bloom-drift-a 27s ease-in-out infinite;
+}
+.bloom--b {
+  right: -14%;
+  top: 26%;
+  background: radial-gradient(closest-side ellipse,
+    rgba(255,72,114, 0.26), rgba(217,89,106, 0.08) 55%, transparent 80%);
+  animation: bloom-drift-b 34s ease-in-out infinite;
+}
+.bloom--c {
+  left: 12%;
+  bottom: 2%;
+  background: radial-gradient(closest-side ellipse,
+    rgba(217,89,106, 0.24), rgba(235,63,95, 0.07) 55%, transparent 80%);
+  animation: bloom-drift-a 41s ease-in-out infinite reverse;
+}
+@keyframes bloom-drift-a {
+  0%, 100% { opacity: calc(0.35 * var(--fx)); transform: translate3d(0, 0, 0) scale(1); }
+  50%      { opacity: calc(0.75 * var(--fx)); transform: translate3d(14%, 6%, 0) scale(1.16); }
+}
+@keyframes bloom-drift-b {
+  0%, 100% { opacity: calc(0.28 * var(--fx)); transform: translate3d(0, 0, 0) scale(1.1); }
+  50%      { opacity: calc(0.62 * var(--fx)); transform: translate3d(-12%, -5%, 0) scale(1); }
+}
+
+/* --------------------------------------------------------------------------
+   Vignettage : ramene l'oeil au centre et calme les bords, la ou l'interface
+   de la plateforme viendra se superposer.
+   -------------------------------------------------------------------------- */
+/* Volontairement leger sur les cotes : la richesse de l'image d'arene est
+   justement dans les gradins, sur les bords. Un vignettage appuye — calibre
+   quand le fond etait vide — les ecrasait. Il ne reste que deux voiles en
+   haut et en bas, la ou l'interface de la plateforme vient se superposer et
+   ou il faut du calme. */
+.vignette {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(135% 88% at 50% 46%, transparent 62%,
+      rgba(7,2,3, calc(0.30 * var(--vig, 1))) 100%),
+    linear-gradient(180deg, rgba(7,2,3, calc(0.42 * var(--vig, 1))) 0%, transparent 11%),
+    linear-gradient(0deg, rgba(7,2,3, calc(0.78 * var(--vig, 1))) 0%,
+                          rgba(7,2,3, calc(0.35 * var(--vig, 1))) 12%,
+                          transparent 26%);
+}

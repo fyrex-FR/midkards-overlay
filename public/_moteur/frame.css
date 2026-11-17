@@ -1,0 +1,916 @@
+/* ==========================================================================
+   MIDKARDS — Couche de CADRE (au-dessus des cameras dans OBS)
+   Transparente partout sauf les liseres, les coins et le bandeau central.
+   Les fenetres camera n'ont AUCUN fond : c'est la camera OBS placee dessous
+   qui apparait a travers.
+   ========================================================================== */
+
+:root {
+  /* La page de cadre occupe toujours toute la source, donc --vh = 100vh.
+     Passer par une variable garde le CSS lisible et pilotable. */
+  --vh: 100vh;
+
+  /* Bornes du CADRE decoratif. Distinctes des zones d'interface : celles-ci
+     ne sont que des reperes, pas des interdits. Le chat de la plateforme est
+     une surcouche que le viewer peut masquer, donc la video doit exister
+     dessous. Seul le bandeau, qui porte du texte a lire, reste degage. */
+  --stage-top: 4%;
+  --stage-bottom: 8%;
+
+  /* Zones d'interface, pour les reperes de reglage uniquement. */
+  --safe-top: 10%;
+  --safe-bottom: 30%;
+  --safe-side: 10%;
+
+  /* Angles DROITS, pas arrondis. Ce n'est pas un gout : une source camera est
+     un rectangle net, et un arrondi dessine par-dessus laisse l'image
+     depasser du liseré dans chaque angle. */
+  --win-r: 0px;
+  --ring-w: calc(var(--vh) * 0.0034); /* epaisseur du liseré */
+  --br-size: calc(var(--vh) * 0.062); /* longueur des bras d'angle */
+  --br-w: calc(var(--vh) * 0.0026);   /* epaisseur des bras d'angle */
+}
+
+.stage,
+.win,
+.rail,
+.zone-guide { pointer-events: none; }
+
+/* --------------------------------------------------------------------------
+   Le plateau : le cadre exterieur ne couvre QUE la zone reellement visible.
+   Il s'arrete avant l'UI de la plateforme (entete en haut, chat en bas),
+   sinon on dessinerait un liseré derriere le fil de messages.
+   -------------------------------------------------------------------------- */
+.stage {
+  position: absolute;
+  left: 1.6%;
+  right: 1.6%;
+  top: var(--stage-top);
+  bottom: var(--stage-bottom);
+  border-radius: 0;
+  border: 1px solid rgba(255,194,202, 0.30);
+  box-shadow:
+    inset 0 0 calc(var(--vh) * 0.02) rgba(235,63,95, 0.18),
+    0 0 calc(var(--vh) * 0.03) rgba(224,70,91, 0.16);
+}
+
+/* Chevrons aux quatre angles du plateau */
+.chev {
+  position: absolute;
+  width: calc(var(--vh) * 0.026);
+  height: calc(var(--vh) * 0.026);
+  border: calc(var(--vh) * 0.0022) solid var(--c-cyan);
+  box-shadow: 0 0 calc(var(--vh) * 0.012) rgba(255,164,176, 0.8);
+  animation: chev-glow 6s ease-in-out infinite;
+}
+.chev--tl { top: -1px; left: -1px;  border-right: 0; border-bottom: 0; }
+.chev--tr { top: -1px; right: -1px; border-left: 0;  border-bottom: 0; animation-delay: -1.5s; }
+.chev--bl { bottom: -1px; left: -1px;  border-right: 0; border-top: 0;  animation-delay: -3s; }
+.chev--br { bottom: -1px; right: -1px; border-left: 0;  border-top: 0;  animation-delay: -4.5s; }
+@keyframes chev-glow {
+  0%, 100% { opacity: 0.55; }
+  50%      { opacity: 1; }
+}
+
+/* --------------------------------------------------------------------------
+   Rails lateraux : ce qui remplace les blocs de texte du mock.
+   Purement decoratifs, ils tiennent le regard sur la verticale.
+   -------------------------------------------------------------------------- */
+.rail {
+  position: absolute;
+  top: 16%;
+  height: 52%;
+  width: calc(var(--vh) * 0.0016);
+  background: linear-gradient(180deg,
+    transparent, var(--c-cyan) 18%, var(--c-violet) 50%, var(--c-pink) 82%, transparent);
+  opacity: 0.55;
+  animation: rail-drift 11s ease-in-out infinite;
+}
+.rail--l { left: 0.7%; }
+.rail--r { right: 0.7%; animation-delay: -5.5s; }
+@keyframes rail-drift {
+  0%, 100% { opacity: 0.30; transform: scaleY(0.94); }
+  50%      { opacity: 0.75; transform: scaleY(1); }
+}
+
+/* --------------------------------------------------------------------------
+   Fenetres camera
+   -------------------------------------------------------------------------- */
+.win {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  /* aucun background : la camera OBS dessous doit rester visible */
+}
+
+/* Liseré neon avec une lumiere qui fait le tour.
+   L'astuce du masque en xor ne garde que la bande de bordure ; l'enfant qui
+   tourne dessous fournit la lumiere voyageuse. */
+.win__ring {
+  position: absolute;
+  inset: 0;
+  border-radius: var(--win-r);
+  padding: var(--ring-w);
+  overflow: hidden;
+  background: linear-gradient(180deg,
+    rgba(255,194,202, 0.42), rgba(217,89,106, 0.30) 55%, rgba(255,72,114, 0.34));
+
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+          mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+          mask-composite: exclude;
+}
+
+.win__spin {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 165%;
+  height: 165%;
+  transform: translate(-50%, -50%);
+  will-change: transform;
+  background: conic-gradient(from 0deg,
+    transparent 0 58%,
+    rgba(255,164,176, 0.55) 70%,
+    #ffffff 78%,
+    rgba(255,72,114, 0.65) 86%,
+    transparent 96% 100%);
+  animation: ring-travel var(--ring-sec, 9s) linear infinite;
+}
+@keyframes ring-travel {
+  to { transform: translate(-50%, -50%) rotate(360deg); }
+}
+
+/* Ombre portee vers l'INTERIEUR de la fenetre.
+   Double role : elle donne de la profondeur a l'emplacement, qui se lit donc
+   meme vide, et elle detache l'image de la camera du decor une fois posee
+   dedans. Elle ne bouge pas, donc elle ne coute rien en debit video. */
+.win__inner {
+  position: absolute;
+  inset: var(--ring-w);
+  border-radius: var(--win-r);
+  pointer-events: none;
+  /* Un liseré sombre fin et UNIFORME, pas une ombre floue : une ombre
+     interne avec du flou concentre son assombrissement dans les angles, et
+     sur une camera claire ca dessinait quatre blocs sombres. */
+  box-shadow:
+    inset 0 0 0 1px rgba(11,2,4, 0.75),
+    inset 0 0 0 2px rgba(255,194,202, 0.18);
+}
+
+/* Halo doux projete vers l'exterieur de la fenetre */
+.win__glow {
+  position: absolute;
+  inset: calc(-1 * var(--vh) * 0.004);
+  border-radius: var(--win-r);
+  box-shadow: 0 0 calc(var(--vh) * 0.032) rgba(235,63,95, 0.5),
+              0 0 calc(var(--vh) * 0.012) rgba(0, 0, 0, 0.6);
+}
+
+/* Bras d'angle : deux traits fins et longs poses exactement sur le bord.
+   Ils marquent l'angle sans dessiner de forme fermee — une equerre epaisse et
+   courte se lisait comme un petit carre flottant a l'interieur du cadre. */
+.bracket {
+  position: absolute;
+  width: var(--br-size);
+  height: var(--br-size);
+  border: var(--br-w) solid var(--c-cyan);
+  box-shadow: 0 0 calc(var(--vh) * 0.01) rgba(255,164,176, 0.7);
+  animation: chev-glow 5.5s ease-in-out infinite;
+}
+.bracket--tl { top: 0; left: 0;     border-right: 0; border-bottom: 0; }
+.bracket--tr { top: 0; right: 0;    border-left: 0;  border-bottom: 0; animation-delay: -1.4s; }
+.bracket--bl { bottom: 0; left: 0;  border-right: 0; border-top: 0;    animation-delay: -2.8s; }
+.bracket--br { bottom: 0; right: 0; border-left: 0;  border-top: 0;    animation-delay: -4.2s; }
+
+/* Possibilite de s'en passer : le liseré suffit a cadrer. */
+.win.no-corners .bracket { display: none; }
+
+/* Fenetre nue : plus aucun ornement, juste le trou transparent. Coller la
+   camera au bord du cadre laisse peu de marge pour un lisere ou un anneau —
+   autant les retirer que les laisser mordre sur l'image. */
+.win.is-bare .win__glow,
+.win.is-bare .win__inner,
+.win.is-bare .win__ring,
+.win.is-bare .win__scan,
+.win.is-bare .bracket { display: none; }
+
+/* Ligne de balayage ponctuelle, volontairement tres discrete :
+   plus appuyee, elle passerait pour un defaut de compression video. */
+.win__scan {
+  position: absolute;
+  left: var(--ring-w);
+  right: var(--ring-w);
+  height: calc(var(--vh) * 0.05);
+  top: 0;
+  opacity: 0;
+  mix-blend-mode: screen;
+  background: linear-gradient(180deg,
+    transparent, rgba(255,208,214, 0.16) 45%, rgba(220, 240, 255, 0.24) 50%,
+    rgba(255,208,214, 0.16) 55%, transparent);
+}
+.win__scan.is-running {
+  animation: scan-pass 2.4s cubic-bezier(0.4, 0, 0.6, 1) 1;
+}
+@keyframes scan-pass {
+  0%   { top: 0%;   opacity: 0; }
+  14%  { opacity: 1; }
+  86%  { opacity: 1; }
+  100% { top: 100%; opacity: 0; }
+}
+
+/* --------------------------------------------------------------------------
+   Bande centrale : accueille le bandeau (banner.css / banner.js).
+   overflow visible pour que le logo puisse mordre sur les deux fenetres.
+   -------------------------------------------------------------------------- */
+.band {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  overflow: visible;
+  z-index: 7;                   /* le logo central passe devant la grille */
+}
+
+/* --------------------------------------------------------------------------
+   Reperes de zones sures. Outil de reglage, jamais actif en direct :
+   ?zones=1 dans l'URL, ou showSafeZones dans config.js.
+   -------------------------------------------------------------------------- */
+.zone-guide {
+  position: absolute;
+  display: none;
+  background: repeating-linear-gradient(45deg,
+    rgba(255,72,114, 0.16) 0 8px, transparent 8px 16px);
+  border: 1px dashed rgba(255,72,114, 0.6);
+  font-size: 14px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #ffd9ec;
+  padding: 6px 10px;
+}
+body.show-zones .zone-guide { display: block; }
+.zone-guide--top, .zone-guide--bottom { left: 0; right: 0; }
+.zone-guide--top    { top: 0; height: var(--safe-top); }
+.zone-guide--bottom { bottom: 0; height: var(--safe-bottom); }
+
+/* Cotes : Whatnot (et la plupart des lecteurs mobiles) affichent un flux
+   vertical en "cover" — ils remplissent tout l'ecran du telephone sans bande
+   noire, quel que soit son format. Un telephone moderne est proportionnellement
+   plus HAUT que notre canvas 1080x1920 (souvent 19,5:9 a 20:9 contre notre
+   16:9 [en largeur/hauteur inverse]) : pour remplir sans bande, le lecteur
+   doit rogner les COTES, pas le haut ni le bas. Verifie sur les captures d'un
+   vrai telephone : les rails neon des bords y ont completement disparu. */
+.zone-guide--left, .zone-guide--right {
+  top: 0;
+  bottom: 0;
+  padding: 0;
+  writing-mode: vertical-rl;
+  text-align: center;
+}
+body.show-zones .zone-guide--left,
+body.show-zones .zone-guide--right { display: flex; align-items: center; justify-content: center; }
+.zone-guide--left  { left: 0;  width: var(--safe-side); }
+.zone-guide--right { right: 0; width: var(--safe-side); }
+.zone-guide--left::after  { content: "zone rognée au téléphone"; }
+.zone-guide--right::after { content: "zone rognée au téléphone"; }
+
+/* --------------------------------------------------------------------------
+   GRILLE DES RANDOMS
+   Les equipes du break, suspendue sous la barre du bandeau, par-dessus la
+   camera du bas.
+
+   Parti pris : AUCUN FOND derriere les logos. Un pave de couleur par equipe se
+   battait avec le logo qu'il portait, et les logos sombres disparaissaient sur
+   leur propre couleur. Chaque equipe est donc seulement posee dans un cadre, et
+   c'est la camera qu'on voit au travers.
+
+   Ce qui remplace le fond pour la lisibilite : une ombre portee sous le logo.
+   Elle detache le dessin sans poser d'aplat. Un voile reste disponible dans les
+   reglages (0 par defaut) si la camera du bas devient trop claire.
+
+   Tout est dimensionne en vw : la source de navigateur a exactement la taille
+   du canvas OBS, donc 1vw vaut 1 % de la largeur du flux. Les proportions
+   tiennent donc en 720x1280 comme en 1080x1920.
+
+   Volontairement sans animation : la grille couvre 13 % de l'image, et a
+   0,056 bit par pixel tout mouvement ici serait pris aux cartes.
+   -------------------------------------------------------------------------- */
+.randoms {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 6;                    /* au-dessus des fenetres, sous le bandeau */
+  pointer-events: none;
+
+  /* Ecarts entre les cases. Serres : sur un telephone, la grille n'a que
+     ~58 % de large et ~200 px de haut entre le bandeau et le chat, et chaque
+     ecart en moins agrandit les logos. L'ecart entre lignes laisse juste
+     la place a la tranche en relief sous chaque case. */
+  --rnd-gap-col:   0.3vw;
+  --rnd-gap-ligne: 0.6vw;
+
+  /* Teintes des cases et de la barre, en un seul endroit. */
+  --tuile-reflet:  rgba(224,121,135, 0.4);  /* lueur en haut de la case */
+  --tuile-haut:    #6b2730;
+  --tuile-milieu:  #3a1116;
+  --tuile-bas:     #1a0609;
+  --tranche-haut:  #942332;                   /* epaisseur du bloc */
+  --tranche-bas:   #4d1018;
+  /* Halo neon autour des blocs : eteint par defaut. */
+  --neon-c:        transparent;
+  --neon-flou:     0vw;
+  --neon-int:      transparent;               /* lueur a l'interieur du bord */
+}
+
+/* Les deux attaches qui traversent l'ecart jusqu'a la barre. Sans elles, la
+   grille flotte ; avec, elle est visiblement suspendue au bandeau. Placees a
+   l'aplomb des chevrons interieurs de la barre. */
+.randoms::before,
+.randoms::after {
+  content: "";
+  position: absolute;
+  bottom: 100%;
+  width: 0.16vw;
+  height: var(--rnd-attache, 1.4vh);
+  background: linear-gradient(180deg, rgba(255,164,176, 0), rgba(255,164,176, 0.75));
+  box-shadow: 0 0 0.4vw rgba(255,164,176, 0.5);
+}
+.randoms::before { left: 21%; }
+.randoms::after  { right: 21%; }
+
+.randoms__panel {
+  position: relative;
+  padding: 0.4vw;          /* serre : chaque fraction de vw va aux logos */
+  /* Voile facultatif, nul par defaut : c'est la camera qu'on doit voir. */
+  background: rgba(17,6,8, var(--rnd-voile, 0));
+}
+
+.randoms__grid {
+  display: grid;
+  grid-template-columns: repeat(var(--rnd-cols, 10), 1fr);
+  gap: var(--rnd-gap-ligne) var(--rnd-gap-col);
+}
+
+/* La ligne de reste : memes cases, largeur identique aux lignes pleines (le
+   calc reprend exactement le meme partage que le grid ci-dessus), mais
+   centree au lieu d'etre plaquee a gauche. Un flex plutot qu'un grid, parce
+   qu'un grid dont la derniere ligne est incomplete aligne ses cases a gauche
+   sans moyen simple de les centrer. */
+.randoms__reste {
+  display: flex;
+  justify-content: center;
+  gap: var(--rnd-gap-col);
+  margin-top: var(--rnd-gap-ligne);
+}
+.randoms__reste > .rnd {
+  flex: 0 0 calc((100% - (var(--rnd-cols, 10) - 1) * var(--rnd-gap-col)) / var(--rnd-cols, 10));
+}
+
+/* --- une equipe ----------------------------------------------------------
+   Une tuile en relief, le logo pose dessus.
+   ------------------------------------------------------------------------- */
+.rnd {
+  position: relative;
+  top: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  aspect-ratio: 1 / var(--rnd-hauteur, 0.9);   /* hauteur / largeur, voir randoms.js */
+  border-radius: 0.35vw;
+
+  /* Une tuile en relief, pas un aplat. Fond OPAQUE : la case se detache de
+     la camera quelle qu'elle soit. Le fond est eclaire par le haut (lueur
+     violette, degrade qui s'assombrit vers le bas) ; le contour reprend les
+     cadres de marques de la charte MidKards, bleu aux coins magenta.
+     L'astuce padding-box / border-box donne un bord en degrade sans
+     pseudo-element. */
+  border: 0.12vw solid transparent;
+  background:
+    radial-gradient(ellipse 90% 55% at 50% 0%, var(--tuile-reflet), transparent 70%) padding-box,
+    linear-gradient(180deg, var(--tuile-haut) 0%, var(--tuile-milieu) 40%, var(--tuile-bas) 100%) padding-box,
+    linear-gradient(135deg, var(--sk-magenta) 0%, var(--sk-bleu) 28%,
+                            var(--sk-bleu) 72%, var(--sk-magenta) 100%) border-box;
+
+  /* Le volume, de l'interieur vers l'exterieur : arete haute eclairee, flancs
+     (gauche clair, droit sombre), bas dans l'ombre, trait a la couleur de
+     l'equipe, puis la TRANCHE du bloc et son ombre portee.
+
+     La tranche est violette, pas noire : noire, elle se confondait avec le
+     bas de la case et l'ombre, et l'oeil ne lisait aucune epaisseur. Deux
+     teintes (claire en haut, sombre en bas) la font paraitre arrondie. */
+  box-shadow:
+    inset 0 0.2vw 0 rgba(255, 255, 255, 0.38),
+    inset 0.14vw 0 0 rgba(255, 255, 255, 0.1),
+    inset -0.14vw 0 0 rgba(0, 0, 0, 0.3),
+    inset 0 -0.45vw 0.45vw rgba(0, 0, 0, 0.6),
+    inset 0 -0.14vw 0 var(--lueur, transparent),
+    inset 0 0 0.5vw var(--neon-int),
+    0 0 var(--neon-flou) var(--neon-c),
+    0 0.22vw 0 var(--tranche-haut),
+    0 0.42vw 0 var(--tranche-bas),
+    0 0.95vw 1.1vw rgba(0, 0, 0, 0.75);
+}
+
+/* Reflet de verre sur la moitie haute, par-dessus le logo : l'effet
+   acrylique d'une case de vitrine. */
+.rnd::after {
+  content: "";
+  position: absolute;
+  inset: 0 0 52% 0;
+  border-radius: 0.25vw 0.25vw 50% 50% / 0.25vw 0.25vw 0.5vw 0.5vw;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.02));
+  pointer-events: none;
+}
+
+.rnd__sigle {
+  font-family: "Barlow Condensed", sans-serif;
+  font-weight: 700;
+  font-size: 1.6vw;
+  letter-spacing: 0.04em;
+  line-height: 1;
+  color: #eaf2ff;
+  text-shadow: 0 0.1vw 0.3vw rgba(0, 0, 0, 0.85);
+}
+
+/* Logo : il recouvre le sigle une fois charge, jamais avant. L'ombre portee
+   remplace le fond — c'est elle qui detache le dessin de la camera. */
+.rnd__logo {
+  position: absolute;
+  inset: 3%;
+  width: 94%;
+  height: 94%;
+  object-fit: contain;
+  display: none;
+  /* Le logo flotte au-dessus du fond de la case : ombre decalee vers le bas. */
+  filter:
+    drop-shadow(0 0 0.18vw rgba(0, 0, 0, 0.95))
+    drop-shadow(0 0.38vw 0.25vw rgba(0, 0, 0, 0.85));
+}
+.rnd.has-logo .rnd__logo { display: block; }
+
+/* Roue a portraits : l'image remplit la case, coins compris. Pas d'ombre
+   portee, il n'y a plus de dessin a detacher du fond. */
+.randoms--portraits .rnd__logo {
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: inherit;
+  filter: none;
+}
+.rnd.has-logo .rnd__sigle { display: none; }
+
+/* Spot vendu : il reste en place (la grille ne se recompose pas), assombri
+   et ENFONCE, comme un bouton presse. top plutot que transform : le saut de
+   la selection anime transform, les deux ne se marchent pas dessus. */
+.rnd.is-pris {
+  top: 0.42vw;
+  background:
+    linear-gradient(180deg, #180609 0%, #1d080c 100%) padding-box,
+    linear-gradient(135deg, #51292f, #4e1e27 50%, #51292f) border-box;
+  box-shadow:
+    inset 0 0.3vw 0.5vw rgba(0, 0, 0, 0.8),
+    0 0.08vw 0 #380e13,
+    0 0.2vw 0.4vw rgba(0, 0, 0, 0.5);
+}
+.rnd.is-pris::after { opacity: 0.35; }
+.rnd.is-pris .rnd__logo { filter: grayscale(1) brightness(0.55); }
+
+/* Le bandeau VENDU, en travers de la case et coupe par ses bords. */
+.rnd__vendu {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  border-radius: inherit;
+  pointer-events: none;
+}
+.rnd__vendu b {
+  display: block;
+  width: 140%;
+  padding: 0.12vw 0;
+  text-align: center;
+  transform: rotate(-24deg);
+  color: #ffffff;
+  font: 800 1.05vw/1 "Barlow Condensed", sans-serif;
+  letter-spacing: 0.14em;
+  background: linear-gradient(90deg, var(--sk-violet), var(--sk-magenta));
+  box-shadow: 0 0 0.6vw rgba(224,22,49, 0.6), 0 0.1vw 0.2vw rgba(0, 0, 0, 0.6);
+  text-shadow: 0 0.05vw 0.15vw rgba(0, 0, 0, 0.6);
+}
+/* Sur le spot qu'on vient d'attribuer, le bandeau s'abat a la fin du show,
+   quand le logo repasse au gris. */
+.rnd.is-selectionnee .rnd__vendu b {
+  animation: rnd-bande 4.2s linear calc(var(--t0, 0s) + var(--decal, 0s)) both;
+}
+
+.rnd.is-pris .rnd__sigle { color: #8d8082; }
+/* --- spot attribue : l'entree du catcheur ---------------------------------
+   Tout se joue sur une seule horloge de 4,2 s, partagee par la scene, la
+   case de la grille et la secousse : les pourcentages des keyframes ci-
+   dessous sont donc des instants communs.
+
+     0 → 14 %   le logo tombe du haut de l'image
+     14 %       IMPACT : ecrasement, poussiere, onde, tout tremble
+     14 → 38 %  deux rebonds de plus en plus courts
+     34 %       le tampon VENDU s'ecrase, petite replique
+     38 → 50 %  le nom, puis la punchline
+     84 → 100 % le logo se ramasse et repart par le haut
+
+   Les deplacements passent par transform, jamais par top/left : c'est ce
+   qui garde l'animation fluide dans le Chromium d'OBS. */
+/* Couleurs de la charte MidKards, pas celles de l'equipe : l'animation
+   est la signature de la boutique. Bleu electrique et magenta du bandeau du
+   site, violet du bouton "Shop now", bleu ciel des titres. */
+:root {
+  --sk-bleu:    #eb0e37;
+  --sk-violet:  #e01631;
+  --sk-magenta: #e01631;
+  --sk-rose:    #ff164d;
+  --sk-ciel:    #fdbec6;
+}
+
+.rnd.is-selectionnee {
+  z-index: 2;
+  animation: rnd-saut 4.2s linear calc(var(--t0, 0s) + var(--decal, 0s)) both;
+}
+.rnd.is-selectionnee::before {
+  content: "";
+  position: absolute;
+  inset: -12%;
+  border: 0.16vw solid var(--sk-magenta);
+  box-shadow: 0 0 1.1vw var(--sk-bleu), inset 0 0 0.6vw var(--sk-bleu);
+  pointer-events: none;
+  animation: rnd-selection-ring 1.1s ease-out calc(0.59s + var(--t0, 0s) + var(--decal, 0s)) both;
+}
+/* Le logo garde ses couleurs le temps du show, puis rejoint les vendus. */
+.rnd.is-selectionnee .rnd__logo {
+  animation: rnd-degrise 4.2s linear calc(var(--t0, 0s) + var(--decal, 0s)) both;
+}
+
+/* La grille encaisse le choc avec la scene. */
+.randoms__panel.is-secousse {
+  animation: spot-secousse 4.2s linear var(--t0, 0s) both;
+}
+
+.spot-focus {
+  position: fixed;
+  inset: 0;
+  z-index: 40;
+  display: grid;
+  place-items: center;
+  pointer-events: none;
+  background: radial-gradient(circle at center,
+    rgba(16,2,3, 0.78) 0%, rgba(37,5,10, 0.42) 35%, transparent 68%);
+  animation: spot-scene 4.2s linear both;
+}
+
+.spot-focus__carte {
+  position: relative;
+  width: min(58vw, calc(var(--vh) * 0.58));
+  display: grid;
+  justify-items: center;
+  gap: calc(var(--vh) * 0.014);
+  animation: spot-secousse 4.2s linear both;
+}
+
+/* Le ring : la zone ou le logo atterrit. Le sol (poussiere, onde) est
+   accroche a son bas et ne bouge pas avec les rebonds. */
+.spot-focus__ring {
+  position: relative;
+  width: 82%;
+  margin-bottom: calc(var(--vh) * 0.03);   /* place pour le tampon qui deborde */
+}
+.spot-focus__chute {
+  position: relative;
+  z-index: 2;
+  animation: spot-chute 4.2s linear both;
+}
+
+/* Le logo seul, sans cadre : c'est lui qui tombe et s'ecrase. Il est pose
+   au sol (calé en bas) pour que l'impact tombe pile sur l'onde et la
+   poussiere, quelle que soit sa forme. */
+.spot-focus__visuel {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1.25 / 1;
+  /* Ecrasement depuis le bas : c'est le sol qui pousse, pas le centre. */
+  transform-origin: 50% 100%;
+  animation: spot-ecrase 4.2s linear both;
+}
+/* Pas de fond derriere le logo : un liseré clair et une lueur aux couleurs
+   de l'equipe le detachent de la camera, une ombre le pose. */
+.spot-focus__image {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: 50% 100%;
+  filter:
+    drop-shadow(0 0 calc(var(--vh) * 0.002) rgba(255, 255, 255, 0.9))
+    drop-shadow(0 0 calc(var(--vh) * 0.016) var(--sk-bleu))
+    drop-shadow(0 0 calc(var(--vh) * 0.03) rgba(224,22,49, 0.55))
+    drop-shadow(0 calc(var(--vh) * 0.008) calc(var(--vh) * 0.012) rgba(0, 0, 0, 0.75));
+}
+.spot-focus__sigle {
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  transform: translateX(-50%);
+  color: #f4f8ff;
+  font: 800 calc(var(--vh) * 0.11)/1 "Barlow Condensed", sans-serif;
+  letter-spacing: 0.06em;
+  text-shadow: 0 0 calc(var(--vh) * 0.02) var(--sk-bleu),
+               0 calc(var(--vh) * 0.006) calc(var(--vh) * 0.012) #000;
+}
+
+/* Le tampon, pose de travers comme a la main. */
+.spot-focus__tampon {
+  position: absolute;
+  left: 50%;
+  top: 86%;           /* a cheval sur le bas du cadre : le logo reste lisible */
+  z-index: 3;
+  padding: calc(var(--vh) * 0.004) calc(var(--vh) * 0.022);
+  color: var(--sk-rose);
+  font: 800 calc(var(--vh) * 0.05)/1 "Barlow Condensed", sans-serif;
+  letter-spacing: 0.08em;
+  white-space: nowrap;
+  border: calc(var(--vh) * 0.005) solid var(--sk-rose);
+  border-radius: calc(var(--vh) * 0.008);
+  outline: calc(var(--vh) * 0.0018) solid rgba(255,22,77, 0.7);
+  outline-offset: calc(var(--vh) * 0.004);
+  background: rgba(21,2,5, 0.85);
+  text-shadow: 0 0 calc(var(--vh) * 0.012) rgba(255,22,77, 0.8);
+  box-shadow: 0 0 calc(var(--vh) * 0.022) rgba(224,22,49, 0.6);
+  animation: spot-tampon 4.2s linear both;
+}
+
+/* Le sol : onde de choc et nuages de poussiere, au point d'impact. Il a la
+   largeur du logo, et tout y est mesure en proportion : la carte suit la
+   largeur du canvas, pas sa hauteur. */
+.spot-focus__sol {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 1;
+  height: 0;
+}
+.spot-focus__onde {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  width: 125%;
+  aspect-ratio: 7 / 1;
+  border-radius: 50%;
+  border: calc(var(--vh) * 0.004) solid rgba(236, 222, 255, 0.9);
+  box-shadow: 0 0 calc(var(--vh) * 0.02) var(--sk-magenta),
+              inset 0 0 calc(var(--vh) * 0.012) var(--sk-bleu);
+  animation: spot-onde 0.55s ease-out 0.59s both;
+}
+.spot-focus__nuage {
+  position: absolute;
+  left: calc(50% + var(--x0, 0) * 50%);
+  top: 0;
+  width: calc(var(--taille, 0.12) * 100%);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: radial-gradient(circle,
+    rgba(236, 228, 255, 0.8) 0%, rgba(211,124,136, 0.42) 40%, rgba(176,49,66, 0) 70%);
+  animation: spot-nuage 0.95s cubic-bezier(0.1, 0.7, 0.3, 1) var(--retard, 0.59s) both;
+}
+
+.spot-focus__nom,
+.spot-focus__punch {
+  position: relative;
+  z-index: 2;
+  max-width: 100%;
+  text-align: center;
+  text-transform: uppercase;
+}
+.spot-focus__nom {
+  color: #ffffff;
+  font: 700 calc(var(--vh) * 0.034)/1.05 "Barlow Condensed", sans-serif;
+  letter-spacing: 0.035em;
+  text-shadow: 0 0 calc(var(--vh) * 0.014) var(--sk-bleu),
+               0 calc(var(--vh) * 0.003) calc(var(--vh) * 0.012) #000;
+  animation: spot-nom 4.2s linear both;
+}
+/* La punchline : la pastille du bouton "Shop now" du site, collee un peu
+   de travers. */
+.spot-focus__punch {
+  padding: calc(var(--vh) * 0.008) calc(var(--vh) * 0.022);
+  color: #ffffff;
+  font: 800 calc(var(--vh) * 0.022)/1.1 "Barlow Condensed", sans-serif;
+  letter-spacing: 0.06em;
+  border-radius: calc(var(--vh) * 0.03);
+  background: linear-gradient(90deg, var(--sk-violet), var(--sk-magenta));
+  box-shadow: 0 0 calc(var(--vh) * 0.022) rgba(224,22,49, 0.55),
+              inset 0 0 0 calc(var(--vh) * 0.0015) rgba(255, 255, 255, 0.35);
+  animation: spot-punch 4.2s linear both;
+}
+
+@keyframes spot-scene {
+  0%   { opacity: 0; }
+  3%, 90% { opacity: 1; }
+  100% { opacity: 0; }
+}
+/* Chute en acceleration (la gravite), rebonds qui decelerent en montant et
+   accelerent en redescendant. La rotation donne le cote balance. */
+@keyframes spot-chute {
+  0%   { transform: translateY(calc(var(--vh) * -0.62)) rotate(-14deg);
+         animation-timing-function: cubic-bezier(0.5, 0, 0.9, 0.5); }
+  14%  { transform: translateY(0) rotate(3deg);
+         animation-timing-function: cubic-bezier(0, 0.55, 0.45, 1); }
+  21%  { transform: translateY(calc(var(--vh) * -0.075)) rotate(-2deg);
+         animation-timing-function: cubic-bezier(0.55, 0, 1, 0.45); }
+  28%  { transform: translateY(0) rotate(1deg);
+         animation-timing-function: cubic-bezier(0, 0.55, 0.45, 1); }
+  31.5% { transform: translateY(calc(var(--vh) * -0.02)) rotate(0);
+         animation-timing-function: cubic-bezier(0.55, 0, 1, 0.45); }
+  35%, 86% { transform: translateY(0) rotate(0);
+         animation-timing-function: cubic-bezier(0.6, -0.3, 0.9, 0.4); }
+  100% { transform: translateY(calc(var(--vh) * -0.9)) rotate(8deg); }
+}
+/* Squash & stretch : etire pendant la chute, ecrase a l'impact, puis
+   ressort de moins en moins. Ramasse avant de repartir. */
+@keyframes spot-ecrase {
+  0%, 12% { transform: scale(0.86, 1.2); }
+  14%   { transform: scale(1.38, 0.6); }
+  17%   { transform: scale(0.86, 1.16); }
+  21%   { transform: scale(1, 1); }
+  28%   { transform: scale(1.2, 0.8); }
+  30.5% { transform: scale(0.95, 1.06); }
+  35%   { transform: scale(1.08, 0.92); }
+  38%, 84% { transform: scale(1, 1); }
+  88%   { transform: scale(1.22, 0.74); }
+  92%, 100% { transform: scale(0.82, 1.3); }
+}
+@keyframes spot-secousse {
+  0%, 14%  { transform: none; }
+  14.6% { transform: translate(calc(var(--vh) * -0.012), calc(var(--vh) * 0.009)); }
+  15.4% { transform: translate(calc(var(--vh) * 0.011), calc(var(--vh) * -0.008)); }
+  16.2% { transform: translate(calc(var(--vh) * -0.008), calc(var(--vh) * 0.006)); }
+  17%   { transform: translate(calc(var(--vh) * 0.005), calc(var(--vh) * -0.004)); }
+  17.8% { transform: translate(calc(var(--vh) * -0.002), calc(var(--vh) * 0.002)); }
+  18.6%, 34% { transform: none; }
+  34.6% { transform: translate(calc(var(--vh) * 0.006), calc(var(--vh) * 0.004)); }
+  35.4% { transform: translate(calc(var(--vh) * -0.005), calc(var(--vh) * -0.003)); }
+  36.2% { transform: translate(calc(var(--vh) * 0.002), calc(var(--vh) * 0.001)); }
+  37%, 100% { transform: none; }
+}
+@keyframes spot-tampon {
+  0%, 31% { opacity: 0; transform: translate(-50%, -50%) rotate(-24deg) scale(3.2); }
+  34%   { opacity: 1; transform: translate(-50%, -50%) rotate(-13deg) scale(0.88); }
+  36%   { transform: translate(-50%, -50%) rotate(-13deg) scale(1.06); }
+  38%, 100% { opacity: 1; transform: translate(-50%, -50%) rotate(-13deg) scale(1); }
+}
+@keyframes spot-onde {
+  0%   { opacity: 0; transform: translate(-50%, -50%) scale(0.2); }
+  8%   { opacity: 1; }
+  100% { opacity: 0; transform: translate(-50%, -50%) scale(1.5); }
+}
+@keyframes spot-nuage {
+  0%   { opacity: 0; transform: translate(-50%, -50%) scale(0.4); }
+  12%  { opacity: 1; }
+  100% { opacity: 0;
+         transform: translate(calc(-50% + var(--dx, 0) * 100%), calc(-50% + var(--dy, 0) * 100%))
+                    scale(var(--s, 1.4)); }
+}
+@keyframes spot-nom {
+  0%, 37% { opacity: 0; transform: translateY(calc(var(--vh) * 0.02)) scale(0.6); }
+  42%   { opacity: 1; transform: translateY(0) scale(1.08); }
+  45%, 85% { opacity: 1; transform: scale(1); }
+  90%, 100% { opacity: 0; transform: scale(0.7); }
+}
+@keyframes spot-punch {
+  0%, 43% { opacity: 0; transform: rotate(-8deg) scale(0); }
+  48%   { opacity: 1; transform: rotate(4deg) scale(1.15); }
+  51%   { transform: rotate(-3deg) scale(0.97); }
+  54%   { transform: rotate(2deg) scale(1); }
+  60%   { transform: rotate(-2deg); }
+  66%   { transform: rotate(2deg); }
+  72%, 85% { opacity: 1; transform: rotate(-1.5deg) scale(1); }
+  90%, 100% { opacity: 0; transform: rotate(-1.5deg) scale(0.7); }
+}
+/* La case de la grille saute au moment ou le logo touche le sol. */
+@keyframes rnd-saut {
+  0%, 13% { transform: none; filter: brightness(1); }
+  14%   { transform: translateY(0) scale(1.18, 0.78); filter: brightness(2); }
+  19%   { transform: translateY(-38%) scale(0.9, 1.15); filter: brightness(1.6); }
+  25%   { transform: translateY(0) scale(1.14, 0.84); filter: brightness(1.3); }
+  29%   { transform: translateY(-10%) scale(1); }
+  33%   { transform: translateY(0) scale(1.04, 0.96); }
+  36%, 80% { transform: none; filter: brightness(1.2); }
+  100%  { transform: none; filter: brightness(1); }
+}
+@keyframes rnd-degrise {
+  0%, 80% {
+    filter: grayscale(0) brightness(1)
+      drop-shadow(0 0 0.18vw rgba(0, 0, 0, 0.95))
+      drop-shadow(0 0.38vw 0.25vw rgba(0, 0, 0, 0.85));
+  }
+  100% {
+    filter: grayscale(1) brightness(0.55)
+      drop-shadow(0 0 0.18vw rgba(0, 0, 0, 0.95))
+      drop-shadow(0 0.38vw 0.25vw rgba(0, 0, 0, 0.85));
+  }
+}
+@keyframes rnd-bande {
+  0%, 80% { opacity: 0; transform: rotate(-24deg) scale(2.4); }
+  86%     { opacity: 1; transform: rotate(-24deg) scale(0.92); }
+  90%, 100% { opacity: 1; transform: rotate(-24deg) scale(1); }
+}
+@keyframes rnd-selection-ring {
+  0% { opacity: 0; transform: scale(0.72); }
+  35% { opacity: 1; transform: scale(1); }
+  100% { opacity: 0; transform: scale(1.28); }
+}
+
+/* --- le fanion du 2 POUR 1 -----------------------------------------------
+   Le visuel du breaker, accroche sous la grille. Il en sort par le haut (la
+   decoupe le fait naitre du bord de la grille), descend en rebondissant,
+   puis flotte. Trois couches pour trois mouvements independants :
+     .fanion__corps     entree / sortie (vertical)
+     .fanion__flottant  balancement autour du centre de la barre
+     .fanion__visuel    pulsation du neon, reflet qui passe */
+.fanion {
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  width: 82%;
+  margin-left: -41%;
+  pointer-events: none;
+  clip-path: inset(0 -30% -80% -30%);
+}
+.fanion[hidden] { display: none; }
+
+.fanion__corps { transform: translateY(-115%); }
+.fanion.is-entree .fanion__corps { animation: fanion-entree 1s cubic-bezier(0.3, 0.7, 0.4, 1) both; }
+.fanion.is-sortie .fanion__corps { animation: fanion-sortie 0.6s cubic-bezier(0.5, 0, 0.8, 0.4) both; }
+
+.fanion__flottant {
+  padding-top: 0.3vw;
+  transform-origin: 50% 0;
+  animation: fanion-balance 4s ease-in-out infinite;
+}
+.fanion.is-sortie .fanion__flottant { animation-play-state: paused; }
+
+.fanion__visuel {
+  position: relative;
+  animation: fanion-neon 2.4s ease-in-out infinite;
+}
+.fanion.is-entree .fanion__visuel { animation: fanion-flash 1s ease-out both, fanion-neon 2.4s ease-in-out 1s infinite; }
+.fanion__image {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+/* Le reflet : une bande claire qui traverse, decoupee a la forme du visuel. */
+.fanion__reflet {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(105deg, transparent 38%, rgba(255, 255, 255, 0.55) 50%, transparent 62%);
+  background-size: 250% 100%;
+  background-position: 120% 0;
+  -webkit-mask-image: var(--fanion-image);
+  mask-image: var(--fanion-image);
+  -webkit-mask-size: 100% 100%;
+  mask-size: 100% 100%;
+  mix-blend-mode: screen;
+  animation: fanion-reflet 4.5s ease-in-out 1.2s infinite;
+}
+
+@keyframes fanion-entree {
+  0%   { transform: translateY(-115%); }
+  55%  { transform: translateY(8%); }
+  75%  { transform: translateY(-3%); }
+  90%  { transform: translateY(1%); }
+  100% { transform: translateY(0); }
+}
+@keyframes fanion-sortie {
+  0%   { transform: translateY(0); }
+  30%  { transform: translateY(5%); }
+  100% { transform: translateY(-115%); }
+}
+@keyframes fanion-balance {
+  0%, 100% { transform: rotate(-1.4deg) translateY(0); }
+  50%      { transform: rotate(1.4deg) translateY(0.25vw); }
+}
+@keyframes fanion-neon {
+  0%, 100% { filter: brightness(1) drop-shadow(0 0 0.5vw rgba(224,22,49, 0.45)); }
+  50%      { filter: brightness(1.15) drop-shadow(0 0 1.1vw rgba(224,22,49, 0.8)); }
+}
+@keyframes fanion-flash {
+  0%, 50% { filter: brightness(1) drop-shadow(0 0 0.5vw rgba(224,22,49, 0.45)); }
+  62%     { filter: brightness(1.9) drop-shadow(0 0 2vw rgba(255,22,77, 1)); }
+  100%    { filter: brightness(1) drop-shadow(0 0 0.5vw rgba(224,22,49, 0.45)); }
+}
+@keyframes fanion-reflet {
+  0%, 55%   { background-position: 120% 0; }
+  85%, 100% { background-position: -20% 0; }
+}

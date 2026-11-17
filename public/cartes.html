@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>MidKards — Cartes infographie</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=Barlow:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="_moteur/regie.css?v=20261014-stop">
+</head>
+<body>
+  <nav class="nav-outils">
+    <a href="index.html">Accueil</a>
+    <a href="reglages.html">Réglages</a>
+    <a href="regie.html">Roue spot</a>
+    <a href="dbtk.html">DBTK</a>
+    <a href="cartes.html" class="est-ici">Cartes</a>
+    <a href="sports.html">Éditeur de roue</a>
+  </nav>
+
+  <section class="whatnot cartes" id="cartes">
+    <div class="cartes__tete">
+      <strong>Cartes infographie</strong>
+      <span class="cartes__pastille" id="cartes-etat">NBA</span>
+    </div>
+
+    <div class="cartes__resume" id="cartes-resume" hidden></div>
+
+    <div class="cartes__etape">
+      <div class="cartes__titre"><b>Breaks préparés</b></div>
+      <div class="cartes__breaks" id="cartes-breaks"></div>
+      <div class="cartes__duo">
+        <input id="cartes-nom-break" placeholder="Nom du break" autocomplete="off" aria-label="Nom du break">
+        <button type="button" id="cartes-sauver">Sauver la sélection</button>
+      </div>
+    </div>
+
+    <div class="cartes__etape">
+      <div class="cartes__titre"><i>1</i><b>Produits du break</b><span id="cartes-compte">0 produit</span></div>
+      <input id="cartes-filtre" type="search" autocomplete="off" placeholder="Filtrer (ex. prizm 2025)" aria-label="Filtrer les produits">
+      <div class="cartes__liste" id="cartes-liste"></div>
+      <button type="button" class="cartes__primaire" id="cartes-charger">Charger la sélection</button>
+    </div>
+
+    <div class="cartes__etape is-off" id="cartes-etape2">
+      <div class="cartes__titre"><i>2</i><b>Carte à afficher</b><span id="cartes-aide">après l'étape 1</span></div>
+      <div class="cartes__segments" role="group" aria-label="Type de carte">
+        <button type="button" class="is-on" data-type="team">Équipe</button>
+        <button type="button" data-type="player">Joueur</button>
+      </div>
+      <input type="hidden" id="cartes-type" value="team">
+      <select id="cartes-equipe" aria-label="Équipe"></select>
+      <input id="cartes-joueur" placeholder="Nom du joueur" autocomplete="off" hidden>
+      <div id="cartes-suggestions" class="cartes__suggestions"></div>
+      <div class="cartes__duo">
+        <button type="button" class="cartes__primaire" id="cartes-afficher">Afficher</button>
+        <button type="button" id="cartes-masquer">Masquer</button>
+      </div>
+    </div>
+    <p class="whatnot__error" id="cartes-erreur" hidden></p>
+  </section>
+
+  <script src="config.js?v=20261012-anims-reglages"></script>
+  <script src="_moteur/cartes-regie.js?v=20261014-perf"></script>
+</body>
+</html>

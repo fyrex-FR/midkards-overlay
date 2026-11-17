@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <title>MidKards — Cadre</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Barlow:wght@500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="_moteur/tokens.css?v=20260914-131952">
+  <link rel="stylesheet" href="_moteur/banner.css?v=20260915-094100">
+  <link rel="stylesheet" href="_moteur/break-info.css?v=20261012-fanion">
+  <link rel="stylesheet" href="_moteur/frame.css?v=20261014-marvel">
+  <link rel="stylesheet" href="_moteur/spot-anims.css?v=20261012-obs">
+  <link rel="stylesheet" href="_moteur/card.css?v=20260929-cards9">
+  <link rel="stylesheet" href="_moteur/pyp.css?v=20261111-bandeau">
+</head>
+<body>
+
+  <svg class="icon-defs" aria-hidden="true">
+    <defs>
+      <symbol id="ic-instagram" viewBox="0 0 24 24">
+        <path fill="none" stroke="currentColor" stroke-width="1.9" stroke-linejoin="round"
+              d="M3 7.5A4.5 4.5 0 0 1 7.5 3h9A4.5 4.5 0 0 1 21 7.5v9a4.5 4.5 0 0 1-4.5 4.5h-9A4.5 4.5 0 0 1 3 16.5z"/>
+        <circle cx="12" cy="12" r="4.1" fill="none" stroke="currentColor" stroke-width="1.9"/>
+        <circle cx="17.2" cy="6.8" r="1.25" fill="currentColor"/>
+      </symbol>
+      <symbol id="ic-tiktok" viewBox="0 0 24 24">
+        <path fill="currentColor"
+              d="M16.5 2h-3v12.2a2.55 2.55 0 1 1-2.55-2.55c.27 0 .53.04.78.12V8.7a5.8 5.8 0 0 0-.78-.05 5.75 5.75 0 1 0 5.75 5.75V8.9a6.4 6.4 0 0 0 4 1.38V7.2a3.7 3.7 0 0 1-3.7-3.7z"/>
+      </symbol>
+      <symbol id="ic-web" viewBox="0 0 24 24">
+        <circle cx="12" cy="12" r="9.1" fill="none" stroke="currentColor" stroke-width="1.9"/>
+        <ellipse cx="12" cy="12" rx="4" ry="9.1" fill="none" stroke="currentColor" stroke-width="1.7"/>
+        <path d="M3.2 9.2h17.6M3.2 14.8h17.6" fill="none" stroke="currentColor" stroke-width="1.7"/>
+      </symbol>
+      <symbol id="ic-whatnot" viewBox="0 0 24 24">
+        <path fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"
+              d="M3 6.5h18l-2.2 12a2 2 0 0 1-2 1.7H7.2a2 2 0 0 1-2-1.7z"/>
+        <path fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"
+              d="M8.6 6.5V5a3.4 3.4 0 0 1 6.8 0v1.5"/>
+      </symbol>
+      <symbol id="ic-ebay" viewBox="0 0 24 24">
+        <path fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"
+              d="M2.5 12.5 12 3l9.5 9.5"/>
+        <path fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"
+              d="M5.5 11v8.5h13V11"/>
+      </symbol>
+      <symbol id="ic-mail" viewBox="0 0 24 24">
+        <rect x="2.6" y="4.8" width="18.8" height="14.4" rx="2.4"
+              fill="none" stroke="currentColor" stroke-width="1.9"/>
+        <path d="m3.4 6.6 8.6 6.2 8.6-6.2" fill="none" stroke="currentColor"
+              stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/>
+      </symbol>
+    </defs>
+  </svg>
+
+  <!-- Cadre exterieur, limite a la zone reellement visible -->
+  <div class="stage">
+    <span class="chev chev--tl"></span>
+    <span class="chev chev--tr"></span>
+    <span class="chev chev--bl"></span>
+    <span class="chev chev--br"></span>
+  </div>
+
+  <span class="rail rail--l"></span>
+  <span class="rail rail--r"></span>
+
+  <!-- Fenetre camera animateur -->
+  <div class="win" id="win-top">
+    <span class="win__glow"></span>
+    <span class="win__inner"></span>
+    <span class="win__ring"><i class="win__spin"></i></span>
+    <span class="bracket bracket--tl"></span>
+    <span class="bracket bracket--tr"></span>
+    <span class="bracket bracket--bl"></span>
+    <span class="bracket bracket--br"></span>
+    <div class="break-info" id="break-info" hidden aria-live="polite"></div>
+  </div>
+
+  <!-- Fenetre camera break -->
+  <div class="win" id="win-break">
+    <span class="win__glow"></span>
+    <span class="win__inner"></span>
+    <span class="win__ring"><i class="win__spin"></i></span>
+    <span class="bracket bracket--tl"></span>
+    <span class="bracket bracket--tr"></span>
+    <span class="bracket bracket--bl"></span>
+    <span class="bracket bracket--br"></span>
+    <span class="win__scan" id="scan-break"></span>
+  </div>
+
+  <!-- Bande centrale : le bandeau, identique a la version autonome -->
+  <div class="band banner-scope" id="banner-host">
+    <div class="bar" id="bar">
+      <div class="bar__skin" aria-hidden="true">
+        <span class="bar__sheen" id="sheen"></span>
+      </div>
+      <div class="zone zone--left">
+        <div class="ticker" id="ticker">
+          <div class="ticker__track" id="ticker-track"></div>
+        </div>
+      </div>
+      <div class="logo" id="logo">
+        <img class="logo__img" id="logo-img" alt="MidKards">
+        <span class="logo__sweep" id="logo-sweep" aria-hidden="true"></span>
+      </div>
+      <div class="zone zone--right">
+        <div class="social" id="social"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Grille des randoms : sous le bandeau, par-dessus la camera du bas -->
+  <div class="randoms" id="randoms" hidden></div>
+
+  <!-- Reperes de reglage, masques par defaut -->
+  <div class="zone-guide zone-guide--top">zone UI plateforme — haut</div>
+  <div class="zone-guide zone-guide--bottom">zone UI plateforme — chat</div>
+  <div class="zone-guide zone-guide--left"></div>
+  <div class="zone-guide zone-guide--right"></div>
+
+  <script src="config.js?v=20261012-anims-reglages"></script>
+  <script src="_moteur/boot.js?v=20261110-pyp" data-recharge
+          data-then="_moteur/frame.js?v=20260914-131952,_moteur/banner.js?v=20260914-131952,_moteur/spot-anims.js?v=20261012-obs,_moteur/randoms.js?v=20261110-pyp,_moteur/pyp.js?v=20261111-bandeau,_moteur/break-info.js?v=20261012-termines,_moteur/card.js?v=20260929-cards9"
+          data-poll="60" data-hot="randoms"></script>
+</body>
+</html>

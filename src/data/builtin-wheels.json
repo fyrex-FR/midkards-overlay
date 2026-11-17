@@ -1,0 +1,1467 @@
+{
+ "nba": {
+  "nom": "NBA",
+  "equipes": [
+   {
+    "sigle": "ATL",
+    "nom": "Atlanta Hawks",
+    "logo": "assets/logos/nba/ATL.png"
+   },
+   {
+    "sigle": "BKN",
+    "nom": "Brooklyn Nets",
+    "logo": "assets/logos/nba/BKN.png"
+   },
+   {
+    "sigle": "BOS",
+    "nom": "Boston Celtics",
+    "logo": "assets/logos/nba/BOS.png"
+   },
+   {
+    "sigle": "CHA",
+    "nom": "Charlotte Hornets",
+    "logo": "assets/logos/nba/CHA.png"
+   },
+   {
+    "sigle": "CHI",
+    "nom": "Chicago Bulls",
+    "logo": "assets/logos/nba/CHI.png"
+   },
+   {
+    "sigle": "CLE",
+    "nom": "Cleveland Cavaliers",
+    "logo": "assets/logos/nba/CLE.png"
+   },
+   {
+    "sigle": "DAL",
+    "nom": "Dallas Mavericks",
+    "logo": "assets/logos/nba/DAL.png"
+   },
+   {
+    "sigle": "DEN",
+    "nom": "Denver Nuggets",
+    "logo": "assets/logos/nba/DEN.png"
+   },
+   {
+    "sigle": "DET",
+    "nom": "Detroit Pistons",
+    "logo": "assets/logos/nba/DET.png"
+   },
+   {
+    "sigle": "GSW",
+    "nom": "Golden State Warriors",
+    "logo": "assets/logos/nba/GSW.png"
+   },
+   {
+    "sigle": "HOU",
+    "nom": "Houston Rockets",
+    "logo": "assets/logos/nba/HOU.png"
+   },
+   {
+    "sigle": "IND",
+    "nom": "Indiana Pacers",
+    "logo": "assets/logos/nba/IND.png"
+   },
+   {
+    "sigle": "LAC",
+    "nom": "LA Clippers",
+    "logo": "assets/logos/nba/LAC.png"
+   },
+   {
+    "sigle": "LAL",
+    "nom": "Los Angeles Lakers",
+    "logo": "assets/logos/nba/LAL.png"
+   },
+   {
+    "sigle": "MEM",
+    "nom": "Memphis Grizzlies",
+    "logo": "assets/logos/nba/MEM.png"
+   },
+   {
+    "sigle": "MIA",
+    "nom": "Miami Heat",
+    "logo": "assets/logos/nba/MIA.png"
+   },
+   {
+    "sigle": "MIL",
+    "nom": "Milwaukee Bucks",
+    "logo": "assets/logos/nba/MIL.png"
+   },
+   {
+    "sigle": "MIN",
+    "nom": "Minnesota Timberwolves",
+    "logo": "assets/logos/nba/MIN.png"
+   },
+   {
+    "sigle": "NOP",
+    "nom": "New Orleans Pelicans",
+    "logo": "assets/logos/nba/NOP.png"
+   },
+   {
+    "sigle": "NYK",
+    "nom": "New York Knicks",
+    "logo": "assets/logos/nba/NYK.png"
+   },
+   {
+    "sigle": "OKC",
+    "nom": "Oklahoma City Thunder",
+    "logo": "assets/logos/nba/OKC.png"
+   },
+   {
+    "sigle": "ORL",
+    "nom": "Orlando Magic",
+    "logo": "assets/logos/nba/ORL.png"
+   },
+   {
+    "sigle": "PHI",
+    "nom": "Philadelphia 76ers",
+    "logo": "assets/logos/nba/PHI.png"
+   },
+   {
+    "sigle": "PHX",
+    "nom": "Phoenix Suns",
+    "logo": "assets/logos/nba/PHX.png"
+   },
+   {
+    "sigle": "POR",
+    "nom": "Portland Trail Blazers",
+    "logo": "assets/logos/nba/POR.png"
+   },
+   {
+    "sigle": "SAC",
+    "nom": "Sacramento Kings",
+    "logo": "assets/logos/nba/SAC.png"
+   },
+   {
+    "sigle": "SAS",
+    "nom": "San Antonio Spurs",
+    "logo": "assets/logos/nba/SAS.png"
+   },
+   {
+    "sigle": "TOR",
+    "nom": "Toronto Raptors",
+    "logo": "assets/logos/nba/TOR.png"
+   },
+   {
+    "sigle": "UTA",
+    "nom": "Utah Jazz",
+    "logo": "assets/logos/nba/UTA.png"
+   },
+   {
+    "sigle": "WAS",
+    "nom": "Washington Wizards",
+    "logo": "assets/logos/nba/WAS.png"
+   }
+  ]
+ },
+ "nba-whatnot": {
+  "nom": "NBA Whatnot (UM, DEN+UW, MIL+CO)",
+  "equipes": [
+   {
+    "sigle": "ATL",
+    "nom": "Atlanta Hawks",
+    "logo": null
+   },
+   {
+    "sigle": "BOS",
+    "nom": "Boston Celtics",
+    "logo": null
+   },
+   {
+    "sigle": "UNIV M",
+    "nom": "UNIV MEN",
+    "logo": "assets/logos/nba-whatnot/UNIVM.webp?v=4"
+   },
+   {
+    "sigle": "CHA",
+    "nom": "Charlotte Hornets",
+    "logo": null
+   },
+   {
+    "sigle": "CHI",
+    "nom": "Chicago Bulls",
+    "logo": null
+   },
+   {
+    "sigle": "CLE",
+    "nom": "Cleveland Cavaliers",
+    "logo": null
+   },
+   {
+    "sigle": "DAL",
+    "nom": "Dallas Mavericks",
+    "logo": null
+   },
+   {
+    "sigle": "DEN/UW",
+    "nom": "Denver Nuggets/UNIV WOMEN",
+    "logo": "assets/logos/nba-whatnot/DENUW.webp?v=4"
+   },
+   {
+    "sigle": "DET",
+    "nom": "Detroit Pistons",
+    "logo": null
+   },
+   {
+    "sigle": "GSW",
+    "nom": "Golden State Warriors",
+    "logo": null
+   },
+   {
+    "sigle": "HOU",
+    "nom": "Houston Rockets",
+    "logo": null
+   },
+   {
+    "sigle": "IND",
+    "nom": "Indiana Pacers",
+    "logo": null
+   },
+   {
+    "sigle": "LAC",
+    "nom": "LA Clippers",
+    "logo": null
+   },
+   {
+    "sigle": "LAL",
+    "nom": "LA Lakers",
+    "logo": null
+   },
+   {
+    "sigle": "MEM",
+    "nom": "Memphis Grizzlies",
+    "logo": null
+   },
+   {
+    "sigle": "MIA",
+    "nom": "Miami Heat",
+    "logo": null
+   },
+   {
+    "sigle": "MIL/CO",
+    "nom": "Milwaukee Bucks/COACH",
+    "logo": "assets/logos/nba-whatnot/MILCO.webp?v=4"
+   },
+   {
+    "sigle": "MIN",
+    "nom": "Minnesota Timberwolves",
+    "logo": null
+   },
+   {
+    "sigle": "NOP",
+    "nom": "New Orleans Pelicans",
+    "logo": null
+   },
+   {
+    "sigle": "NYK",
+    "nom": "New York Knicks",
+    "logo": null
+   },
+   {
+    "sigle": "OKC",
+    "nom": "Oklahoma City Thunder",
+    "logo": null
+   },
+   {
+    "sigle": "ORL",
+    "nom": "Orlando Magic",
+    "logo": null
+   },
+   {
+    "sigle": "PHI",
+    "nom": "Philadelphia Sixers",
+    "logo": null
+   },
+   {
+    "sigle": "PHX",
+    "nom": "Phoenix Suns",
+    "logo": null
+   },
+   {
+    "sigle": "POR",
+    "nom": "Portland Trail Blazers",
+    "logo": null
+   },
+   {
+    "sigle": "SAC",
+    "nom": "Sacramento Kings",
+    "logo": null
+   },
+   {
+    "sigle": "SAS",
+    "nom": "San Antonio Spurs",
+    "logo": null
+   },
+   {
+    "sigle": "TOR",
+    "nom": "Toronto Raptors",
+    "logo": null
+   },
+   {
+    "sigle": "UTA",
+    "nom": "Utah Jazz",
+    "logo": null
+   },
+   {
+    "sigle": "WAS",
+    "nom": "Washington Wizards",
+    "logo": null
+   }
+  ]
+ },
+ "nba-whatnot-2": {
+  "nom": "NBA Whatnot (BKN+UM, IND+UW)",
+  "equipes": [
+   {
+    "sigle": "ATL",
+    "nom": "Atlanta Hawks",
+    "logo": null
+   },
+   {
+    "sigle": "BOS",
+    "nom": "Boston Celtics",
+    "logo": null
+   },
+   {
+    "sigle": "BKN/UM",
+    "nom": "Brooklyn Nets+Univ Men",
+    "logo": "assets/logos/nba-whatnot/BKNUM.webp?v=4"
+   },
+   {
+    "sigle": "CHA",
+    "nom": "Charlotte Hornets",
+    "logo": null
+   },
+   {
+    "sigle": "CHI",
+    "nom": "Chicago Bulls",
+    "logo": null
+   },
+   {
+    "sigle": "CLE",
+    "nom": "Cleveland Cavaliers",
+    "logo": null
+   },
+   {
+    "sigle": "DAL",
+    "nom": "Dallas Mavericks",
+    "logo": null
+   },
+   {
+    "sigle": "DEN",
+    "nom": "Denver Nuggets",
+    "logo": null
+   },
+   {
+    "sigle": "DET",
+    "nom": "Detroit Pistons",
+    "logo": null
+   },
+   {
+    "sigle": "GSW",
+    "nom": "Golden State Warriors",
+    "logo": null
+   },
+   {
+    "sigle": "HOU",
+    "nom": "Houston Rockets",
+    "logo": null
+   },
+   {
+    "sigle": "IND/UW",
+    "nom": "Indiana Pacers/univ Women",
+    "logo": "assets/logos/nba-whatnot/INDUW.webp?v=4"
+   },
+   {
+    "sigle": "LAC",
+    "nom": "LA Clippers",
+    "logo": null
+   },
+   {
+    "sigle": "LAL",
+    "nom": "LA Lakers",
+    "logo": null
+   },
+   {
+    "sigle": "MEM",
+    "nom": "Memphis Grizzlies",
+    "logo": null
+   },
+   {
+    "sigle": "MIA",
+    "nom": "Miami Heat",
+    "logo": null
+   },
+   {
+    "sigle": "MIL",
+    "nom": "Milwaukee Bucks",
+    "logo": null
+   },
+   {
+    "sigle": "MIN",
+    "nom": "Minnesota Timberwolves",
+    "logo": null
+   },
+   {
+    "sigle": "NOP",
+    "nom": "New Orleans Pelicans",
+    "logo": null
+   },
+   {
+    "sigle": "NYK",
+    "nom": "New York Knicks",
+    "logo": null
+   },
+   {
+    "sigle": "OKC",
+    "nom": "Oklahoma City Thunder",
+    "logo": null
+   },
+   {
+    "sigle": "ORL",
+    "nom": "Orlando Magic",
+    "logo": null
+   },
+   {
+    "sigle": "PHI",
+    "nom": "Philadelphia Sixers",
+    "logo": null
+   },
+   {
+    "sigle": "PHX",
+    "nom": "Phoenix Suns",
+    "logo": null
+   },
+   {
+    "sigle": "POR",
+    "nom": "Portland Trail Blazers",
+    "logo": null
+   },
+   {
+    "sigle": "SAC",
+    "nom": "Sacramento Kings",
+    "logo": null
+   },
+   {
+    "sigle": "SAS",
+    "nom": "San Antonio Spurs",
+    "logo": null
+   },
+   {
+    "sigle": "TOR",
+    "nom": "Toronto Raptors",
+    "logo": null
+   },
+   {
+    "sigle": "UTA",
+    "nom": "Utah Jazz",
+    "logo": null
+   },
+   {
+    "sigle": "WAS",
+    "nom": "Washington Wizards",
+    "logo": null
+   }
+  ]
+ },
+ "mlb-ag": {
+  "nom": "MLB Allen & Ginter",
+  "equipes": [
+   {
+    "sigle": "ARI",
+    "nom": "Arizona Diamondbacks",
+    "logo": "assets/logos/mlb-ag/ARI.webp?v=4"
+   },
+   {
+    "sigle": "ATL",
+    "nom": "Atlanta Braves",
+    "logo": "assets/logos/mlb-ag/ATL.webp?v=4"
+   },
+   {
+    "sigle": "BAL",
+    "nom": "Baltimore Orioles",
+    "logo": "assets/logos/mlb-ag/BAL.webp?v=4"
+   },
+   {
+    "sigle": "BOS",
+    "nom": "Boston Red Sox",
+    "logo": "assets/logos/mlb-ag/BOS.webp?v=4"
+   },
+   {
+    "sigle": "CHC",
+    "nom": "Chicago Cubs",
+    "logo": "assets/logos/mlb-ag/CHC.webp?v=4"
+   },
+   {
+    "sigle": "CWS",
+    "nom": "Chicago White Sox",
+    "logo": "assets/logos/mlb-ag/CWS.webp?v=4"
+   },
+   {
+    "sigle": "CIN",
+    "nom": "Cincinnati Reds",
+    "logo": "assets/logos/mlb-ag/CIN.webp?v=4"
+   },
+   {
+    "sigle": "CLE",
+    "nom": "Cleveland Guardians",
+    "logo": "assets/logos/mlb-ag/CLE.webp?v=4"
+   },
+   {
+    "sigle": "COL",
+    "nom": "Colorado Rockies",
+    "logo": "assets/logos/mlb-ag/COL.webp?v=4"
+   },
+   {
+    "sigle": "DET",
+    "nom": "Detroit Tigers",
+    "logo": "assets/logos/mlb-ag/DET.webp?v=4"
+   },
+   {
+    "sigle": "HOU",
+    "nom": "Houston Astros",
+    "logo": "assets/logos/mlb-ag/HOU.webp?v=4"
+   },
+   {
+    "sigle": "KC",
+    "nom": "Kansas City Royals",
+    "logo": "assets/logos/mlb-ag/KC.webp?v=4"
+   },
+   {
+    "sigle": "LAA",
+    "nom": "Los Angeles Angels",
+    "logo": "assets/logos/mlb-ag/LAA.webp?v=4"
+   },
+   {
+    "sigle": "LAD",
+    "nom": "Los Angeles Dodgers",
+    "logo": "assets/logos/mlb-ag/LAD.webp?v=4"
+   },
+   {
+    "sigle": "MIA",
+    "nom": "Miami Marlins",
+    "logo": "assets/logos/mlb-ag/MIA.webp?v=4"
+   },
+   {
+    "sigle": "MIL",
+    "nom": "Milwaukee Brewers",
+    "logo": "assets/logos/mlb-ag/MIL.webp?v=4"
+   },
+   {
+    "sigle": "MIN",
+    "nom": "Minnesota Twins",
+    "logo": "assets/logos/mlb-ag/MIN.webp?v=4"
+   },
+   {
+    "sigle": "NYM",
+    "nom": "New York Mets",
+    "logo": "assets/logos/mlb-ag/NYM.webp?v=4"
+   },
+   {
+    "sigle": "NYY",
+    "nom": "New York Yankees",
+    "logo": "assets/logos/mlb-ag/NYY.webp?v=4"
+   },
+   {
+    "sigle": "OAK",
+    "nom": "Oakland Athletics",
+    "logo": "assets/logos/mlb-ag/OAK.webp?v=4"
+   },
+   {
+    "sigle": "PHI",
+    "nom": "Philadelphia Phillies",
+    "logo": "assets/logos/mlb-ag/PHI.webp?v=4"
+   },
+   {
+    "sigle": "PIT",
+    "nom": "Pittsburgh Pirates",
+    "logo": "assets/logos/mlb-ag/PIT.webp?v=4"
+   },
+   {
+    "sigle": "SD",
+    "nom": "San Diego Padres",
+    "logo": "assets/logos/mlb-ag/SD.webp?v=4"
+   },
+   {
+    "sigle": "SF",
+    "nom": "San Francisco Giants",
+    "logo": "assets/logos/mlb-ag/SF.webp?v=4"
+   },
+   {
+    "sigle": "SEA",
+    "nom": "Seattle Mariners",
+    "logo": "assets/logos/mlb-ag/SEA.webp?v=4"
+   },
+   {
+    "sigle": "STL",
+    "nom": "St. Louis Cardinals",
+    "logo": "assets/logos/mlb-ag/STL.webp?v=4"
+   },
+   {
+    "sigle": "TB",
+    "nom": "Tampa Bay Rays",
+    "logo": "assets/logos/mlb-ag/TB.webp?v=4"
+   },
+   {
+    "sigle": "TEX",
+    "nom": "Texas Rangers",
+    "logo": "assets/logos/mlb-ag/TEX.webp?v=4"
+   },
+   {
+    "sigle": "TOR",
+    "nom": "Toronto Blue Jays",
+    "logo": "assets/logos/mlb-ag/TOR.webp?v=4"
+   },
+   {
+    "sigle": "WSH",
+    "nom": "Washington Nationals",
+    "logo": "assets/logos/mlb-ag/WSH.webp?v=4"
+   },
+   {
+    "sigle": "CELEB",
+    "nom": "NON Baseball Celebrity",
+    "logo": "assets/logos/mlb-ag/CELEB.svg?v=1"
+   },
+   {
+    "sigle": "INSERTS",
+    "nom": "ALL OTHERS INSERTS",
+    "logo": "assets/logos/mlb-ag/INSERTS.svg?v=1"
+   }
+  ]
+ },
+ "mlb-ag-blaster": {
+  "nom": "MLB Allen & Ginter Blaster",
+  "equipes": [
+   {
+    "sigle": "ARI",
+    "nom": "Arizona Diamondbacks",
+    "logo": "assets/logos/mlb-ag/ARI.webp?v=4"
+   },
+   {
+    "sigle": "ATL",
+    "nom": "Atlanta Braves",
+    "logo": "assets/logos/mlb-ag/ATL.webp?v=4"
+   },
+   {
+    "sigle": "BAL",
+    "nom": "Baltimore Orioles",
+    "logo": "assets/logos/mlb-ag/BAL.webp?v=4"
+   },
+   {
+    "sigle": "BOS",
+    "nom": "Boston Red Sox",
+    "logo": "assets/logos/mlb-ag/BOS.webp?v=4"
+   },
+   {
+    "sigle": "CHC",
+    "nom": "Chicago Cubs",
+    "logo": "assets/logos/mlb-ag/CHC.webp?v=4"
+   },
+   {
+    "sigle": "CWS",
+    "nom": "Chicago White Sox",
+    "logo": "assets/logos/mlb-ag/CWS.webp?v=4"
+   },
+   {
+    "sigle": "CIN",
+    "nom": "Cincinnati Reds",
+    "logo": "assets/logos/mlb-ag/CIN.webp?v=4"
+   },
+   {
+    "sigle": "CLE",
+    "nom": "Cleveland Guardians",
+    "logo": "assets/logos/mlb-ag/CLE.webp?v=4"
+   },
+   {
+    "sigle": "COL",
+    "nom": "Colorado Rockies",
+    "logo": "assets/logos/mlb-ag/COL.webp?v=4"
+   },
+   {
+    "sigle": "DET",
+    "nom": "Detroit Tigers",
+    "logo": "assets/logos/mlb-ag/DET.webp?v=4"
+   },
+   {
+    "sigle": "HOU",
+    "nom": "Houston Astros",
+    "logo": "assets/logos/mlb-ag/HOU.webp?v=4"
+   },
+   {
+    "sigle": "KC",
+    "nom": "Kansas City Royals",
+    "logo": "assets/logos/mlb-ag/KC.webp?v=4"
+   },
+   {
+    "sigle": "LAA",
+    "nom": "Los Angeles Angels",
+    "logo": "assets/logos/mlb-ag/LAA.webp?v=4"
+   },
+   {
+    "sigle": "LAD",
+    "nom": "Los Angeles Dodgers",
+    "logo": "assets/logos/mlb-ag/LAD.webp?v=4"
+   },
+   {
+    "sigle": "MIA",
+    "nom": "Miami Marlins",
+    "logo": "assets/logos/mlb-ag/MIA.webp?v=4"
+   },
+   {
+    "sigle": "MIL",
+    "nom": "Milwaukee Brewers",
+    "logo": "assets/logos/mlb-ag/MIL.webp?v=4"
+   },
+   {
+    "sigle": "MIN",
+    "nom": "Minnesota Twins",
+    "logo": "assets/logos/mlb-ag/MIN.webp?v=4"
+   },
+   {
+    "sigle": "NYM",
+    "nom": "New York Mets",
+    "logo": "assets/logos/mlb-ag/NYM.webp?v=4"
+   },
+   {
+    "sigle": "NYY",
+    "nom": "New York Yankees",
+    "logo": "assets/logos/mlb-ag/NYY.webp?v=4"
+   },
+   {
+    "sigle": "OAK",
+    "nom": "Oakland Athletics",
+    "logo": "assets/logos/mlb-ag/OAK.webp?v=4"
+   },
+   {
+    "sigle": "PHI",
+    "nom": "Philadelphia Phillies",
+    "logo": "assets/logos/mlb-ag/PHI.webp?v=4"
+   },
+   {
+    "sigle": "PIT",
+    "nom": "Pittsburgh Pirates",
+    "logo": "assets/logos/mlb-ag/PIT.webp?v=4"
+   },
+   {
+    "sigle": "SD",
+    "nom": "San Diego Padres",
+    "logo": "assets/logos/mlb-ag/SD.webp?v=4"
+   },
+   {
+    "sigle": "SF",
+    "nom": "San Francisco Giants",
+    "logo": "assets/logos/mlb-ag/SF.webp?v=4"
+   },
+   {
+    "sigle": "SEA",
+    "nom": "Seattle Mariners",
+    "logo": "assets/logos/mlb-ag/SEA.webp?v=4"
+   },
+   {
+    "sigle": "STL",
+    "nom": "St. Louis Cardinals",
+    "logo": "assets/logos/mlb-ag/STL.webp?v=4"
+   },
+   {
+    "sigle": "TB",
+    "nom": "Tampa Bay Rays",
+    "logo": "assets/logos/mlb-ag/TB.webp?v=4"
+   },
+   {
+    "sigle": "TEX",
+    "nom": "Texas Rangers",
+    "logo": "assets/logos/mlb-ag/TEX.webp?v=4"
+   },
+   {
+    "sigle": "TOR",
+    "nom": "Toronto Blue Jays",
+    "logo": "assets/logos/mlb-ag/TOR.webp?v=4"
+   },
+   {
+    "sigle": "WSH",
+    "nom": "Washington Nationals",
+    "logo": "assets/logos/mlb-ag/WSH.webp?v=4"
+   },
+   {
+    "sigle": "CELEB/INS",
+    "nom": "Others Inserts+celebrity",
+    "logo": "assets/logos/mlb-ag-blaster/CELEBINS.svg?v=1"
+   }
+  ]
+ },
+ "marvel-neon": {
+  "nom": "Marvel Neon",
+  "equipes": [
+   {
+    "sigle": "OAB",
+    "nom": "A-B Others",
+    "logo": "assets/logos/marvel-neon/OAB.webp?v=1"
+   },
+   {
+    "sigle": "BCAT",
+    "nom": "Black Cat",
+    "logo": "assets/logos/marvel-neon/BCAT.webp?v=1"
+   },
+   {
+    "sigle": "CYC",
+    "nom": "Cyclops /Havok",
+    "logo": "assets/logos/marvel-neon/CYC.webp?v=1"
+   },
+   {
+    "sigle": "CAP",
+    "nom": "Captain America",
+    "logo": "assets/logos/marvel-neon/CAP.webp?v=1"
+   },
+   {
+    "sigle": "DRS",
+    "nom": "Doctor Strange/clea",
+    "logo": "assets/logos/marvel-neon/DRS.webp?v=1"
+   },
+   {
+    "sigle": "OCD",
+    "nom": "C-D Others",
+    "logo": "assets/logos/marvel-neon/OCD.webp?v=1"
+   },
+   {
+    "sigle": "OEFG",
+    "nom": "E-F-G Others",
+    "logo": "assets/logos/marvel-neon/OEFG.webp?v=1"
+   },
+   {
+    "sigle": "HLK",
+    "nom": "Hulk",
+    "logo": "assets/logos/marvel-neon/HLK.webp?v=1"
+   },
+   {
+    "sigle": "HTT",
+    "nom": "Human Torch/The thing",
+    "logo": "assets/logos/marvel-neon/HTT.webp?v=1"
+   },
+   {
+    "sigle": "OHI",
+    "nom": "H-I Others",
+    "logo": "assets/logos/marvel-neon/OHI.webp?v=1"
+   },
+   {
+    "sigle": "IRM",
+    "nom": "Iron Man",
+    "logo": "assets/logos/marvel-neon/IRM.webp?v=1"
+   },
+   {
+    "sigle": "JGP",
+    "nom": "Jean Grey/Phoenix/Dark Phoenix",
+    "logo": "assets/logos/marvel-neon/JGP.webp?v=1"
+   },
+   {
+    "sigle": "OJKL",
+    "nom": "J-K-L Others",
+    "logo": "assets/logos/marvel-neon/OJKL.webp?v=1"
+   },
+   {
+    "sigle": "LOK",
+    "nom": "Loki/Lady Loki/ Aligator Loki",
+    "logo": "assets/logos/marvel-neon/LOK.webp?v=1"
+   },
+   {
+    "sigle": "MJ",
+    "nom": "Mary Jane",
+    "logo": "assets/logos/marvel-neon/MJ.webp?v=1"
+   },
+   {
+    "sigle": "OM",
+    "nom": "M Others",
+    "logo": "assets/logos/marvel-neon/OM.webp?v=1"
+   },
+   {
+    "sigle": "ONPQ",
+    "nom": "N-O-P-Q Others",
+    "logo": "assets/logos/marvel-neon/ONPQ.webp?v=1"
+   },
+   {
+    "sigle": "SCW",
+    "nom": "Scarlet Witch/Wiccan",
+    "logo": "assets/logos/marvel-neon/SCW.webp?v=1"
+   },
+   {
+    "sigle": "SHK",
+    "nom": "She-Hulk",
+    "logo": "assets/logos/marvel-neon/SHK.webp?v=1"
+   },
+   {
+    "sigle": "SLK",
+    "nom": "Silk",
+    "logo": "assets/logos/marvel-neon/SLK.webp?v=1"
+   },
+   {
+    "sigle": "ORS",
+    "nom": "R-S Others",
+    "logo": "assets/logos/marvel-neon/ORS.webp?v=1"
+   },
+   {
+    "sigle": "SPM",
+    "nom": "Spider Man",
+    "logo": "assets/logos/marvel-neon/SPM.webp?v=1"
+   },
+   {
+    "sigle": "VEN",
+    "nom": "Venom/Carnage",
+    "logo": "assets/logos/marvel-neon/VEN.webp?v=1"
+   },
+   {
+    "sigle": "THR",
+    "nom": "Thor/Mighty Thor",
+    "logo": "assets/logos/marvel-neon/THR.webp?v=1"
+   },
+   {
+    "sigle": "OTUY",
+    "nom": "T-U-V-W-Y Others",
+    "logo": "assets/logos/marvel-neon/OTUY.webp?v=1"
+   },
+   {
+    "sigle": "WOL",
+    "nom": "Wolverine/Old Man Logan",
+    "logo": "assets/logos/marvel-neon/WOL.webp?v=1"
+   },
+   {
+    "sigle": "X23",
+    "nom": "X-23",
+    "logo": "assets/logos/marvel-neon/X23.webp?v=1"
+   }
+  ]
+ },
+ "marvel-neon-random": {
+  "nom": "Random Hobby+ Mega+Value",
+  "equipes": [
+   {
+    "sigle": "OA",
+    "nom": "A-Others",
+    "logo": "assets/logos/marvel-neon-random/OA.webp?v=1"
+   },
+   {
+    "sigle": "OB",
+    "nom": "B-Others",
+    "logo": "assets/logos/marvel-neon-random/OB.webp?v=1"
+   },
+   {
+    "sigle": "BP",
+    "nom": "Black Panther",
+    "logo": "assets/logos/marvel-neon-random/BP.webp?v=1"
+   },
+   {
+    "sigle": "OC",
+    "nom": "C-Others",
+    "logo": "assets/logos/marvel-neon-random/OC.webp?v=1"
+   },
+   {
+    "sigle": "CAP",
+    "nom": "Captain America",
+    "logo": "assets/logos/marvel-neon/CAP.webp?v=1"
+   },
+   {
+    "sigle": "CRN",
+    "nom": "Carnage",
+    "logo": "assets/logos/marvel-neon-random/CRN.webp?v=1"
+   },
+   {
+    "sigle": "OD",
+    "nom": "D-Others",
+    "logo": "assets/logos/marvel-neon-random/OD.webp?v=1"
+   },
+   {
+    "sigle": "DD",
+    "nom": "Daredevil",
+    "logo": "assets/logos/marvel-neon-random/DD.webp?v=1"
+   },
+   {
+    "sigle": "DOOM",
+    "nom": "Doctor Doom",
+    "logo": "assets/logos/marvel-neon-random/DOOM.webp?v=1"
+   },
+   {
+    "sigle": "DRS",
+    "nom": "Doctor Strange",
+    "logo": "assets/logos/marvel-neon/DRS.webp?v=1"
+   },
+   {
+    "sigle": "OEF",
+    "nom": "E/F-Others",
+    "logo": "assets/logos/marvel-neon-random/OEF.webp?v=1"
+   },
+   {
+    "sigle": "OG",
+    "nom": "G-Others",
+    "logo": "assets/logos/marvel-neon-random/OG.webp?v=1"
+   },
+   {
+    "sigle": "GAL",
+    "nom": "Galactus",
+    "logo": "assets/logos/marvel-neon-random/GAL.webp?v=1"
+   },
+   {
+    "sigle": "GHS",
+    "nom": "Ghost Spider",
+    "logo": "assets/logos/marvel-neon-random/GHS.webp?v=1"
+   },
+   {
+    "sigle": "OH",
+    "nom": "H-Others",
+    "logo": "assets/logos/marvel-neon-random/OH.webp?v=1"
+   },
+   {
+    "sigle": "HLK",
+    "nom": "Hulk",
+    "logo": "assets/logos/marvel-neon/HLK.webp?v=1"
+   },
+   {
+    "sigle": "OI",
+    "nom": "I-Others",
+    "logo": "assets/logos/marvel-neon-random/OI.webp?v=1"
+   },
+   {
+    "sigle": "IRM",
+    "nom": "Iron Man",
+    "logo": "assets/logos/marvel-neon/IRM.webp?v=1"
+   },
+   {
+    "sigle": "OJ",
+    "nom": "J-Others",
+    "logo": "assets/logos/marvel-neon-random/OJ.webp?v=1"
+   },
+   {
+    "sigle": "OKL",
+    "nom": "K/L-Others",
+    "logo": "assets/logos/marvel-neon-random/OKL.webp?v=1"
+   },
+   {
+    "sigle": "LOK",
+    "nom": "Loki/Alligator Loki",
+    "logo": "assets/logos/marvel-neon/LOK.webp?v=1"
+   },
+   {
+    "sigle": "OM",
+    "nom": "M-Others",
+    "logo": "assets/logos/marvel-neon-random/OM.webp?v=1"
+   },
+   {
+    "sigle": "ONO",
+    "nom": "N/O-Others",
+    "logo": "assets/logos/marvel-neon-random/ONO.webp?v=1"
+   },
+   {
+    "sigle": "OPQ",
+    "nom": "P/Q-Others",
+    "logo": "assets/logos/marvel-neon-random/OPQ.webp?v=1"
+   },
+   {
+    "sigle": "OR",
+    "nom": "R-Others",
+    "logo": "assets/logos/marvel-neon-random/OR.webp?v=1"
+   },
+   {
+    "sigle": "OS",
+    "nom": "S-Others",
+    "logo": "assets/logos/marvel-neon-random/OS.webp?v=1"
+   },
+   {
+    "sigle": "SCW",
+    "nom": "Scarlet Witch",
+    "logo": "assets/logos/marvel-neon/SCW.webp?v=1"
+   },
+   {
+    "sigle": "SPM",
+    "nom": "Spider man",
+    "logo": "assets/logos/marvel-neon/SPM.webp?v=1"
+   },
+   {
+    "sigle": "OTU",
+    "nom": "T/U-Others",
+    "logo": "assets/logos/marvel-neon-random/OTU.webp?v=1"
+   },
+   {
+    "sigle": "THN",
+    "nom": "Thanos",
+    "logo": "assets/logos/marvel-neon-random/THN.webp?v=1"
+   },
+   {
+    "sigle": "THR",
+    "nom": "Thor",
+    "logo": "assets/logos/marvel-neon/THR.webp?v=1"
+   },
+   {
+    "sigle": "OVW",
+    "nom": "V/W-Others",
+    "logo": "assets/logos/marvel-neon-random/OVW.webp?v=1"
+   },
+   {
+    "sigle": "VEN",
+    "nom": "Venom",
+    "logo": "assets/logos/marvel-neon/VEN.webp?v=1"
+   },
+   {
+    "sigle": "WOL",
+    "nom": "Wolverine",
+    "logo": "assets/logos/marvel-neon/WOL.webp?v=1"
+   },
+   {
+    "sigle": "OXY",
+    "nom": "X/Y-Others",
+    "logo": "assets/logos/marvel-neon-random/OXY.webp?v=1"
+   }
+  ]
+ },
+ "marvel-neon-cosmos": {
+  "nom": "Neon Hobby + Kakawow Cosmos",
+  "equipes": [
+   {
+    "sigle": "OA",
+    "nom": "A-Others",
+    "logo": "assets/logos/marvel-neon-random/OA.webp?v=1"
+   },
+   {
+    "sigle": "OB",
+    "nom": "B-Others",
+    "logo": "assets/logos/marvel-neon-random/OB.webp?v=1"
+   },
+   {
+    "sigle": "BP",
+    "nom": "Black Panther",
+    "logo": "assets/logos/marvel-neon-random/BP.webp?v=1"
+   },
+   {
+    "sigle": "OC",
+    "nom": "C-Others",
+    "logo": "assets/logos/marvel-neon-random/OC.webp?v=1"
+   },
+   {
+    "sigle": "CAP",
+    "nom": "Captain America",
+    "logo": "assets/logos/marvel-neon/CAP.webp?v=1"
+   },
+   {
+    "sigle": "CRN",
+    "nom": "Carnage",
+    "logo": "assets/logos/marvel-neon-random/CRN.webp?v=1"
+   },
+   {
+    "sigle": "OD",
+    "nom": "D-Others",
+    "logo": "assets/logos/marvel-neon-random/OD.webp?v=1"
+   },
+   {
+    "sigle": "DD",
+    "nom": "Daredevil",
+    "logo": "assets/logos/marvel-neon-random/DD.webp?v=1"
+   },
+   {
+    "sigle": "DOOM",
+    "nom": "Doctor Doom",
+    "logo": "assets/logos/marvel-neon-random/DOOM.webp?v=1"
+   },
+   {
+    "sigle": "DRS",
+    "nom": "Doctor Strange",
+    "logo": "assets/logos/marvel-neon/DRS.webp?v=1"
+   },
+   {
+    "sigle": "CYC",
+    "nom": "Cyclops",
+    "logo": "assets/logos/marvel-neon/CYC.webp?v=1"
+   },
+   {
+    "sigle": "MAG",
+    "nom": "Magneto",
+    "logo": "assets/logos/marvel-neon-random/MAG.webp?v=1"
+   },
+   {
+    "sigle": "OEF",
+    "nom": "E/F-Others",
+    "logo": "assets/logos/marvel-neon-random/OEF.webp?v=1"
+   },
+   {
+    "sigle": "OG",
+    "nom": "G-Others",
+    "logo": "assets/logos/marvel-neon-random/OG.webp?v=1"
+   },
+   {
+    "sigle": "GAL",
+    "nom": "Galactus",
+    "logo": "assets/logos/marvel-neon-random/GAL.webp?v=1"
+   },
+   {
+    "sigle": "GHS",
+    "nom": "Ghost Spider",
+    "logo": "assets/logos/marvel-neon-random/GHS.webp?v=1"
+   },
+   {
+    "sigle": "OH",
+    "nom": "H-Others",
+    "logo": "assets/logos/marvel-neon-random/OH.webp?v=1"
+   },
+   {
+    "sigle": "HLK",
+    "nom": "Hulk",
+    "logo": "assets/logos/marvel-neon/HLK.webp?v=1"
+   },
+   {
+    "sigle": "OI",
+    "nom": "I-Others",
+    "logo": "assets/logos/marvel-neon-random/OI.webp?v=1"
+   },
+   {
+    "sigle": "IRM",
+    "nom": "Iron Man",
+    "logo": "assets/logos/marvel-neon/IRM.webp?v=1"
+   },
+   {
+    "sigle": "OJ",
+    "nom": "J-Others",
+    "logo": "assets/logos/marvel-neon-random/OJ.webp?v=1"
+   },
+   {
+    "sigle": "OKL",
+    "nom": "K/L-Others",
+    "logo": "assets/logos/marvel-neon-random/OKL.webp?v=1"
+   },
+   {
+    "sigle": "LOK",
+    "nom": "Loki/Alligator Loki",
+    "logo": "assets/logos/marvel-neon/LOK.webp?v=1"
+   },
+   {
+    "sigle": "OM",
+    "nom": "M-Others",
+    "logo": "assets/logos/marvel-neon-random/OM.webp?v=1"
+   },
+   {
+    "sigle": "ONO",
+    "nom": "N/O-Others",
+    "logo": "assets/logos/marvel-neon-random/ONO.webp?v=1"
+   },
+   {
+    "sigle": "OPQ",
+    "nom": "P/Q-Others",
+    "logo": "assets/logos/marvel-neon-random/OPQ.webp?v=1"
+   },
+   {
+    "sigle": "OR",
+    "nom": "R-Others",
+    "logo": "assets/logos/marvel-neon-random/OR.webp?v=1"
+   },
+   {
+    "sigle": "OS",
+    "nom": "S-Others",
+    "logo": "assets/logos/marvel-neon-random/OS.webp?v=1"
+   },
+   {
+    "sigle": "SCW",
+    "nom": "Scarlet Witch",
+    "logo": "assets/logos/marvel-neon/SCW.webp?v=1"
+   },
+   {
+    "sigle": "SPM",
+    "nom": "Spider man",
+    "logo": "assets/logos/marvel-neon/SPM.webp?v=1"
+   },
+   {
+    "sigle": "OTU",
+    "nom": "T/U-Others",
+    "logo": "assets/logos/marvel-neon-random/OTU.webp?v=1"
+   },
+   {
+    "sigle": "THN",
+    "nom": "Thanos",
+    "logo": "assets/logos/marvel-neon-random/THN.webp?v=1"
+   },
+   {
+    "sigle": "THR",
+    "nom": "Thor",
+    "logo": "assets/logos/marvel-neon/THR.webp?v=1"
+   },
+   {
+    "sigle": "OVW",
+    "nom": "V/W-Others",
+    "logo": "assets/logos/marvel-neon-random/OVW.webp?v=1"
+   },
+   {
+    "sigle": "VEN",
+    "nom": "Venom",
+    "logo": "assets/logos/marvel-neon/VEN.webp?v=1"
+   },
+   {
+    "sigle": "WOL",
+    "nom": "Wolverine",
+    "logo": "assets/logos/marvel-neon/WOL.webp?v=1"
+   },
+   {
+    "sigle": "OXY",
+    "nom": "X/Y-Others",
+    "logo": "assets/logos/marvel-neon-random/OXY.webp?v=1"
+   }
+  ]
+ },
+ "nfl": {
+  "nom": "NFL",
+  "equipes": [
+   {
+    "sigle": "ARI",
+    "nom": "Arizona Cardinals",
+    "logo": "assets/logos/nfl/ARI.png"
+   },
+   {
+    "sigle": "ATL",
+    "nom": "Atlanta Falcons",
+    "logo": "assets/logos/nfl/ATL.png"
+   },
+   {
+    "sigle": "BAL",
+    "nom": "Baltimore Ravens",
+    "logo": "assets/logos/nfl/BAL.png"
+   },
+   {
+    "sigle": "BUF",
+    "nom": "Buffalo Bills",
+    "logo": "assets/logos/nfl/BUF.png"
+   },
+   {
+    "sigle": "CAR",
+    "nom": "Carolina Panthers",
+    "logo": "assets/logos/nfl/CAR.png"
+   },
+   {
+    "sigle": "CHI",
+    "nom": "Chicago Bears",
+    "logo": "assets/logos/nfl/CHI.png"
+   },
+   {
+    "sigle": "CIN",
+    "nom": "Cincinnati Bengals",
+    "logo": "assets/logos/nfl/CIN.png"
+   },
+   {
+    "sigle": "CLE",
+    "nom": "Cleveland Browns",
+    "logo": "assets/logos/nfl/CLE.png"
+   },
+   {
+    "sigle": "DAL",
+    "nom": "Dallas Cowboys",
+    "logo": "assets/logos/nfl/DAL.png"
+   },
+   {
+    "sigle": "DEN",
+    "nom": "Denver Broncos",
+    "logo": "assets/logos/nfl/DEN.png"
+   },
+   {
+    "sigle": "DET",
+    "nom": "Detroit Lions",
+    "logo": "assets/logos/nfl/DET.png"
+   },
+   {
+    "sigle": "GB",
+    "nom": "Green Bay Packers",
+    "logo": "assets/logos/nfl/GB.png"
+   },
+   {
+    "sigle": "HOU",
+    "nom": "Houston Texans",
+    "logo": "assets/logos/nfl/HOU.png"
+   },
+   {
+    "sigle": "IND",
+    "nom": "Indianapolis Colts",
+    "logo": "assets/logos/nfl/IND.png"
+   },
+   {
+    "sigle": "JAX",
+    "nom": "Jacksonville Jaguars",
+    "logo": "assets/logos/nfl/JAX.png"
+   },
+   {
+    "sigle": "KC",
+    "nom": "Kansas City Chiefs",
+    "logo": "assets/logos/nfl/KC.png"
+   },
+   {
+    "sigle": "LAC",
+    "nom": "Los Angeles Chargers",
+    "logo": "assets/logos/nfl/LAC.png"
+   },
+   {
+    "sigle": "LAR",
+    "nom": "Los Angeles Rams",
+    "logo": "assets/logos/nfl/LAR.png"
+   },
+   {
+    "sigle": "LV",
+    "nom": "Las Vegas Raiders",
+    "logo": "assets/logos/nfl/LV.png"
+   },
+   {
+    "sigle": "MIA",
+    "nom": "Miami Dolphins",
+    "logo": "assets/logos/nfl/MIA.png"
+   },
+   {
+    "sigle": "MIN",
+    "nom": "Minnesota Vikings",
+    "logo": "assets/logos/nfl/MIN.png"
+   },
+   {
+    "sigle": "NE",
+    "nom": "New England Patriots",
+    "logo": "assets/logos/nfl/NE.png"
+   },
+   {
+    "sigle": "NO",
+    "nom": "New Orleans Saints",
+    "logo": "assets/logos/nfl/NO.png"
+   },
+   {
+    "sigle": "NYG",
+    "nom": "New York Giants",
+    "logo": "assets/logos/nfl/NYG.png"
+   },
+   {
+    "sigle": "NYJ",
+    "nom": "New York Jets",
+    "logo": "assets/logos/nfl/NYJ.png"
+   },
+   {
+    "sigle": "PHI",
+    "nom": "Philadelphia Eagles",
+    "logo": "assets/logos/nfl/PHI.png"
+   },
+   {
+    "sigle": "PIT",
+    "nom": "Pittsburgh Steelers",
+    "logo": "assets/logos/nfl/PIT.png"
+   },
+   {
+    "sigle": "SEA",
+    "nom": "Seattle Seahawks",
+    "logo": "assets/logos/nfl/SEA.png"
+   },
+   {
+    "sigle": "SF",
+    "nom": "San Francisco 49ers",
+    "logo": "assets/logos/nfl/SF.png"
+   },
+   {
+    "sigle": "TB",
+    "nom": "Tampa Bay Buccaneers",
+    "logo": "assets/logos/nfl/TB.png"
+   },
+   {
+    "sigle": "TEN",
+    "nom": "Tennessee Titans",
+    "logo": "assets/logos/nfl/TEN.png"
+   },
+   {
+    "sigle": "WAS",
+    "nom": "Washington Commanders",
+    "logo": "assets/logos/nfl/WAS.png"
+   }
+  ]
+ }
+}

@@ -1,0 +1,659 @@
+/* ==========================================================================
+   MIDKARDS — Page de reglages
+   Interface d'edition, jamais chargee par OBS.
+   ========================================================================== */
+
+:root {
+  /* Controles natifs (listes deroulantes, cases, barres) en theme sombre. */
+  color-scheme: dark;
+  --ink: #e8eefc;
+  --dim: #c0afb2;
+  --line: #3d2227;
+  --bg-0: #160a0c;
+  --bg-1: #261115;
+  --bg-2: #3c181f;
+  --cy: #ffa4b0;
+  --vi: #d9596a;
+  --pk: #ff4872;
+  --ok: #3ddc97;
+  --warn: #ffb454;
+  --bad: #ff5c7a;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: var(--bg-0);
+  color: var(--ink);
+  font: 14px/1.5 "Barlow", -apple-system, "Segoe UI", system-ui, sans-serif;
+  caret-color: var(--cy);
+  scrollbar-color: var(--line) var(--bg-0);
+}
+::selection { background: rgba(255,164,176, 0.35); color: #ffffff; }
+
+/* Focus clavier visible partout : sans lui, on ne sait plus ou on est dans
+   une page de 80 reglages. */
+:focus-visible {
+  outline: 2px solid var(--cy);
+  outline-offset: 2px;
+  border-radius: 6px;
+}
+
+/* -------------------------------------------------------------- ossature */
+.app {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 420px;
+  gap: 0;
+  min-height: 100vh;
+}
+@media (max-width: 1100px) {
+  .app { grid-template-columns: 1fr; }
+  .preview { position: static !important; height: 70vh; }
+}
+
+.panel { padding: 22px 26px 120px; min-width: 0; }
+
+h1 {
+  font-family: "Barlow Condensed", sans-serif;
+  font-size: 26px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  margin: 0 0 4px;
+  color: #ffffff;
+}
+.sub { color: var(--dim); margin: 0 0 22px; max-width: 62ch; }
+
+/* -------------------------------------------------------------- sections */
+details {
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: var(--bg-1);
+  margin-bottom: 12px;
+  overflow: hidden;
+}
+details[open] { background: var(--bg-1); }
+summary {
+  cursor: pointer;
+  padding: 12px 16px;
+  font-family: "Barlow Condensed", sans-serif;
+  font-size: 17px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  list-style: none;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+summary::-webkit-details-marker { display: none; }
+summary:hover { background: rgba(255,164,176, 0.04); }
+summary:focus-visible { outline-offset: -2px; border-radius: 10px; }
+summary::before {
+  content: "";
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  background: var(--cy);
+  box-shadow: 0 0 8px var(--cy);
+  flex: 0 0 auto;
+}
+.body { padding: 4px 16px 18px; border-top: 1px solid var(--line); }
+
+/* ----------------------------------------------------------------- champs */
+.field { margin: 14px 0; }
+.field > label {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  font-weight: 600;
+  margin-bottom: 5px;
+}
+.field .val {
+  font-variant-numeric: tabular-nums;
+  color: var(--cy);
+  font-weight: 700;
+}
+.help { color: var(--dim); font-size: 12.5px; margin-top: 4px; max-width: 75ch; }
+
+input[type="text"], select {
+  width: 100%;
+  padding: 8px 10px;
+  border-radius: 7px;
+  border: 1px solid var(--line);
+  background: var(--bg-0);
+  color: var(--ink);
+  font: inherit;
+}
+input[type="text"]:focus, select:focus { border-color: var(--cy); }
+input[type="text"]:focus-visible, select:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(255,164,176, 0.35);
+}
+input[type="range"] { width: 100%; accent-color: var(--cy); }
+input[type="checkbox"] { accent-color: var(--cy); width: 17px; height: 17px; }
+.field--check > label { justify-content: flex-start; gap: 10px; cursor: pointer; }
+
+/* ------------------------------------------------------------------ listes */
+.list { display: flex; flex-direction: column; gap: 7px; }
+.row {
+  display: flex;
+  gap: 7px;
+  align-items: center;
+}
+.row input[type="text"] { flex: 1 1 auto; }
+.row select { flex: 0 0 130px; }
+.btn {
+  border: 1px solid var(--line);
+  background: var(--bg-2);
+  color: var(--ink);
+  border-radius: 7px;
+  padding: 7px 11px;
+  font: inherit;
+  cursor: pointer;
+  white-space: nowrap;
+}
+.btn:hover { border-color: var(--cy); }
+.btn:active { transform: translateY(1px); }
+.btn:disabled { opacity: 0.45; cursor: default; transform: none; }
+.btn:disabled:hover { border-color: var(--line); }
+.btn--icon { padding: 7px 9px; flex: 0 0 auto; color: var(--dim); }
+.btn--icon:hover { color: var(--pk); border-color: var(--pk); }
+.btn--add { align-self: flex-start; margin-top: 4px; }
+
+/* ------------------------------------------------------- budget vertical */
+.budget {
+  border: 1px solid var(--line);
+  border-radius: 9px;
+  background: var(--bg-0);
+  padding: 12px 14px;
+  margin-top: 12px;
+  font-size: 13px;
+}
+.budget table { width: 100%; border-collapse: collapse; }
+.budget td { padding: 3px 0; }
+.budget td:last-child { text-align: right; font-variant-numeric: tabular-nums; }
+.budget .k { color: var(--dim); }
+.diag { margin-top: 10px; display: flex; flex-direction: column; gap: 5px; }
+.diag div { display: flex; gap: 8px; align-items: flex-start; }
+.diag .ok   { color: var(--ok); }
+.diag .warn { color: var(--warn); }
+.diag .bad  { color: var(--bad); }
+
+/* ---------------------------------------------------------------- apercu */
+.preview {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  border-left: 1px solid var(--line);
+  background:
+    radial-gradient(90% 60% at 50% 0%, #37171d, #110809 70%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  padding: 14px;
+}
+.preview h2 {
+  font-family: "Barlow Condensed", sans-serif;
+  font-size: 14px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--dim);
+  margin: 0;
+}
+.phone {
+  /* Contraint sur les DEUX axes : avec seulement aspect-ratio + flex, le
+     telephone debordait de sa colonne des que la fenetre etait haute. */
+  width: min(100%, calc((100vh - 150px) * 9 / 16));
+  aspect-ratio: 9 / 16;
+  flex: 0 0 auto;
+  border-radius: 14px;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  box-shadow: 0 18px 50px rgba(0, 0, 0, 0.6);
+  background: #000;
+}
+.phone iframe { width: 100%; height: 100%; border: 0; display: block; }
+.preview .note { color: var(--dim); font-size: 12px; text-align: center; }
+
+/* ------------------------------------------------------------ barre basse */
+.bar-actions {
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: calc(100% - 420px);
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  padding: 12px 26px;
+  background: linear-gradient(180deg, rgba(22,10,12, 0.5), var(--bg-0) 45%);
+  border-top: 1px solid var(--line);
+  backdrop-filter: blur(6px);
+}
+@media (max-width: 1100px) { .bar-actions { width: 100%; } }
+/* Sur telephone, les quatre actions passaient hors de l'ecran : elles vont
+   a la ligne, et la page garde assez de marge pour ne rien masquer. */
+@media (max-width: 700px) {
+  .bar-actions { flex-wrap: wrap; gap: 8px; padding: 10px 16px; }
+  .bar-actions .btn { padding: 8px 11px; font-size: 13px; }
+  .bar-actions .btn--main { flex: 1 1 100%; }
+  .status { flex-basis: 100%; }
+  .panel { padding: 18px 16px 230px; }
+  .nav-outils { padding: 12px 16px 0; }
+}
+
+.btn--main {
+  /* Violet eclairci en fin de degrade : le texte sombre y garde 4,5:1. */
+  background: linear-gradient(90deg, var(--cy), #ffdce2);
+  border-color: transparent;
+  color: #21070c;
+  font-weight: 700;
+  padding: 10px 16px;
+}
+.status { color: var(--dim); font-size: 13px; }
+.status.is-ok { color: var(--ok); }
+.status.is-bad { color: var(--bad); }
+
+/* --------------------------------------------------------------------------
+   Annonce du mode
+   La page sert deux deploiements qui n'enregistrent pas au meme endroit.
+   Cette bande dit lequel est actif ; sans elle, l'interface est identique
+   dans les deux cas et le bouton « Enregistrer config.js » passe pour un
+   enregistrement en ligne.
+   -------------------------------------------------------------------------- */
+.mode {
+  margin: 0 0 18px;
+  padding: 10px 13px;
+  border-radius: 9px;
+  border: 1px solid var(--line);
+  font-size: 13px;
+  line-height: 1.5;
+}
+.mode code { font-size: 12px; }
+.mode--enligne { border-color: rgba(64, 200, 130, 0.45); background: rgba(64, 200, 130, 0.09); }
+.mode--fichier { border-color: rgba(202,115,131, 0.40); background: rgba(202,115,131, 0.08); }
+.mode--averti  { border-color: rgba(240, 170, 60, 0.55);  background: rgba(240, 170, 60, 0.11); }
+
+/* --------------------------------------------------------------------------
+   L'essentiel
+   Bloc non repliable, en tete de page : les quelques reglages qui changent
+   d'un direct a l'autre. Tout le reste est dans des sections fermees.
+   -------------------------------------------------------------------------- */
+.essentiel {
+  border: 1px solid rgba(255,164,176, 0.34);
+  border-radius: 10px;
+  background: linear-gradient(180deg, rgba(255,164,176, 0.055), rgba(255,164,176, 0));
+  padding: 14px 16px 6px;
+  margin-bottom: 16px;
+}
+.essentiel h2 {
+  margin: 0;
+  font-family: "Barlow Condensed", sans-serif;
+  font-size: 17px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.essentiel__note {
+  margin: 4px 0 0;
+  font-size: 12.5px;
+  color: var(--dim);
+}
+.body--essentiel { padding: 0; border-top: 0; }
+
+/* ------------------------------------------------------------- les replis */
+.replis { display: flex; justify-content: flex-end; margin: 0 2px 8px; }
+.replis__lien {
+  background: none;
+  border: 0;
+  padding: 4px 2px;
+  color: var(--dim);
+  font: inherit;
+  font-size: 12.5px;
+  cursor: pointer;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.replis__lien:hover { color: var(--ink); }
+
+/* Combien de reglages dorment dans une section fermee. */
+.count {
+  font-family: "Barlow", sans-serif;
+  font-size: 11px;
+  letter-spacing: 0;
+  color: var(--dim);
+  background: rgba(255, 255, 255, 0.055);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 1px 7px;
+}
+
+/* Chevron : sans lui, rien ne dit qu'une section fermee peut s'ouvrir. */
+summary::after {
+  content: "";
+  margin-left: auto;
+  width: 7px;
+  height: 7px;
+  border-right: 2px solid var(--dim);
+  border-bottom: 2px solid var(--dim);
+  transform: rotate(45deg);
+  transition: transform 0.15s ease;
+  flex: 0 0 auto;
+}
+details[open] > summary::after { transform: rotate(-135deg); }
+summary:hover::after { border-color: var(--ink); }
+
+/* ------------------------------------------------- deblocage par collage */
+.mode__deblocage {
+  display: flex;
+  gap: 8px;
+  margin-top: 10px;
+}
+.mode__deblocage input {
+  flex: 1 1 auto;
+  min-width: 0;
+  background: var(--bg-0);
+  border: 1px solid var(--line);
+  border-radius: 7px;
+  color: var(--ink);
+  font: inherit;
+  font-size: 13px;
+  padding: 7px 10px;
+}
+.mode__deblocage input:focus {
+  outline: none;
+  border-color: var(--cy);
+}
+.mode__deblocage button {
+  flex: 0 0 auto;
+  background: var(--bg-2);
+  border: 1px solid var(--line);
+  border-radius: 7px;
+  color: var(--ink);
+  font: inherit;
+  font-size: 13px;
+  padding: 7px 14px;
+  cursor: pointer;
+}
+.mode__deblocage button:hover { border-color: var(--cy); }
+.mode__retour {
+  display: block;
+  margin-top: 7px;
+  font-size: 12.5px;
+  color: var(--dim);
+}
+
+/* --------------------------------------------------------------------------
+   Galeries d'images (decor de fond, globe central)
+   Une grille de vignettes cliquables. La tuile active porte le lisere cyan :
+   dans une galerie, ce qui manque le plus c'est de savoir lequel est en
+   service.
+   -------------------------------------------------------------------------- */
+.galerie {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(118px, 1fr));
+  gap: 8px;
+  margin-top: 6px;
+}
+.galerie__item {
+  position: relative;
+  border: 1px solid var(--line);
+  border-radius: 9px;
+  overflow: hidden;
+  background: var(--bg-0);
+}
+.galerie__item.is-actif {
+  border-color: var(--cy);
+  box-shadow: inset 0 0 0 1px var(--cy);
+}
+.galerie__choix {
+  display: block;
+  width: 100%;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--ink);
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+.galerie__vue {
+  display: block;
+  height: 74px;
+  background-color: var(--bg-2);
+  background-size: cover;
+  background-position: center;
+}
+.galerie__nom {
+  display: block;
+  padding: 6px 8px 0;
+  font-size: 12px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.galerie__info { display: block; padding: 0 8px 7px; font-size: 11px; color: var(--dim); }
+.galerie__x {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  border: 1px solid var(--line);
+  background: rgba(12,5,6, 0.8);
+  color: var(--ink);
+  font-size: 11px;
+  line-height: 1;
+  cursor: pointer;
+}
+.galerie__x:hover { border-color: var(--bad); color: var(--bad); }
+.galerie__ajout {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 74px;
+  padding: 8px;
+  border-style: dashed;
+  color: var(--dim);
+  font-size: 12.5px;
+  text-align: center;
+  cursor: pointer;
+}
+.galerie__ajout:hover { border-color: var(--cy); color: var(--ink); }
+.galerie__retour { margin-top: 7px; }
+.galerie__manuel { margin-top: 8px; }
+
+/* Vignette du globe : en rond, et posee sur un damier discret pour qu'on voie
+   tout de suite si la transparence a bien ete gardee. `contain` et non `cover`
+   — un ballon ne doit pas etre recadre dans sa propre vignette. */
+.galerie__vue--rond {
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-color: transparent;
+  border-radius: 50%;
+  margin: 6px auto 0;
+  width: 62px;
+  height: 62px;
+  box-shadow: inset 0 0 0 1px var(--line);
+}
+.galerie__item:has(.galerie__vue--rond) {
+  background-image:
+    linear-gradient(45deg, rgba(255,255,255,0.035) 25%, transparent 25%,
+                    transparent 75%, rgba(255,255,255,0.035) 75%),
+    linear-gradient(45deg, rgba(255,255,255,0.035) 25%, transparent 25%,
+                    transparent 75%, rgba(255,255,255,0.035) 75%);
+  background-size: 12px 12px;
+  background-position: 0 0, 6px 6px;
+}
+.galerie__option {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 9px;
+  font-size: 12.5px;
+  color: var(--dim);
+  cursor: pointer;
+}
+
+/* --------------------------------------------------------------------------
+   Themes
+   Une puce montre le decor en vignette avec le globe pose dessus : c'est la
+   seule facon de reconnaitre un theme d'un coup d'oeil sans lire son nom.
+   -------------------------------------------------------------------------- */
+.themes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 6px;
+}
+.theme {
+  position: relative;
+  border: 1px solid var(--line);
+  border-radius: 9px;
+  overflow: hidden;
+  background: var(--bg-0);
+  width: 112px;
+}
+.theme.is-actif {
+  border-color: var(--cy);
+  box-shadow: inset 0 0 0 1px var(--cy);
+}
+.theme__choix {
+  display: block;
+  width: 100%;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--ink);
+  font: inherit;
+  cursor: pointer;
+}
+.theme__vue {
+  position: relative;
+  display: block;
+  height: 58px;
+  background-color: var(--bg-2);
+  background-size: cover;
+  background-position: center;
+}
+/* Le globe pose au centre, comme dans l'habillage : la vignette raconte donc
+   vraiment ce que le theme va produire. */
+.theme__globe {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 30px;
+  height: 30px;
+  margin: -15px 0 0 -15px;
+  border-radius: 50%;
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+  filter: drop-shadow(0 1px 3px rgba(0, 0, 0, 0.7));
+}
+.theme__nom {
+  display: block;
+  padding: 6px 8px 7px;
+  font-size: 12px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.theme__x {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 1px solid var(--line);
+  background: rgba(12,5,6, 0.8);
+  color: var(--ink);
+  font-size: 10px;
+  line-height: 1;
+  cursor: pointer;
+}
+.theme__x:hover { border-color: var(--bad); color: var(--bad); }
+
+.theme--ajout {
+  display: flex;
+  align-items: center;
+  border-style: dashed;
+  min-height: 58px;
+}
+.theme--ajout .theme__choix {
+  padding: 10px 8px;
+  font-size: 12px;
+  color: var(--dim);
+  text-align: center;
+  line-height: 1.35;
+}
+.theme--ajout:hover { border-color: var(--cy); }
+.theme--ajout:hover .theme__choix { color: var(--ink); }
+.theme--ajout.is-saisie { display: flex; gap: 5px; padding: 7px; align-items: center; }
+.theme--ajout.is-saisie input {
+  flex: 1 1 auto;
+  min-width: 0;
+  width: auto;
+  padding: 5px 7px;
+  font-size: 12px;
+  border-radius: 6px;
+  border: 1px solid var(--line);
+  background: var(--bg-0);
+  color: var(--ink);
+  font-family: inherit;
+}
+.theme--ajout.is-saisie button {
+  flex: 0 0 auto;
+  width: 26px;
+  height: 26px;
+  border-radius: 6px;
+  border: 1px solid var(--line);
+  background: var(--bg-2);
+  color: var(--ok);
+  cursor: pointer;
+}
+
+
+/* Renvoi vers la regie : c'est la page a utiliser en direct, et rien ne le
+   disait depuis ici. */
+.renvoi {
+  margin: 0 0 18px;
+  padding: 10px 13px;
+  border-radius: 9px;
+  border: 1px dashed var(--line);
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--dim);
+}
+.renvoi a { color: var(--cy); }
+
+/* --------------------------------------------------------------------------
+   Navigation entre les pages
+   Une rangee de liens, identique sur reglages/regie/sports-editeur, pour
+   passer de l'une a l'autre sans avoir a retenir une adresse. La page
+   courante est marquee et non cliquable.
+   -------------------------------------------------------------------------- */
+.nav-outils {
+  display: flex;
+  gap: 6px;
+  padding: 12px 26px 0;
+  flex-wrap: wrap;
+}
+.nav-outils a {
+  padding: 6px 12px;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: var(--bg-1);
+  color: var(--dim);
+  font-size: 12.5px;
+  text-decoration: none;
+}
+.nav-outils a:hover { border-color: var(--cy); color: var(--ink); }
+.nav-outils a.est-ici {
+  border-color: var(--cy);
+  background: rgba(255,164,176, 0.09);
+  color: var(--ink);
+  pointer-events: none;
+}

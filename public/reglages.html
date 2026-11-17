@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>MidKards — Réglages de l'habillage</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=Barlow:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="_moteur/reglages.css?v=20261013-polish">
+</head>
+<body>
+  <nav class="nav-outils">
+    <a href="index.html">Accueil</a>
+    <a href="reglages.html" class="est-ici">Réglages</a>
+    <a href="regie.html">Roue spot</a>
+    <a href="dbtk.html">DBTK</a>
+    <a href="cartes.html">Cartes</a>
+    <a href="sports.html">Éditeur de roue</a>
+  </nav>
+
+  <div class="app">
+    <div class="panel">
+      <h1>Réglages de l'habillage</h1>
+      <p class="sub">
+        Tout se règle ici, et l'aperçu se met à jour tout de suite.
+      </p>
+      <p class="mode" id="mode" hidden></p>
+      <p class="renvoi">
+        <b>Les équipes du random se pilotent dans la
+        <a href="regie.html">roue spot</a></b> — une page à part, faite pour le
+        téléphone, où chaque équipe tapée s'enregistre toute seule et sans
+        recharger l'overlay. Ici, tu ne règles que son placement.
+      </p>
+      <p class="renvoi">
+        <b>Pour créer un sport (NHL, foot…) avec ses propres équipes et
+        logos, ouvre l'<a href="sports.html">éditeur de roue</a></b>
+        — les roues livrées avec l'overlay (NBA, NFL, MLB…) n'y sont pas
+        modifiables.
+      </p>
+
+      <div id="form"></div>
+    </div>
+
+    <div class="preview">
+      <h2>Aperçu</h2>
+      <div class="phone"><iframe id="preview" title="aperçu"></iframe></div>
+      <p class="note">
+        Les deux rectangles gris et beige tiennent la place des caméras.<br>
+        Coche « Afficher les zones plateforme » pour voir ce que le chat recouvre.
+      </p>
+    </div>
+  </div>
+
+  <div class="bar-actions">
+    <button class="btn btn--main" id="publish" hidden>Enregistrer en ligne</button>
+    <button class="btn btn--main" id="save">Enregistrer config.js</button>
+    <button class="btn" id="copy">Copier dans le presse-papier</button>
+    <button class="btn" id="thrifty" title="Coupe les effets qui font bouger le décor">Alléger pour le débit</button>
+    <button class="btn" id="reset">Revenir aux valeurs du fichier</button>
+    <span class="status" id="status" role="status" aria-live="polite"></span>
+  </div>
+
+  <script src="config.js?v=20261012-anims-reglages"></script>
+  <script src="_moteur/boot.js?v=20261110-pyp" data-then="_moteur/reglages.js?v=20261013-polish"></script>
+</body>
+</html>

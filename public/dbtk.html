@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>MidKards — DBTK</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=Barlow:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="_moteur/regie.css?v=20261110-enchere">
+</head>
+<body class="page-dbtk">
+  <nav class="nav-outils">
+    <a href="index.html">Accueil</a>
+    <a href="reglages.html">Réglages</a>
+    <a href="regie.html">Roue spot</a>
+    <a href="dbtk.html" class="est-ici">DBTK</a>
+    <a href="cartes.html">Cartes</a>
+    <a href="sports.html">Éditeur de roue</a>
+  </nav>
+
+  <header class="tete">
+    <div class="tete__titre">
+      <h1>DBTK</h1>
+      <p class="tete__live" id="whatnot-status">Aucun live connecté</p>
+    </div>
+    <div class="jauge" id="jauge">
+      <span class="jauge__n" id="restant">—</span>
+      <span class="jauge__l">joueurs restants</span>
+    </div>
+  </header>
+
+  <p class="mode" id="mode" hidden></p>
+
+  <!-- L'overlay montre une autre roue, ou rien n'est importe : un seul bouton. -->
+  <section class="dbtk-alerte" id="hors-dbtk" hidden>
+    <p id="hors-dbtk-texte"></p>
+    <button type="button" class="dbtk-alerte__bt" id="passer-dbtk">Afficher le DBTK sur l'overlay</button>
+  </section>
+
+  <!-- Le direct : un joueur a la fois. -->
+  <section class="pyp-regie" id="pyp" aria-labelledby="pyp-titre">
+    <h2 class="direct__titre" id="pyp-titre">Joueur en enchère</h2>
+    <div class="pyp-regie__joueur" id="pyp-joueur"></div>
+    <div class="pyp-regie__nav">
+      <button type="button" class="pyp-regie__prec" id="pyp-prec">Précédent</button>
+      <button type="button" class="pyp-regie__suiv" id="pyp-suiv">Joueur suivant</button>
+    </div>
+    <p class="pyp-regie__progres" id="pyp-progres"></p>
+    <!-- La fiche suit le spot mis en enchere sur Whatnot (statut « running »). -->
+    <div class="reglage dbtk-auto">
+      <span class="reglage__nom" id="auto-nom">Suivre l'enchère Whatnot</span>
+      <div class="bascule" role="radiogroup" aria-labelledby="auto-nom">
+        <button type="button" class="bascule__choix" id="auto-on" role="radio" aria-checked="false">Automatique</button>
+        <button type="button" class="bascule__choix" id="auto-off" role="radio" aria-checked="true">À la main</button>
+      </div>
+    </div>
+    <p class="reglage__note" id="auto-note"></p>
+    <label class="pyp-regie__cherche">
+      <span class="visuellement-cache">Chercher un joueur</span>
+      <input type="search" id="pyp-cherche" autocomplete="off" spellcheck="false" placeholder="Chercher un joueur ou une équipe">
+    </label>
+    <div class="pyp-regie__resultats" id="pyp-resultats"></div>
+  </section>
+
+  <!-- Le break Whatnot du DBTK : ses ventes cochent les joueurs et posent le
+       pseudo de l'acheteur sur la fiche. -->
+  <section class="direct" id="whatnot" aria-labelledby="direct-titre">
+    <div class="encours" id="encours" hidden>
+      <p class="encours__badge"><span class="encours__point"></span>Ventes Whatnot suivies<span class="encours__maj" id="encours-maj"></span></p>
+      <p class="encours__titre" id="encours-titre"></p>
+      <div class="encours__barre" aria-hidden="true"><i id="encours-fill"></i></div>
+      <p class="encours__info" id="encours-info"></p>
+      <button type="button" class="encours__stop" id="stop">STOP · arrêter le suivi</button>
+    </div>
+    <h2 class="direct__titre" id="direct-titre">Quel break est le DBTK ?</h2>
+    <p class="reglage__note is-alerte" id="autre-break" hidden></p>
+    <div class="breaks" id="whatnot-breaks"></div>
+    <p class="direct__vide" id="whatnot-vide" hidden></p>
+    <p class="reglage__note" id="whatnot-note" hidden></p>
+    <button type="button" class="dbtk-relire" id="relire" hidden>Relire les spots du break Whatnot</button>
+    <p class="direct__erreur" id="whatnot-error" role="alert" hidden></p>
+  </section>
+
+  <!-- La liste des joueurs vient des spots du break Whatnot, lus quand on le
+       touche. Ici : les boites, le nom, et le CSV en secours. -->
+  <details class="avance" id="pyp-prep">
+    <summary>Boîtes et nom du break</summary>
+    <p class="reglage__note is-alerte" id="sans-boites" hidden>Aucune boîte enregistrée : le bandeau des boxes n'apparaît pas sous la fiche. Remplis-les ici une fois.</p>
+    <form class="pyp-prep" id="pyp-form">
+      <label class="pyp-prep__champ">
+        <span>Boîtes du break</span>
+        <input type="text" id="pyp-boites" autocomplete="off" placeholder="3 Jumbo, 6 Hobby, 20 Value, 12 Hanger" aria-describedby="pyp-boites-aide pyp-boites-lu">
+      </label>
+      <p class="pyp-prep__aide" id="pyp-boites-aide">Pour chaque type de boîte : <b>le nombre, puis le nom</b>. Sépare les types par une virgule.
+        Exemple : <code>3 Jumbo, 6 Hobby, 20 Value, 12 Hanger</code>. Le total (ici 41) se calcule tout seul.</p>
+      <p class="pyp-prep__lu" id="pyp-boites-lu" aria-live="polite"></p>
+      <label class="pyp-prep__champ">
+        <span>Nom du break</span>
+        <input type="text" id="pyp-nom" autocomplete="off" maxlength="60" placeholder="Flagship 2026-27">
+      </label>
+      <label class="pyp-prep__champ">
+        <span>En secours, la liste depuis un CSV (si Whatnot ne répond pas)</span>
+        <input type="file" id="pyp-csv" accept=".csv,text/csv">
+      </label>
+      <button type="submit" id="pyp-importer">Enregistrer</button>
+      <p class="pyp-prep__etat" id="pyp-prep-etat" role="status"></p>
+    </form>
+  </details>
+
+  <footer class="pied">
+    <span class="etat" id="etat" role="status" aria-live="polite"></span>
+    <button class="bt bt--bascule" id="visible">Fiche affichée</button>
+  </footer>
+
+  <script src="config.js?v=20261012-anims-reglages"></script>
+  <script src="_moteur/boot.js?v=20261110-pyp"
+          data-then="_moteur/dbtk.js?v=20261110-enchere"></script>
+</body>
+</html>

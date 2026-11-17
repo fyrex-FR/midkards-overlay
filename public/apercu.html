@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <title>MidKards — Apercu complet</title>
+  <style>
+    html, body { margin: 0; height: 100%; background: #1b1b1f; overflow: hidden;
+                 font-family: system-ui, sans-serif; }
+    #stack { position: absolute; left: 50%; top: 0; width: 1080px; height: 1920px;
+             transform-origin: 50% 0; }
+    iframe, .cam { position: absolute; border: 0; }
+    #fond, #cadre { left: 0; top: 0; width: 1080px; height: 1920px; }
+    #cadre { z-index: 3; }
+
+    /* Fausses cameras, aux emplacements exacts definis dans config.js.
+       Elles remplacent les vraies sources OBS le temps de l'apercu. */
+    .cam { z-index: 2; display: flex; align-items: center; justify-content: center; }
+    .cam b { font: 700 42px system-ui; color: rgba(0,0,0,.32); letter-spacing: .12em; }
+    #camtop   { background: linear-gradient(135deg, #6a5f61, #3d3536); }
+    #cambreak { background: linear-gradient(120deg, #d9c7a4, #efe2c6 45%, #c9b795); }
+
+    .note { position: fixed; left: 12px; bottom: 10px; z-index: 9; color: #8b8b96;
+            font-size: 12px; line-height: 1.5; }
+  </style>
+</head>
+<body>
+  <div id="stack">
+    <iframe id="fond" title="fond"></iframe>
+    <div class="cam" id="camtop"><b>CAM ANIMATEUR</b></div>
+    <div class="cam" id="cambreak"><b>CAM BREAK</b></div>
+    <iframe id="cadre" title="cadre"></iframe>
+  </div>
+  <p class="note">Apercu : les deux rectangles gris et beige tiennent la place de tes vraies cameras.<br>
+     Ajoute <b>?zones=1</b> a l'adresse pour voir les zones occupees par l'interface de la plateforme.</p>
+
+  <script src="config.js?v=20261012-anims-reglages"></script>
+  <script src="_moteur/config-override.js?v=20260914-131952"></script>
+  <script>
+  (() => {
+    "use strict";
+    const L = (window.SHAKS_CONFIG && window.SHAKS_CONFIG.layout) || {};
+    const W = 1080;
+
+    /* Les fausses cameras se placent d'apres la meme config que le cadre :
+       si tu ajustes la geometrie, l'apercu suit tout seul. */
+    function place(id, spec) {
+      const el = document.getElementById(id);
+      if (!el || !spec) return;
+      const w = spec.width != null ? spec.width : 100;
+      el.style.top = spec.top + "%";
+      el.style.width = w + "%";
+      el.style.left = ((100 - w) / 2) + "%";
+
+      /* Meme regle que le cadre : un format verrouille impose la hauteur. */
+      const parts = String(spec.ratio || "").split(/[:/]/);
+      let r = null;
+      if (parts.length === 2) {
+        const a = parseFloat(parts[0]), b = parseFloat(parts[1]);
+        if (a > 0 && b > 0) r = a / b;
+      } else if (spec.ratio) {
+        const n = parseFloat(spec.ratio);
+        if (n > 0) r = n;
+      }
+      if (r) { el.style.aspectRatio = String(r); el.style.height = "auto"; }
+      else   { el.style.aspectRatio = ""; el.style.height = spec.height + "%"; }
+    }
+    place("camtop", L.camTop);
+    place("cambreak", L.camBreak);
+
+    /* Embarquee dans reglages.html, la note n'a plus lieu d'etre : elle est
+       en position fixe et viendrait se superposer a l'apercu. */
+    if (window !== window.top) {
+      const note = document.querySelector(".note");
+      if (note) note.hidden = true;
+    }
+
+    /* Mise a l'echelle pour tenir dans la fenetre du navigateur. */
+    const stack = document.getElementById("stack");
+    function fit() {
+      const k = Math.min(innerWidth / W, innerHeight / 1920);
+      stack.style.transform = `translateX(-50%) scale(${k})`;
+    }
+    fit();
+    addEventListener("resize", fit);
+
+    /* Les deux couches sont chargees ICI et non via un src dans le HTML.
+       C'est volontaire : ajouter un hash a un src deja charge est une
+       navigation dans le meme document, donc sans rechargement — la couche
+       ne verrait jamais la config. On construit l'URL complete une fois. */
+    const params = new URLSearchParams(location.search);
+    const zones = params.has("zones");
+    const cfgHash = location.hash.startsWith("#cfg=") ? location.hash : "";
+    const v = params.get("v");
+
+    const query = [];
+    if (zones) query.push("zones=1");
+    if (v) query.push("v=" + encodeURIComponent(v));
+    const suffix = (query.length ? "?" + query.join("&") : "") + cfgHash;
+
+    document.getElementById("fond").src = "fond.html" + suffix;
+    document.getElementById("cadre").src = "cadre.html" + suffix;
+  })();
+  </script>
+</body>
+</html>

@@ -1,0 +1,49 @@
+/* ==========================================================================
+   MIDKARDS — jeton de style partages
+   Charge en premier par les trois pages (arene, cadre, bandeau seul).
+   ========================================================================== */
+
+:root {
+  /* Palette relevee sur le logo */
+  --c-cyan:   #ffa4b0;
+  --c-blue:   #eb3f5f;
+  --c-violet: #d9596a;
+  --c-pink:   #ff4872;
+
+  --c-text:   #f2f6ff;
+  --c-dim:    #c4b3b6;
+
+  /* Nuit d'arene */
+  --n-0: #0d0406;
+  --n-1: #210b0e;
+  --n-2: #280d10;
+  --n-3: #130708;
+
+  /* --u = hauteur de reference pour tout le dimensionnement.
+     En page autonome c'est la hauteur de la source ; a l'interieur du
+     cadre, le JS la remplace par la hauteur reelle de la bande en px.
+     C'est ce qui permet au meme CSS de bandeau de servir dans les deux cas
+     sans que les lueurs soient calculees sur 1920 px de haut. */
+  --u: 100vh;
+
+  /* Intensite globale des effets d'arene ; pilotee par config.js.
+     Utilisee DANS les keyframes, car une animation qui anime l'opacite
+     ecraserait un reglage pose en inline. */
+  --fx: 1;
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  height: 100%;
+  overflow: hidden;
+  background: transparent;   /* indispensable pour OBS */
+}
+
+body {
+  font-family: "Barlow Condensed", "Oswald", "Roboto Condensed",
+               "Helvetica Neue", Arial, sans-serif;
+  color: var(--c-text);
+  -webkit-font-smoothing: antialiased;
+}

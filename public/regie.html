@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>MidKards — Roue spot</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=Barlow:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="_moteur/regie.css?v=20261110-enchere">
+</head>
+<body>
+  <nav class="nav-outils">
+    <a href="index.html">Accueil</a>
+    <a href="reglages.html">Réglages</a>
+    <a href="regie.html" class="est-ici">Roue spot</a>
+    <a href="dbtk.html">DBTK</a>
+    <a href="cartes.html">Cartes</a>
+    <a href="sports.html">Éditeur de roue</a>
+  </nav>
+
+  <header class="tete">
+    <div class="tete__titre">
+      <h1>Roue spot</h1>
+      <p class="tete__live" id="whatnot-status">Aucun live connecté</p>
+    </div>
+    <div class="jauge" id="jauge">
+      <span class="jauge__n" id="restant">—</span>
+      <span class="jauge__l">spots restants</span>
+    </div>
+  </header>
+
+  <p class="mode" id="mode" hidden></p>
+
+  <!-- Le DBTK a sa page : la roue spot ne fait que le signaler. -->
+  <section class="dbtk-alerte" id="dbtk-actif" hidden>
+    <p>L'overlay affiche le <b>DBTK</b> (fiche joueur). Il se gère sur sa page. Pour revenir à une roue, touche un autre break plus bas ou choisis la roue.</p>
+    <a class="dbtk-alerte__bt" href="dbtk.html">Ouvrir la page DBTK</a>
+  </section>
+
+  <!-- Le direct : un seul geste, toucher le break qu'on ouvre. La roue et le
+       mode automatique suivent tout seuls. -->
+  <section class="direct" id="whatnot" aria-labelledby="direct-titre">
+    <!-- Un break suivi : il prend toute la tete du bloc, avec son STOP. -->
+    <div class="encours" id="encours" hidden>
+      <p class="encours__badge"><span class="encours__point"></span>En cours<span class="encours__maj" id="encours-maj"></span></p>
+      <p class="encours__titre" id="encours-titre"></p>
+      <div class="encours__barre" aria-hidden="true"><i id="encours-fill"></i></div>
+      <p class="encours__info" id="encours-info"></p>
+      <button type="button" class="encours__stop" id="stop">STOP · arrêter ce break</button>
+    </div>
+
+    <h2 class="direct__titre" id="direct-titre">Quel break ouvres-tu ?</h2>
+    <div class="breaks" id="whatnot-breaks"></div>
+    <p class="direct__vide" id="whatnot-vide" hidden></p>
+
+    <div class="reglage">
+      <label class="reglage__nom" for="sport">Roue</label>
+      <select class="reglage__choix" id="sport"></select>
+    </div>
+    <p class="reglage__note" id="roue-note" hidden></p>
+
+    <div class="reglage">
+      <span class="reglage__nom" id="mode-nom">Cocher les spots</span>
+      <div class="bascule" role="radiogroup" aria-labelledby="mode-nom">
+        <button type="button" class="bascule__choix" id="mode-auto" role="radio" aria-checked="false">Automatique</button>
+        <button type="button" class="bascule__choix" id="mode-manuel" role="radio" aria-checked="true">À la main</button>
+      </div>
+    </div>
+    <p class="reglage__note" id="mode-expl"></p>
+
+    <div class="reglage">
+      <span class="reglage__nom" id="deux-nom">2 pour 1</span>
+      <div class="bascule" role="radiogroup" aria-labelledby="deux-nom">
+        <button type="button" class="bascule__choix" id="deux-off" role="radio" aria-checked="true">Désactivé</button>
+        <button type="button" class="bascule__choix" id="deux-on" role="radio" aria-checked="false">Activé</button>
+      </div>
+    </div>
+    <div class="reglage" id="deux-seuil-ligne">
+      <label class="reglage__nom" for="deux-seuil">Jusqu'à</label>
+      <div class="pas">
+        <button type="button" class="pas__bt" id="deux-moins" aria-label="Un spot de moins">−</button>
+        <input class="pas__val" type="number" id="deux-seuil" min="1" max="99" inputmode="numeric">
+        <button type="button" class="pas__bt" id="deux-plus" aria-label="Un spot de plus">+</button>
+        <span class="pas__unite">spots restants</span>
+      </div>
+    </div>
+    <p class="reglage__note" id="deux-expl"></p>
+
+    <p class="direct__erreur" id="whatnot-error" role="alert" hidden></p>
+
+    <details class="avance">
+      <summary>Réglages du live Whatnot</summary>
+      <label class="avance__case">
+        <input type="checkbox" id="whatnot-auto">
+        <span>Suivre automatiquement le live de <b id="whatnot-seller">@midkards</b>
+          <small>Connecte le live en cours, ou le prochain programmé, et passe au suivant quand il se termine.</small></span>
+      </label>
+      <form class="avance__lien" id="whatnot-connect">
+        <input id="whatnot-url" type="url" inputmode="url" autocomplete="off"
+               placeholder="Ou colle le lien d'un autre live" aria-label="Lien d'un live Whatnot">
+        <button type="submit">Connecter</button>
+      </form>
+      <div class="avance__actions">
+        <button type="button" id="whatnot-toggle">Mettre en pause</button>
+        <button type="button" id="whatnot-disconnect">Déconnecter le live</button>
+      </div>
+      <p class="avance__sync" id="whatnot-sync"></p>
+    </details>
+
+  </section>
+
+  <p class="grille__aide" id="grille-aide"></p>
+  <main class="grille" id="grille"></main>
+
+
+  <footer class="pied">
+    <span class="etat" id="etat" role="status" aria-live="polite"></span>
+    <button class="bt bt--bascule" id="visible">Grille affichée</button>
+    <button class="bt bt--masse" id="liberer">Tout remettre</button>
+    <button class="bt bt--masse" id="vendre">Tout vendu</button>
+  </footer>
+
+  <script src="config.js?v=20261012-anims-reglages"></script>
+  <script src="_moteur/boot.js?v=20261110-pyp"
+          data-then="_moteur/randoms.js?v=20261110-pyp,_moteur/regie.js?v=20261110-dbtk"></script>
+</body>
+</html>

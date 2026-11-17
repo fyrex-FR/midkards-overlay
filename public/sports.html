@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>MidKards — Éditeur de roue</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=Barlow:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="_moteur/sports-editeur.css?v=20260914-131952">
+</head>
+<body>
+  <div class="page">
+    <nav class="nav-outils">
+      <a href="index.html">Accueil</a>
+      <a href="reglages.html">Réglages</a>
+      <a href="regie.html">Roue spot</a>
+      <a href="dbtk.html">DBTK</a>
+      <a href="cartes.html">Cartes</a>
+      <a href="sports.html" class="est-ici">Éditeur de roue</a>
+    </nav>
+
+    <header class="tete">
+      <h1>Éditeur de roue</h1>
+      <p class="sub">
+        Crée tes propres sports (MLB, NHL, foot…) avec leurs équipes et leurs
+        logos. Ils rejoignent NBA et NFL dans le sélecteur de la
+        <a href="regie.html">roue spot</a>. NBA et NFL sont livrés avec l'overlay
+        et ne se modifient pas ici.
+      </p>
+    </header>
+
+    <p class="mode" id="mode" hidden></p>
+
+    <div class="disposition">
+      <aside class="liste">
+        <h2>Sports</h2>
+        <div class="liste__items" id="liste-sports"></div>
+        <button class="bt bt--principal" id="nouveau" type="button">＋ Nouveau sport</button>
+      </aside>
+
+      <section class="editeur" id="editeur" hidden>
+        <div class="champs">
+          <label class="champ">
+            <span>ID</span>
+            <input type="text" id="sport-id" placeholder="mlb" autocomplete="off" spellcheck="false">
+            <small>minuscules, chiffres et tirets — sert d'adresse interne, ne se voit nulle part</small>
+          </label>
+          <label class="champ">
+            <span>Nom</span>
+            <input type="text" id="sport-nom" placeholder="MLB" autocomplete="off">
+            <small>affiché dans le sélecteur de la roue spot</small>
+          </label>
+        </div>
+
+        <div class="zone-depot" id="zone-depot" tabindex="0">
+          <p><b>Glisse des logos ici</b></p>
+          <p class="zone-depot__aide">ou clique pour choisir des fichiers — une équipe par image, PNG ou WebP transparent de préférence</p>
+          <input type="file" id="fichiers" accept="image/png,image/webp" multiple hidden>
+        </div>
+        <p class="retour" id="retour-depot"></p>
+
+        <div class="tableau-scroll">
+          <table class="tableau" id="tableau-equipes">
+            <thead>
+              <tr>
+                <th>Logo</th>
+                <th>Sigle</th>
+                <th>Nom</th>
+                <th>Couleurs</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody id="corps-tableau"></tbody>
+          </table>
+          <p class="vide" id="tableau-vide">Aucune équipe. Dépose des logos ci-dessus pour commencer.</p>
+        </div>
+
+        <div class="barre-actions">
+          <button class="bt bt--principal" id="sauvegarder" type="button">Enregistrer ce sport</button>
+          <button class="bt" id="dupliquer" type="button">Dupliquer…</button>
+          <button class="bt" id="exporter" type="button">Exporter (JSON)</button>
+          <button class="bt" id="importer" type="button">Importer (JSON)</button>
+          <button class="bt" id="supprimer" type="button">Supprimer ce sport</button>
+          <span class="etat" id="etat"></span>
+        </div>
+      </section>
+
+      <section class="editeur editeur--lecture" id="lecture" hidden>
+        <p class="lecture__note">
+          <b id="lecture-nom"></b> est livré avec l'overlay — lecture seule.
+        </p>
+        <button class="bt bt--principal" id="dupliquer-lecture" type="button">Dupliquer pour en faire un sport à moi…</button>
+        <div class="tableau-scroll">
+          <table class="tableau">
+            <thead><tr><th>Logo</th><th>Sigle</th><th>Nom</th></tr></thead>
+            <tbody id="corps-lecture"></tbody>
+          </table>
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <input type="file" id="importer-fichier" accept="application/json" hidden>
+
+  <script src="config.js?v=20261012-anims-reglages"></script>
+  <script src="_moteur/boot.js?v=20261110-pyp"
+          data-then="_moteur/randoms.js?v=20261110-pyp,_moteur/sports-editeur.js?v=20261110-pyp"></script>
+</body>
+</html>

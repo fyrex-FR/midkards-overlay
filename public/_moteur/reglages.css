@@ -8,16 +8,16 @@
   color-scheme: dark;
   --ink: #e8eefc;
   --dim: #c0afb2;
-  --line: #3d2227;
-  --bg-0: #160a0c;
-  --bg-1: #261115;
-  --bg-2: #3c181f;
+  --line: #403c2e;
+  --bg-0: #171611;
+  --bg-1: #28261d;
+  --bg-2: #3f3b2d;
   --cy: #ffa4b0;
-  --vi: #d9596a;
-  --pk: #ff4872;
+  --vi: #c86473;
+  --pk: #ce6777;
   --ok: #3ddc97;
   --warn: #ffb454;
-  --bad: #ff5c7a;
+  --bad: #ce6777;
 }
 
 * { box-sizing: border-box; }
@@ -187,7 +187,7 @@ input[type="checkbox"] { accent-color: var(--cy); width: 17px; height: 17px; }
   height: 100vh;
   border-left: 1px solid var(--line);
   background:
-    radial-gradient(90% 60% at 50% 0%, #37171d, #110809 70%);
+    radial-gradient(90% 60% at 50% 0%, #3a372a, #12110d 70%);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -227,7 +227,7 @@ input[type="checkbox"] { accent-color: var(--cy); width: 17px; height: 17px; }
   gap: 10px;
   align-items: center;
   padding: 12px 26px;
-  background: linear-gradient(180deg, rgba(22,10,12, 0.5), var(--bg-0) 45%);
+  background: linear-gradient(180deg, rgba(23,22,17, 0.5), var(--bg-0) 45%);
   border-top: 1px solid var(--line);
   backdrop-filter: blur(6px);
 }
@@ -247,7 +247,7 @@ input[type="checkbox"] { accent-color: var(--cy); width: 17px; height: 17px; }
   /* Violet eclairci en fin de degrade : le texte sombre y garde 4,5:1. */
   background: linear-gradient(90deg, var(--cy), #ffdce2);
   border-color: transparent;
-  color: #21070c;
+  color: #232119;
   font-weight: 700;
   padding: 10px 16px;
 }
@@ -272,7 +272,7 @@ input[type="checkbox"] { accent-color: var(--cy); width: 17px; height: 17px; }
 }
 .mode code { font-size: 12px; }
 .mode--enligne { border-color: rgba(64, 200, 130, 0.45); background: rgba(64, 200, 130, 0.09); }
-.mode--fichier { border-color: rgba(202,115,131, 0.40); background: rgba(202,115,131, 0.08); }
+.mode--fichier { border-color: rgba(186,93,107, 0.40); background: rgba(186,93,107, 0.08); }
 .mode--averti  { border-color: rgba(240, 170, 60, 0.55);  background: rgba(240, 170, 60, 0.11); }
 
 /* --------------------------------------------------------------------------
@@ -441,7 +441,7 @@ summary:hover::after { border-color: var(--ink); }
   height: 22px;
   border-radius: 50%;
   border: 1px solid var(--line);
-  background: rgba(12,5,6, 0.8);
+  background: rgba(13,12,9, 0.8);
   color: var(--ink);
   font-size: 11px;
   line-height: 1;
@@ -568,7 +568,7 @@ summary:hover::after { border-color: var(--ink); }
   height: 20px;
   border-radius: 50%;
   border: 1px solid var(--line);
-  background: rgba(12,5,6, 0.8);
+  background: rgba(13,12,9, 0.8);
   color: var(--ink);
   font-size: 10px;
   line-height: 1;

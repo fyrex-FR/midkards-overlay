@@ -50,8 +50,8 @@
   border-radius: 0;
   border: 1px solid rgba(255,194,202, 0.30);
   box-shadow:
-    inset 0 0 calc(var(--vh) * 0.02) rgba(235,63,95, 0.18),
-    0 0 calc(var(--vh) * 0.03) rgba(224,70,91, 0.16);
+    inset 0 0 calc(var(--vh) * 0.02) rgba(206,103,119, 0.18),
+    0 0 calc(var(--vh) * 0.03) rgba(206,103,118, 0.16);
 }
 
 /* Chevrons aux quatre angles du plateau */
@@ -113,7 +113,7 @@
   padding: var(--ring-w);
   overflow: hidden;
   background: linear-gradient(180deg,
-    rgba(255,194,202, 0.42), rgba(217,89,106, 0.30) 55%, rgba(255,72,114, 0.34));
+    rgba(255,194,202, 0.42), rgba(200,100,115, 0.30) 55%, rgba(206,103,119, 0.34));
 
   -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
           mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
@@ -133,7 +133,7 @@
     transparent 0 58%,
     rgba(255,164,176, 0.55) 70%,
     #ffffff 78%,
-    rgba(255,72,114, 0.65) 86%,
+    rgba(206,103,119, 0.65) 86%,
     transparent 96% 100%);
   animation: ring-travel var(--ring-sec, 9s) linear infinite;
 }
@@ -154,7 +154,7 @@
      interne avec du flou concentre son assombrissement dans les angles, et
      sur une camera claire ca dessinait quatre blocs sombres. */
   box-shadow:
-    inset 0 0 0 1px rgba(11,2,4, 0.75),
+    inset 0 0 0 1px rgba(12,11,8, 0.75),
     inset 0 0 0 2px rgba(255,194,202, 0.18);
 }
 
@@ -163,7 +163,7 @@
   position: absolute;
   inset: calc(-1 * var(--vh) * 0.004);
   border-radius: var(--win-r);
-  box-shadow: 0 0 calc(var(--vh) * 0.032) rgba(235,63,95, 0.5),
+  box-shadow: 0 0 calc(var(--vh) * 0.032) rgba(206,103,119, 0.5),
               0 0 calc(var(--vh) * 0.012) rgba(0, 0, 0, 0.6);
 }
 
@@ -241,8 +241,8 @@
   position: absolute;
   display: none;
   background: repeating-linear-gradient(45deg,
-    rgba(255,72,114, 0.16) 0 8px, transparent 8px 16px);
-  border: 1px dashed rgba(255,72,114, 0.6);
+    rgba(206,103,119, 0.16) 0 8px, transparent 8px 16px);
+  border: 1px dashed rgba(206,103,119, 0.6);
   font-size: 14px;
   letter-spacing: 0.12em;
   text-transform: uppercase;
@@ -311,12 +311,12 @@ body.show-zones .zone-guide--right { display: flex; align-items: center; justify
   --rnd-gap-ligne: 0.6vw;
 
   /* Teintes des cases et de la barre, en un seul endroit. */
-  --tuile-reflet:  rgba(224,121,135, 0.4);  /* lueur en haut de la case */
-  --tuile-haut:    #6b2730;
-  --tuile-milieu:  #3a1116;
-  --tuile-bas:     #1a0609;
-  --tranche-haut:  #942332;                   /* epaisseur du bloc */
-  --tranche-bas:   #4d1018;
+  --tuile-reflet:  rgba(206,103,118, 0.4);  /* lueur en haut de la case */
+  --tuile-haut:    #6b363e;
+  --tuile-milieu:  #3d392c;
+  --tuile-bas:     #1b1a14;
+  --tranche-haut:  #944a55;                   /* epaisseur du bloc */
+  --tranche-bas:   #4d262c;
   /* Halo neon autour des blocs : eteint par defaut. */
   --neon-c:        transparent;
   --neon-flou:     0vw;
@@ -343,7 +343,7 @@ body.show-zones .zone-guide--right { display: flex; align-items: center; justify
   position: relative;
   padding: 0.4vw;          /* serre : chaque fraction de vw va aux logos */
   /* Voile facultatif, nul par defaut : c'est la camera qu'on doit voir. */
-  background: rgba(17,6,8, var(--rnd-voile, 0));
+  background: rgba(18,17,13, var(--rnd-voile, 0));
 }
 
 .randoms__grid {
@@ -467,11 +467,11 @@ body.show-zones .zone-guide--right { display: flex; align-items: center; justify
 .rnd.is-pris {
   top: 0.42vw;
   background:
-    linear-gradient(180deg, #180609 0%, #1d080c 100%) padding-box,
-    linear-gradient(135deg, #51292f, #4e1e27 50%, #51292f) border-box;
+    linear-gradient(180deg, #191812 0%, #1e1d16 100%) padding-box,
+    linear-gradient(135deg, #51292f, #4e272d 50%, #51292f) border-box;
   box-shadow:
     inset 0 0.3vw 0.5vw rgba(0, 0, 0, 0.8),
-    0 0.08vw 0 #380e13,
+    0 0.08vw 0 #3b382a,
     0 0.2vw 0.4vw rgba(0, 0, 0, 0.5);
 }
 .rnd.is-pris::after { opacity: 0.35; }
@@ -498,7 +498,7 @@ body.show-zones .zone-guide--right { display: flex; align-items: center; justify
   font: 800 1.05vw/1 "Barlow Condensed", sans-serif;
   letter-spacing: 0.14em;
   background: linear-gradient(90deg, var(--sk-violet), var(--sk-magenta));
-  box-shadow: 0 0 0.6vw rgba(224,22,49, 0.6), 0 0.1vw 0.2vw rgba(0, 0, 0, 0.6);
+  box-shadow: 0 0 0.6vw rgba(206,103,118, 0.6), 0 0.1vw 0.2vw rgba(0, 0, 0, 0.6);
   text-shadow: 0 0.05vw 0.15vw rgba(0, 0, 0, 0.6);
 }
 /* Sur le spot qu'on vient d'attribuer, le bandeau s'abat a la fin du show,
@@ -526,10 +526,10 @@ body.show-zones .zone-guide--right { display: flex; align-items: center; justify
    est la signature de la boutique. Bleu electrique et magenta du bandeau du
    site, violet du bouton "Shop now", bleu ciel des titres. */
 :root {
-  --sk-bleu:    #eb0e37;
-  --sk-violet:  #e01631;
-  --sk-magenta: #e01631;
-  --sk-rose:    #ff164d;
+  --sk-bleu:    #ce6777;
+  --sk-violet:  #ce6776;
+  --sk-magenta: #ce6776;
+  --sk-rose:    #ce6777;
   --sk-ciel:    #fdbec6;
 }
 
@@ -564,7 +564,7 @@ body.show-zones .zone-guide--right { display: flex; align-items: center; justify
   place-items: center;
   pointer-events: none;
   background: radial-gradient(circle at center,
-    rgba(16,2,3, 0.78) 0%, rgba(37,5,10, 0.42) 35%, transparent 68%);
+    rgba(17,16,12, 0.78) 0%, rgba(39,37,28, 0.42) 35%, transparent 68%);
   animation: spot-scene 4.2s linear both;
 }
 
@@ -613,7 +613,7 @@ body.show-zones .zone-guide--right { display: flex; align-items: center; justify
   filter:
     drop-shadow(0 0 calc(var(--vh) * 0.002) rgba(255, 255, 255, 0.9))
     drop-shadow(0 0 calc(var(--vh) * 0.016) var(--sk-bleu))
-    drop-shadow(0 0 calc(var(--vh) * 0.03) rgba(224,22,49, 0.55))
+    drop-shadow(0 0 calc(var(--vh) * 0.03) rgba(206,103,118, 0.55))
     drop-shadow(0 calc(var(--vh) * 0.008) calc(var(--vh) * 0.012) rgba(0, 0, 0, 0.75));
 }
 .spot-focus__sigle {
@@ -641,11 +641,11 @@ body.show-zones .zone-guide--right { display: flex; align-items: center; justify
   white-space: nowrap;
   border: calc(var(--vh) * 0.005) solid var(--sk-rose);
   border-radius: calc(var(--vh) * 0.008);
-  outline: calc(var(--vh) * 0.0018) solid rgba(255,22,77, 0.7);
+  outline: calc(var(--vh) * 0.0018) solid rgba(206,103,119, 0.7);
   outline-offset: calc(var(--vh) * 0.004);
-  background: rgba(21,2,5, 0.85);
-  text-shadow: 0 0 calc(var(--vh) * 0.012) rgba(255,22,77, 0.8);
-  box-shadow: 0 0 calc(var(--vh) * 0.022) rgba(224,22,49, 0.6);
+  background: rgba(22,21,16, 0.85);
+  text-shadow: 0 0 calc(var(--vh) * 0.012) rgba(206,103,119, 0.8);
+  box-shadow: 0 0 calc(var(--vh) * 0.022) rgba(206,103,118, 0.6);
   animation: spot-tampon 4.2s linear both;
 }
 
@@ -680,7 +680,7 @@ body.show-zones .zone-guide--right { display: flex; align-items: center; justify
   aspect-ratio: 1;
   border-radius: 50%;
   background: radial-gradient(circle,
-    rgba(236, 228, 255, 0.8) 0%, rgba(211,124,136, 0.42) 40%, rgba(176,49,66, 0) 70%);
+    rgba(236, 228, 255, 0.8) 0%, rgba(194,97,112, 0.42) 40%, rgba(162,81,93, 0) 70%);
   animation: spot-nuage 0.95s cubic-bezier(0.1, 0.7, 0.3, 1) var(--retard, 0.59s) both;
 }
 
@@ -709,7 +709,7 @@ body.show-zones .zone-guide--right { display: flex; align-items: center; justify
   letter-spacing: 0.06em;
   border-radius: calc(var(--vh) * 0.03);
   background: linear-gradient(90deg, var(--sk-violet), var(--sk-magenta));
-  box-shadow: 0 0 calc(var(--vh) * 0.022) rgba(224,22,49, 0.55),
+  box-shadow: 0 0 calc(var(--vh) * 0.022) rgba(206,103,118, 0.55),
               inset 0 0 0 calc(var(--vh) * 0.0015) rgba(255, 255, 255, 0.35);
   animation: spot-punch 4.2s linear both;
 }
@@ -902,13 +902,13 @@ body.show-zones .zone-guide--right { display: flex; align-items: center; justify
   50%      { transform: rotate(1.4deg) translateY(0.25vw); }
 }
 @keyframes fanion-neon {
-  0%, 100% { filter: brightness(1) drop-shadow(0 0 0.5vw rgba(224,22,49, 0.45)); }
-  50%      { filter: brightness(1.15) drop-shadow(0 0 1.1vw rgba(224,22,49, 0.8)); }
+  0%, 100% { filter: brightness(1) drop-shadow(0 0 0.5vw rgba(206,103,118, 0.45)); }
+  50%      { filter: brightness(1.15) drop-shadow(0 0 1.1vw rgba(206,103,118, 0.8)); }
 }
 @keyframes fanion-flash {
-  0%, 50% { filter: brightness(1) drop-shadow(0 0 0.5vw rgba(224,22,49, 0.45)); }
-  62%     { filter: brightness(1.9) drop-shadow(0 0 2vw rgba(255,22,77, 1)); }
-  100%    { filter: brightness(1) drop-shadow(0 0 0.5vw rgba(224,22,49, 0.45)); }
+  0%, 50% { filter: brightness(1) drop-shadow(0 0 0.5vw rgba(206,103,118, 0.45)); }
+  62%     { filter: brightness(1.9) drop-shadow(0 0 2vw rgba(206,103,119, 1)); }
+  100%    { filter: brightness(1) drop-shadow(0 0 0.5vw rgba(206,103,118, 0.45)); }
 }
 @keyframes fanion-reflet {
   0%, 55%   { background-position: 120% 0; }

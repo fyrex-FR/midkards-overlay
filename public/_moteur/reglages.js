@@ -55,20 +55,12 @@
     { title: "L'essentiel", essential: true,
       note: "Ce qui change d'un direct à l'autre. Le reste est rangé en dessous.",
       fields: [
-      { path: "themes", type: "themes", label: "Thèmes",
-        help: "Un thème apparie un décor et un globe : un clic bascule tout l'habillage. Il ne porte que ces deux images, pour qu'appliquer un thème ne défasse jamais un réglage ajusté ailleurs." },
       { path: "ticker.messages", type: "list", label: "Messages",
         help: "Ils défilent en boucle si le texte dépasse la place disponible, sinon ils restent fixes." },
       { path: "social.items", type: "social", label: "Entrées du carrousel",
         help: "Elles s'affichent une par une. Un libellé trop long se réduit tout seul." },
-      { path: "bar.style", type: "select", label: "Style du bandeau",
-        options: [["medaillon", "Avec le médaillon central"],
-                  ["plein", "Barre continue, sans médaillon"]],
-        help: "Sans médaillon, le losange disparaît et les textes de gauche et de droite récupèrent sa place. Le globe et le logo qui tourne autour restent." },
       { path: "arena.image", type: "media", slot: "fond", label: "Décor de fond",
         help: "Réduit à 1920 px et stocké en ligne : rien à poser dans le dossier, et ça suit dans OBS tout seul." },
-      { path: "planet.image", type: "media", slot: "globe", label: "Globe central",
-        help: "Un ballon de basket pour un break NBA, un ballon de foot, une balle de baseball… Le logo continue de tourner autour. À l'envoi, le fond uni est détouré, l'image découpée en rond, et un ombrage est cuit dedans pour que ça lise comme une sphère et pas comme un autocollant." },
     ]},
 
     { title: "Punchlines du spot attribué", fields: [
@@ -79,13 +71,9 @@
         help: "Une phrase tirée au hasard à chaque spot, la même dans la régie et dans OBS. S'applique en direct, sans recharger l'overlay. Courtes de préférence : au-delà d'une quarantaine de caractères, elle passe sur deux lignes." },
     ]},
 
-    { title: "Animations du spot attribué", fields: [
-      { path: "animations.catcheur", type: "check", label: "Le catcheur",
-        help: "Le logo tombe du haut, s'écrase et rebondit, le tampon VENDU s'abat." },
-      { path: "animations.shooteur", type: "check", label: "Le shooteur",
-        help: "Un bonhomme bâton arrive en dribblant et shoote : SWISH, le logo jaillit du panier." },
-      { path: "animations.pince", type: "check", label: "La pince",
-        help: "La pince de fête foraine attrape une carte mystère, manque de la lâcher, et la carte se retourne sur le logo. À chaque vente, une animation cochée est tirée au hasard, jamais deux fois la même d'affilée. Tout décoché, le catcheur reste." },
+    { title: "Animation du spot attribué", fields: [
+      { path: "animations.carte", type: "check", label: "La carte",
+        help: "Une carte blanche monte du bas avec le logo de l'équipe, le pseudo de l'acheteur et la punchline, puis le tampon VENDU s'abat. Décochée, la grille se met à jour sans animation." },
     ]},
 
     { title: "Textes et réseaux", fields: [
@@ -93,50 +81,7 @@
         help: "Le symbole entre deux messages." },
       { path: "ticker.dwellSec", type: "range", label: "Texte de gauche : durée d'affichage", min: 2, max: 15, step: 0.5, unit: " s" },
       { path: "ticker.fadeMs", type: "range", label: "Texte de gauche : durée du fondu", min: 100, max: 1500, step: 20, unit: " ms" },
-      { path: "typo.ticker.scale", type: "range", label: "Texte de gauche : taille de police", min: 0.5, max: 2, step: 0.05 },
       { path: "social.dwellSec", type: "range", label: "Réseaux (droite) : durée d'affichage", min: 2, max: 15, step: 0.5, unit: " s" },
-      { path: "social.flipMs", type: "range", label: "Réseaux (droite) : durée de la bascule", min: 200, max: 1200, step: 20, unit: " ms" },
-      { path: "typo.social.scale", type: "range", label: "Réseaux (droite) : taille de police", min: 0.5, max: 2, step: 0.05 },
-      { path: "bar.heightPct", type: "range", label: "Taille de base de la barre", min: 40, max: 90, step: 1, unit: " %",
-        help: "En style barre continue, l'image a son propre calage et ce curseur reste sans effet." },
-    ]},
-
-    { title: "Polices", fields: [
-      { path: "typo.ticker.family", type: "font", label: "Police du texte défilant",
-        googlePath: "typo.ticker.google",
-        help: "Choisis dans la liste, ou tape le nom de n'importe quelle police — une autre police Google Fonts, ou une police installée sur ta machine." },
-      { path: "typo.ticker.google", type: "check", label: "Aller la chercher chez Google Fonts",
-        help: "À décocher seulement si la police est déjà installée sur ta machine." },
-      { path: "typo.ticker.fontFile", type: "text", label: "…ou un fichier de police",
-        help: "Pour une police que tu as achetée : pose le fichier dans assets/fonts/ et mets son chemin ici, par exemple assets/fonts/MaPolice.woff2. Il est prioritaire sur le nom au-dessus." },
-      { path: "typo.ticker.weight", type: "range", label: "Graisse", min: 300, max: 900, step: 100,
-        help: "Toutes les polices n'ont pas toutes les graisses. Si rien ne change, elle n'a que la sienne." },
-      { path: "typo.ticker.tracking", type: "range", label: "Espacement des lettres", min: -0.02, max: 0.25, step: 0.005 },
-      { path: "typo.ticker.uppercase", type: "check", label: "Tout en capitales" },
-
-      { path: "typo.social.family", type: "font", label: "Police des réseaux",
-        googlePath: "typo.social.google",
-        help: "Laisse vide pour reprendre la même que le texte défilant." },
-      { path: "typo.social.google", type: "check", label: "Aller la chercher chez Google Fonts" },
-      { path: "typo.social.weight", type: "range", label: "Graisse des réseaux", min: 300, max: 900, step: 100 },
-      { path: "typo.social.tracking", type: "range", label: "Espacement des réseaux", min: -0.02, max: 0.25, step: 0.005 },
-      { path: "typo.social.uppercase", type: "check", label: "Réseaux en capitales" },
-    ]},
-
-    { title: "Logo et planète", fields: [
-      { path: "logo.mode", type: "select", label: "Mode",
-        options: [["orbit", "Planète + logo enroulé autour"], ["static", "Logo posé au centre"]] },
-      { path: "planet.orbitSec", type: "range", label: "Tour du logo", min: 8, max: 60, step: 1, unit: " s",
-        help: "Plus c'est court, plus le logo revient vite — mais plus ça s'agite." },
-      { path: "planet.arcDeg", type: "range", label: "Taille du logo", min: 60, max: 150, step: 5, unit: "°",
-        help: "Portion du tour occupée par le logo. Plus grand = logo plus gros ET plus haut." },
-      { path: "planet.tiltDeg", type: "range", label: "Inclinaison", min: 0, max: 40, step: 1, unit: "°",
-        help: "Reste petit : au-delà de 30 le logo se couche à plat et devient illisible." },
-      { path: "planet.ringRadius", type: "range", label: "Écartement du logo", min: 0.2, max: 0.45, step: 0.01 },
-      { path: "planet.size", type: "range", label: "Taille du globe", min: 0.25, max: 0.7, step: 0.01 },
-      { path: "planet.slices", type: "range", label: "Finesse de la courbure", min: 12, max: 48, step: 2,
-        help: "À monter seulement si on voit des angles dans le logo enroulé." },
-      { path: "logo.pulse", type: "check", label: "Respiration de la lueur" },
     ]},
 
     { title: "Caméras et bandeau — placement", fields: [
@@ -180,17 +125,13 @@
       { type: "obs" },
     ]},
 
-    { title: "Cadre et repères", fields: [
-      { path: "layout.stageTopPct", type: "range", label: "Cadre décoratif — haut", min: 0, max: 20, step: 0.5, unit: " %" },
-      { path: "layout.stageBottomPct", type: "range", label: "Cadre décoratif — bas", min: 0, max: 25, step: 0.5, unit: " %" },
+    { title: "Repères", fields: [
       { path: "layout.safeTopPct", type: "range", label: "Repère interface — haut", min: 0, max: 20, step: 0.5, unit: " %",
         help: "Simple repère, pas une limite : les caméras peuvent passer dessous." },
       { path: "layout.safeBottomPct", type: "range", label: "Repère interface — bas", min: 5, max: 35, step: 0.5, unit: " %",
         help: "Là où le chat de la plateforme se superpose. Les caméras ont le droit d'aller dessous — le chat est masquable par le viewer." },
       { path: "layout.safeSidePct", type: "range", label: "Repère rognage — côtés", min: 0, max: 15, step: 0.5, unit: " %",
         help: "Sur téléphone, la plupart des plateformes remplissent tout l'écran sans bande noire : comme un téléphone est plus haut que notre image, elles rognent les côtés, pas le haut ni le bas. Ce que tu veux vraiment voir (visage, cartes) doit rester en dehors de cette bande — contrairement au haut/bas, ici c'est une vraie perte, pas juste un recouvrement." },
-      { path: "layout.showCorners", type: "check", label: "Bras d'angle sur les caméras",
-        help: "Décoche pour un cadrage au liseré seul, plus sobre." },
       { path: "layout.showSafeZones", type: "check", label: "Afficher les repères d'interface" },
     ]},
 
@@ -201,24 +142,10 @@
         help: "À garder bas : c'est lui qui écrase les gradins." },
       { path: "arena.imageBreathe", type: "check", label: "Respiration lumineuse du décor",
         help: "L'EFFET LE PLUS COÛTEUX : il fait changer 100 % des pixels à chaque image. Déconseillé au débit demandé par Whatnot." },
-      { path: "layout.ringSec", type: "range", label: "Lumière autour des fenêtres", min: 3, max: 30, step: 1, unit: " s" },
-      { path: "layout.scanEverySec", type: "range", label: "Balayage sur la fenêtre break", min: 0, max: 90, step: 1, unit: " s",
-        help: "0 = jamais." },
-      { path: "bar.sheenEverySec", type: "range", label: "Reflet du bandeau", min: 0, max: 60, step: 1, unit: " s",
-        help: "Sans effet quand le bandeau est une image." },
     ]},
 
     { title: "Images et calage (avancé)", fields: [
       { path: "logo.src", type: "text", label: "Logo" },
-      { path: "bar.image", type: "text", label: "Image du bandeau" },
-      { path: "bar.imageBarTop", type: "range", label: "Haut de la barre dans l'image", min: 0, max: 0.6, step: 0.005 },
-      { path: "bar.imageBarBottom", type: "range", label: "Bas de la barre dans l'image", min: 0.4, max: 1, step: 0.005 },
-      { path: "bar.imageFieldCenter", type: "range", label: "Centre du champ de texte", min: 0.3, max: 0.7, step: 0.005,
-        help: "Pas forcément 0.5 : les liserés du haut et du bas ne sont pas symétriques." },
-      { path: "bar.imagePadFrac", type: "range", label: "Marge latérale", min: 0, max: 0.2, step: 0.005 },
-      { path: "bar.centerFrac", type: "range", label: "Largeur réservée au médaillon", min: 0.15, max: 0.45, step: 0.01 },
-      { path: "bar.centerFracPlain", type: "range", label: "Largeur du globe (barre continue)", min: 0, max: 0.40, step: 0.01,
-        help: "Place réservée au globe en style barre continue. À 0, le globe disparaît et les deux textes prennent toute la barre." },
     ]},
   ];
 

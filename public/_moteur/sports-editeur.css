@@ -6,16 +6,16 @@
 :root {
   --ink: #e8eefc;
   --dim: #c0afb2;
-  --line: #3d2227;
-  --bg-0: #160a0c;
-  --bg-1: #261115;
-  --bg-2: #3c181f;
+  --line: #403c2e;
+  --bg-0: #171611;
+  --bg-1: #28261d;
+  --bg-2: #3f3b2d;
   --cy: #ffa4b0;
-  --vi: #d9596a;
-  --pk: #ff4872;
+  --vi: #c86473;
+  --pk: #ce6777;
   --ok: #3ddc97;
   --warn: #ffb454;
-  --bad: #ff5c7a;
+  --bad: #ce6777;
 }
 
 * { box-sizing: border-box; }
@@ -23,7 +23,7 @@
 body {
   margin: 0;
   padding: 22px 24px 60px;
-  background: radial-gradient(1400px 800px at 50% -10%, #3a161d 0%, var(--bg-0) 60%);
+  background: radial-gradient(1400px 800px at 50% -10%, #3d392c 0%, var(--bg-0) 60%);
   color: var(--ink);
   font-family: "Barlow", system-ui, sans-serif;
 }
@@ -54,7 +54,7 @@ body {
 }
 .mode code { font-size: 12px; }
 .mode--enligne { border-color: rgba(61, 220, 151, 0.45); background: rgba(61, 220, 151, 0.09); }
-.mode--fichier { border-color: rgba(202,115,131, 0.40); background: rgba(202,115,131, 0.08); }
+.mode--fichier { border-color: rgba(186,93,107, 0.40); background: rgba(186,93,107, 0.08); }
 .mode--averti  { border-color: rgba(255, 180, 84, 0.55);  background: rgba(255, 180, 84, 0.11); }
 .deblocage { display: flex; gap: 8px; margin-top: 10px; }
 .deblocage input {

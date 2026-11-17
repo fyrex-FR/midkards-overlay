@@ -4,26 +4,21 @@
    ========================================================================== */
 
 :root {
-  /* Palette relevee sur le logo */
-  --c-cyan:   #ffa4b0;
-  --c-blue:   #eb3f5f;
-  --c-violet: #d9596a;
-  --c-pink:   #ff4872;
+  /* Palette relevee sur le logo MidKards : bordeaux, encre, blanc. */
+  --c-cyan:   #d6a3ab;   /* bordeaux tres clair (anciens noms gardes pour les pages d'admin) */
+  --c-blue:   #984552;
+  --c-violet: #6c2a36;
+  --c-pink:   #b9707c;
 
-  --c-text:   #f2f6ff;
-  --c-dim:    #c4b3b6;
+  --c-text:   #ffffff;
+  --c-dim:    #b7ada3;
 
-  /* Nuit d'arene */
-  --n-0: #0d0406;
-  --n-1: #210b0e;
-  --n-2: #280d10;
-  --n-3: #130708;
+  /* Fonds sombres : l'encre chaude du logo */
+  --n-0: #14120a;
+  --n-1: #1c1a0f;
+  --n-2: #25221a;
+  --n-3: #0d0c07;
 
-  /* --u = hauteur de reference pour tout le dimensionnement.
-     En page autonome c'est la hauteur de la source ; a l'interieur du
-     cadre, le JS la remplace par la hauteur reelle de la bande en px.
-     C'est ce qui permet au meme CSS de bandeau de servir dans les deux cas
-     sans que les lueurs soient calculees sur 1920 px de haut. */
   --u: 100vh;
 
   /* Intensite globale des effets d'arene ; pilotee par config.js.
@@ -42,8 +37,7 @@ html, body {
 }
 
 body {
-  font-family: "Barlow Condensed", "Oswald", "Roboto Condensed",
-               "Helvetica Neue", Arial, sans-serif;
+  font-family: "Archivo Narrow", "Barlow Condensed", "Arial Narrow", Arial, sans-serif;
   color: var(--c-text);
   -webkit-font-smoothing: antialiased;
 }

@@ -9,14 +9,14 @@
   color-scheme: dark;
   --ink: #e8eefc;
   --dim: #c0afb2;
-  --line: #3d2227;
-  --bg-0: #160a0c;
-  --bg-1: #261115;
-  --bg-2: #3c181f;
+  --line: #403c2e;
+  --bg-0: #171611;
+  --bg-1: #28261d;
+  --bg-2: #3f3b2d;
   --cy: #ffa4b0;
   --ok: #3ddc97;
   --warn: #ffb454;
-  --bad: #ff5c7a;
+  --bad: #ce6777;
 }
 
 * { box-sizing: border-box; }
@@ -24,7 +24,7 @@
 body {
   margin: 0;
   padding: 14px 14px 120px;
-  background: radial-gradient(1200px 700px at 50% -10%, #3a161d 0%, var(--bg-0) 60%);
+  background: radial-gradient(1200px 700px at 50% -10%, #3d392c 0%, var(--bg-0) 60%);
   color: var(--ink);
   font-family: "Barlow", system-ui, sans-serif;
   -webkit-text-size-adjust: 100%;
@@ -94,7 +94,7 @@ body {
 }
 .mode code { font-size: 12px; }
 .mode--enligne { border-color: rgba(61, 220, 151, 0.45); background: rgba(61, 220, 151, 0.09); }
-.mode--fichier { border-color: rgba(202,115,131, 0.40); background: rgba(202,115,131, 0.08); }
+.mode--fichier { border-color: rgba(186,93,107, 0.40); background: rgba(186,93,107, 0.08); }
 .mode--averti  { border-color: rgba(255, 180, 84, 0.55);  background: rgba(255, 180, 84, 0.11); }
 .deblocage { display: flex; gap: 8px; margin-top: 10px; }
 .deblocage input {
@@ -195,7 +195,7 @@ body {
   margin-top: 14px;
   border: 0;
   border-radius: 11px;
-  background: #c8233f;
+  background: #b85c6a;
   color: #ffffff;
   font: 700 18px/1 "Barlow Condensed", sans-serif;
   letter-spacing: 0.08em;
@@ -203,9 +203,9 @@ body {
   cursor: pointer;
   box-shadow: 0 6px 16px rgba(0, 0, 0, 0.45);
 }
-.encours__stop:hover { background: #ad1a33; }
+.encours__stop:hover { background: #9f505c; }
 .encours__stop:active { transform: translateY(1px); }
-.encours__stop.is-arme { background: #ffffff; color: #ad1a33; box-shadow: inset 0 0 0 3px #c8233f; }
+.encours__stop.is-arme { background: #ffffff; color: #9f505c; box-shadow: inset 0 0 0 3px #b85c6a; }
 .encours__stop:disabled { opacity: 0.6; cursor: progress; }
 .direct__titre.is-secondaire { font-size: 14px; color: var(--dim); }
 
@@ -312,7 +312,7 @@ body {
 .pas__val::-webkit-inner-spin-button,
 .pas__val::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
 .pas__unite { font-size: 13px; color: var(--dim); }
-#deux-on[aria-checked="true"] { box-shadow: inset 0 0 0 1px #e01631; color: #ffffff; background: rgba(224,22,49, 0.18); }
+#deux-on[aria-checked="true"] { box-shadow: inset 0 0 0 1px #ce6776; color: #ffffff; background: rgba(206,103,118, 0.18); }
 
 .bascule {
   flex: 1 1 auto;
@@ -446,7 +446,7 @@ body.whatnot-active .grille__aide { color: var(--ok); }
 
 /* Vendue : les trois memes signaux que dans l'habillage, pour qu'on lise la
    regie et le direct de la meme facon. */
-.eq.is-pris { background: #180c0e; border-color: #43282d; }
+.eq.is-pris { background: #191812; border-color: #464233; }
 .eq.is-pris .eq__logo, .eq.is-pris .eq__vide { filter: grayscale(1) brightness(0.45); }
 .eq.is-pris .eq__sigle { color: #706365; text-decoration: line-through; }
 .eq.is-pris::after {
@@ -469,7 +469,7 @@ body.whatnot-active .grille__aide { color: var(--ok); }
   align-items: center;
   gap: 8px;
   padding: 8px 14px 11px;
-  background: linear-gradient(180deg, rgba(22,10,12, 0.55), var(--bg-0) 45%);
+  background: linear-gradient(180deg, rgba(23,22,17, 0.55), var(--bg-0) 45%);
   border-top: 1px solid var(--line);
   backdrop-filter: blur(6px);
 }
@@ -539,7 +539,7 @@ body.est-masquee .jauge { opacity: 0.55; }
   padding: 12px;
   border: 1px solid var(--line);
   border-radius: 12px;
-  background: rgba(38,17,21, 0.88);
+  background: rgba(40,38,29, 0.88);
 }
 .whatnot input, .whatnot select {
   flex: 1 1 auto; min-width: 0; padding: 9px 10px;
@@ -575,7 +575,7 @@ body.est-masquee .jauge { opacity: 0.55; }
 .cartes__segments button.is-on { background: var(--bg-2); color: var(--ink); box-shadow: inset 0 0 0 1px var(--cy); }
 .cartes__duo { display: grid; grid-template-columns: 2fr 1fr; gap: 8px; }
 .cartes button { min-height: 44px; }
-.cartes__primaire { border: 0 !important; background: linear-gradient(135deg, #ffa4b0, #e06b7b) !important; color: #1b1112 !important; font-weight: 700; }
+.cartes__primaire { border: 0 !important; background: linear-gradient(135deg, #ffa4b0, #ce6776) !important; color: #1b1112 !important; font-weight: 700; }
 .cartes select[hidden], .cartes input[hidden] { display: none; }
 
 .cartes__suggestions { display: flex; flex-direction: column; gap: 4px; }
@@ -634,7 +634,7 @@ body.mode-pyp .reglage:has(#deux-on) { display: none; }
   border-radius: 12px;
   background: var(--bg-0);
 }
-.pyp-regie__joueur.is-vendu { border-color: rgba(224,22,49, 0.6); }
+.pyp-regie__joueur.is-vendu { border-color: rgba(206,103,118, 0.6); }
 .pyp-regie__photo {
   width: 92px;
   height: 67px;
@@ -653,7 +653,7 @@ body.mode-pyp .reglage:has(#deux-on) { display: none; }
 .pyp-regie__id span { font-size: 13px; color: var(--dim); }
 .pyp-regie__id .pyp-regie__cartes { color: var(--ink); }
 .pyp-regie__id .pyp-regie__statut { font-weight: 700; color: var(--cy); }
-.is-vendu .pyp-regie__id .pyp-regie__statut { color: #e07886; }
+.is-vendu .pyp-regie__id .pyp-regie__statut { color: #ce6776; }
 .pyp-regie__marquer {
   grid-column: 1 / -1;
   justify-self: start;
@@ -682,7 +682,7 @@ body.mode-pyp .reglage:has(#deux-on) { display: none; }
 .pyp-regie__suiv {
   border: 0;
   background: linear-gradient(90deg, var(--cy), #ffdce2);
-  color: #160a0c;
+  color: #171611;
   box-shadow: 0 6px 16px rgba(0, 0, 0, 0.45);
 }
 .pyp-regie__nav button:active { transform: translateY(1px); }
@@ -757,7 +757,7 @@ body.mode-pyp .reglage:has(#deux-on) { display: none; }
   padding: 14px;
   border: 0;
   border-radius: 12px;
-  background: linear-gradient(90deg, #e01631, #e01631);
+  background: linear-gradient(90deg, #ce6776, #ce6776);
   color: #fff;
   font: 700 17px/1 "Barlow Condensed", sans-serif;
   letter-spacing: 0.06em;
@@ -768,8 +768,8 @@ body.mode-pyp .reglage:has(#deux-on) { display: none; }
 /* Tant que l'overlay n'est pas sur le DBTK, la fiche n'est qu'un apercu. */
 body.hors-dbtk .pyp-regie { opacity: 0.5; }
 /* Le break qui a autant de spots que le CSV importe. */
-.break.is-assorti { border-color: rgba(224,22,49, 0.6); }
-.break.is-assorti .break__info { color: #e07886; font-weight: 600; }
+.break.is-assorti { border-color: rgba(206,103,118, 0.6); }
+.break.is-assorti .break__info { color: #ce6776; font-weight: 600; }
 .page-dbtk > .avance { margin: 0 0 16px; }
 .page-dbtk .direct .reglage__note { margin: 0 0 10px; }
 .dbtk-relire {

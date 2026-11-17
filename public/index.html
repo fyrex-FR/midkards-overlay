@@ -6,8 +6,8 @@
 <title>MidKards — Habillage live</title>
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=Barlow:wght@400;600;700&display=swap" rel="stylesheet">
 <style>
-  :root{--ink:#e8eefc;--dim:#c4b3b6;--line:#402328;--bg:#160a0c;--card:#261115;
-        --cy:#ffa4b0;--vi:#d9596a;--pk:#ff4872;--ok:#3ddc97;--warn:#ffb454}
+  :root{--ink:#e8eefc;--dim:#c4b3b6;--line:#433f30;--bg:#171611;--card:#28261d;
+        --cy:#ffa4b0;--vi:#c86473;--pk:#ce6777;--ok:#3ddc97;--warn:#ffb454}
   *{box-sizing:border-box}
   body{margin:0;background:var(--bg);color:var(--ink);
        font:16px/1.6 Barlow,-apple-system,"Segoe UI",system-ui,sans-serif;
@@ -23,24 +23,24 @@
   .step h2{font-family:"Barlow Condensed",sans-serif;font-size:21px;letter-spacing:.06em;
            text-transform:uppercase;margin:0 0 10px;display:flex;align-items:center;gap:11px}
   .num{width:28px;height:28px;flex:0 0 auto;border-radius:50%;display:grid;place-items:center;
-       background:linear-gradient(135deg,var(--cy),var(--vi));color:#21070c;font-size:15px}
+       background:linear-gradient(135deg,var(--cy),var(--vi));color:#232119;font-size:15px}
   a.big{display:inline-block;margin-top:6px;padding:12px 20px;border-radius:9px;
-        background:linear-gradient(90deg,var(--cy),var(--vi));color:#21070c;
+        background:linear-gradient(90deg,var(--cy),var(--vi));color:#232119;
         font-weight:700;text-decoration:none}
   a.ghost{color:var(--cy)}
   ul{margin:8px 0 0;padding-left:22px} li{margin:5px 0}
-  code{background:#110709;border:1px solid var(--line);border-radius:5px;
+  code{background:#12110d;border:1px solid var(--line);border-radius:5px;
        padding:2px 6px;font-size:14px}
   .path{display:flex;gap:8px;align-items:center;margin:8px 0}
   .path code{flex:1 1 auto;overflow:auto;white-space:nowrap;padding:8px 10px}
-  button{border:1px solid var(--line);background:#3b1a20;color:var(--ink);
+  button{border:1px solid var(--line);background:#3e3a2d;color:var(--ink);
          border-radius:7px;padding:8px 12px;font:inherit;cursor:pointer;white-space:nowrap}
   button:hover{border-color:var(--cy)}
   .warn{border-left:3px solid var(--warn);background:#1a1408;padding:12px 16px;
         border-radius:8px;margin-top:14px}
   .warn b{color:var(--warn)}
   .stack{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:13px;
-         background:#110709;border:1px solid var(--line);border-radius:9px;
+         background:#12110d;border:1px solid var(--line);border-radius:9px;
          padding:14px 16px;margin-top:12px;line-height:1.8}
   .stack .cam{color:var(--ok)} .stack .src{color:var(--cy)}
   nav.nav-outils{display:flex;gap:6px;margin:0 0 26px;flex-wrap:wrap}

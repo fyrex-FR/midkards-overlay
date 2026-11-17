@@ -21,7 +21,7 @@
   box-sizing: border-box;
   border: 1px solid rgba(255,181,191, 0.55);
   border-radius: 3cqh;
-  background: linear-gradient(115deg, rgba(25,6,9, 0.78), rgba(44,16,21, 0.7));
+  background: linear-gradient(115deg, rgba(26,25,19, 0.78), rgba(46,44,33, 0.7));
   backdrop-filter: blur(6px);
   box-shadow: 0 0 4cqh rgba(255,164,176, 0.22), inset 0 1px rgba(255, 255, 255, 0.08);
   color: #f7fbff;
@@ -60,7 +60,7 @@
 .hits__bar { display: flex; height: 3.2cqh; gap: 0.4cqw; border-radius: 2cqh; overflow: hidden; }
 .seg { display: block; flex-basis: 0; min-width: 1cqw; }
 .seg[hidden] { display: none; }
-.is-auto { --c: #ffb5bf; } .is-mem { --c: #e08591; } .is-ssp { --c: #ff829f; }
+.is-auto { --c: #ffb5bf; } .is-mem { --c: #ce6776; } .is-ssp { --c: #ce6777; }
 .seg { background: var(--c); }
 .hits__legend { display: flex; gap: 3cqw; font-size: 5cqh; color: #c8d4ee; }
 .leg[hidden] { display: none; }
@@ -70,7 +70,7 @@
 .players { display: grid; grid-template-columns: repeat(5, 1fr); gap: 1.6cqw; height: 100%; }
 .player { display: grid; grid-template-rows: 1fr auto auto; gap: 0.6cqh; min-height: 0; padding: 1cqh 0.6cqw 1.2cqh; border-radius: 1.8cqh; background: rgba(255, 255, 255, 0.07); text-align: center; overflow: hidden; }
 .player img { width: 100%; height: 100%; min-height: 0; object-fit: cover; object-position: top; border-radius: 1.2cqh; }
-.avatar { display: grid; place-items: center; border-radius: 1.2cqh; background: linear-gradient(135deg, rgba(255,181,191,0.25), rgba(224,94,111,0.3)); font-size: 16cqh; line-height: 1; min-height: 0; overflow: hidden; }
+.avatar { display: grid; place-items: center; border-radius: 1.2cqh; background: linear-gradient(135deg, rgba(255,181,191,0.25), rgba(206,103,118,0.3)); font-size: 16cqh; line-height: 1; min-height: 0; overflow: hidden; }
 .card__side .avatar { position: absolute; inset: 0; font-size: 30cqh; }
 .player__name { font-size: 4.6cqh; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .player__hits { font-size: 4.6cqh; color: #ffb5bf; }

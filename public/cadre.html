@@ -5,14 +5,14 @@
   <title>MidKards — Cadre</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Barlow:wght@500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="_moteur/tokens.css?v=20260914-131952">
-  <link rel="stylesheet" href="_moteur/banner.css?v=20260915-094100">
-  <link rel="stylesheet" href="_moteur/break-info.css?v=20261012-fanion">
-  <link rel="stylesheet" href="_moteur/frame.css?v=20261014-marvel">
-  <link rel="stylesheet" href="_moteur/spot-anims.css?v=20261012-obs">
-  <link rel="stylesheet" href="_moteur/card.css?v=20260929-cards9">
-  <link rel="stylesheet" href="_moteur/pyp.css?v=20261111-bandeau">
+  <link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@700;800;900&family=Archivo+Narrow:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="_moteur/tokens.css?v=20261117-da">
+  <link rel="stylesheet" href="_moteur/frame.css?v=20261117-da">
+  <link rel="stylesheet" href="_moteur/break-info.css?v=20261117-da">
+  <link rel="stylesheet" href="_moteur/spot-anims.css?v=20261117-da">
+  <link rel="stylesheet" href="_moteur/card.css?v=20261117-da">
+  <link rel="stylesheet" href="_moteur/pyp.css?v=20261117-da">
+  <link rel="stylesheet" href="_moteur/slab.css?v=20261117-da">
 </head>
 <body>
 
@@ -54,60 +54,22 @@
     </defs>
   </svg>
 
-  <!-- Cadre exterieur, limite a la zone reellement visible -->
-  <div class="stage">
-    <span class="chev chev--tl"></span>
-    <span class="chev chev--tr"></span>
-    <span class="chev chev--bl"></span>
-    <span class="chev chev--br"></span>
-  </div>
-
-  <span class="rail rail--l"></span>
-  <span class="rail rail--r"></span>
-
-  <!-- Fenetre camera animateur -->
+  <!-- Camera animateur : coque de carte gradee -->
   <div class="win" id="win-top">
-    <span class="win__glow"></span>
     <span class="win__inner"></span>
-    <span class="win__ring"><i class="win__spin"></i></span>
-    <span class="bracket bracket--tl"></span>
-    <span class="bracket bracket--tr"></span>
-    <span class="bracket bracket--bl"></span>
-    <span class="bracket bracket--br"></span>
+    <span class="win__sheen"></span>
     <div class="break-info" id="break-info" hidden aria-live="polite"></div>
   </div>
 
-  <!-- Fenetre camera break -->
+  <!-- Camera break -->
   <div class="win" id="win-break">
-    <span class="win__glow"></span>
     <span class="win__inner"></span>
-    <span class="win__ring"><i class="win__spin"></i></span>
-    <span class="bracket bracket--tl"></span>
-    <span class="bracket bracket--tr"></span>
-    <span class="bracket bracket--bl"></span>
-    <span class="bracket bracket--br"></span>
-    <span class="win__scan" id="scan-break"></span>
+    <span class="win__sheen"></span>
   </div>
 
-  <!-- Bande centrale : le bandeau, identique a la version autonome -->
-  <div class="band banner-scope" id="banner-host">
-    <div class="bar" id="bar">
-      <div class="bar__skin" aria-hidden="true">
-        <span class="bar__sheen" id="sheen"></span>
-      </div>
-      <div class="zone zone--left">
-        <div class="ticker" id="ticker">
-          <div class="ticker__track" id="ticker-track"></div>
-        </div>
-      </div>
-      <div class="logo" id="logo">
-        <img class="logo__img" id="logo-img" alt="MidKards">
-        <span class="logo__sweep" id="logo-sweep" aria-hidden="true"></span>
-      </div>
-      <div class="zone zone--right">
-        <div class="social" id="social"></div>
-      </div>
-    </div>
+  <!-- Etiquette : nom, ligne tournante, compteur de spots, jauge (label.js) -->
+  <div class="band" id="banner-host">
+    <div class="label" id="bar"></div>
   </div>
 
   <!-- Grille des randoms : sous le bandeau, par-dessus la camera du bas -->
@@ -119,9 +81,9 @@
   <div class="zone-guide zone-guide--left"></div>
   <div class="zone-guide zone-guide--right"></div>
 
-  <script src="config.js?v=20261012-anims-reglages"></script>
-  <script src="_moteur/boot.js?v=20261110-pyp" data-recharge
-          data-then="_moteur/frame.js?v=20260914-131952,_moteur/banner.js?v=20260914-131952,_moteur/spot-anims.js?v=20261012-obs,_moteur/randoms.js?v=20261110-pyp,_moteur/pyp.js?v=20261111-bandeau,_moteur/break-info.js?v=20261012-termines,_moteur/card.js?v=20260929-cards9"
+  <script src="config.js?v=20261117-da"></script>
+  <script src="_moteur/boot.js?v=20261117-da" data-recharge
+          data-then="_moteur/frame.js?v=20261117-da,_moteur/spot-anims.js?v=20261117-da,_moteur/randoms.js?v=20261117-da,_moteur/label.js?v=20261117-da,_moteur/pyp.js?v=20261117-da,_moteur/break-info.js?v=20261117-da,_moteur/card.js?v=20261117-da"
           data-poll="60" data-hot="randoms"></script>
 </body>
 </html>

@@ -43,7 +43,7 @@
   // color-mix n'est pas sur dans le Chromium d'OBS : la teinte se calcule ici.
   function teinte(hex, alpha) {
     const n = parseInt(String(hex).replace("#", ""), 16);
-    if (Number.isNaN(n)) return `rgba(224,22,49,${alpha})`;
+    if (Number.isNaN(n)) return `rgba(206,103,118,${alpha})`;
     return `rgba(${(n >> 16) & 255},${(n >> 8) & 255},${n & 255},${alpha})`;
   }
 
@@ -71,7 +71,7 @@
       boites: (c.pyp && Array.isArray(c.pyp.boites)) ? c.pyp.boites : [],
       vendu: pris.has(joueur.s),
       acheteur: (rnd.acheteurs && rnd.acheteurs[joueur.s]) || "",
-      couleur: equipe[2] || "#e01631",
+      couleur: equipe[2] || "#ce6776",
     };
   }
 

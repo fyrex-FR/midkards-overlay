@@ -1,0 +1,320 @@
+/* ==========================================================================
+   MIDKARDS — Direction artistique "carte gradee"
+
+   Charge APRES frame.css, break-info.css et pyp.css : il remplace leur
+   habillage (neon, lueurs, chevrons) par celui d'une carte sous coque.
+   La structure (positions, grille, animations de saut) reste celle du moteur.
+
+   Palette relevee sur le logo : bordeaux, encre, blanc. Rien d'autre.
+   Unite --p : 1 px d'un canvas de 1080 de large, quelle que soit la taille
+   reelle de la source (apercu reduit, OBS en 1080).
+
+   Contraintes OBS (CEF) : pas de mix-blend-mode, pas de filtre sur un element
+   anime, pas de texte en degrade, pas de color-mix.
+   ========================================================================== */
+
+:root {
+  --p: calc(100vw / 1080);
+
+  --mk-bd:    #984552;   /* bordeaux du logo */
+  --mk-bd-2:  #6c2a36;   /* bordeaux sombre : ombres, vendus */
+  --mk-bd-3:  #b9707c;   /* bordeaux clair : traits secondaires sur fond sombre */
+  --mk-ink:   #1c1a0f;   /* encre chaude du logo */
+  --mk-white: #ffffff;
+  --mk-paper: #f3f1ee;
+
+  --mk-display: "Big Shoulders Display", "Barlow Condensed", "Oswald", Impact, sans-serif;
+  --mk-text:    "Archivo Narrow", "Barlow Condensed", "Arial Narrow", Arial, sans-serif;
+
+  /* Variables historiques du moteur, rebranchees sur la palette. */
+  --sk-bleu:    #984552;
+  --sk-violet:  #6c2a36;
+  --sk-magenta: #984552;
+  --sk-rose:    #b9707c;
+  --sk-ciel:    #1c1a0f;
+}
+
+body { font-family: var(--mk-text); }
+
+/* --- coques des cameras ---------------------------------------------------
+   Une bordure blanche epaisse a coins arrondis, un filet d'encre dehors et
+   dedans : la fenetre devient le trou d'une carte sous coque. Bordure (pas
+   ombre) pour que le blanc remplisse aussi les angles autour du trou.
+   -------------------------------------------------------------------------- */
+.win__inner {
+  position: absolute;
+  inset: calc(-16 * var(--p));
+  border: calc(16 * var(--p)) solid var(--mk-white);
+  border-radius: calc(26 * var(--p));
+  box-shadow:
+    0 0 0 calc(2 * var(--p)) var(--mk-ink),
+    inset 0 0 0 calc(2 * var(--p)) var(--mk-ink),
+    0 calc(14 * var(--p)) calc(34 * var(--p)) rgba(0, 0, 0, 0.45);
+  pointer-events: none;
+}
+/* Reflet de coque : une bande claire fixe, sans melange de calques. */
+.win__sheen {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(115deg, rgba(255,255,255,0) 40%, rgba(255,255,255,0.07) 47%, rgba(255,255,255,0) 54%);
+  pointer-events: none;
+}
+.win.is-bare .win__inner { display: none; }
+
+/* --- etiquette -------------------------------------------------------------- */
+.band { align-items: stretch; z-index: 7; }
+.label {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: grid;
+  grid-template-columns: calc(150 * var(--p)) minmax(0, 1fr) calc(230 * var(--p));
+  background: var(--mk-white);
+  border-radius: calc(14 * var(--p));
+  box-shadow:
+    0 0 0 calc(2 * var(--p)) var(--mk-ink),
+    0 calc(12 * var(--p)) calc(28 * var(--p)) rgba(0, 0, 0, 0.5);
+  overflow: hidden;
+  color: var(--mk-ink);
+}
+.label.is-sans-compteur { grid-template-columns: calc(150 * var(--p)) minmax(0, 1fr); }
+.label[hidden], .label [hidden] { display: none; }
+
+.label__seal {
+  background: var(--mk-bd);
+  display: grid;
+  place-items: center;
+  padding-bottom: calc(8 * var(--p));
+}
+.label__seal img { width: calc(104 * var(--p)); height: auto; display: block; }
+
+.label__mid {
+  min-width: 0;
+  padding: calc(14 * var(--p)) calc(22 * var(--p)) calc(22 * var(--p)) calc(26 * var(--p));
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: calc(10 * var(--p));
+}
+.label__word { height: calc(60 * var(--p)); width: auto; align-self: flex-start; display: block; }
+
+.label__line {
+  position: relative;
+  height: calc(34 * var(--p));
+  overflow: hidden;
+}
+.label__track { position: relative; height: 100%; }
+.label__item {
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  max-width: 100%;
+  display: flex;
+  align-items: center;
+  gap: calc(10 * var(--p));
+  white-space: nowrap;
+  font: 700 calc(27 * var(--p) * var(--fit, 1))/1 var(--mk-text);
+  letter-spacing: 0.02em;
+  color: var(--mk-ink);
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity var(--label-fade, 420ms) ease, transform var(--label-fade, 420ms) ease;
+}
+.label__item.is-in  { opacity: 0; transform: translateY(40%); }
+.label__item.is-out { opacity: 0; transform: translateY(-40%); }
+.label__icon { width: calc(27 * var(--p)); height: calc(27 * var(--p)); flex: none; color: var(--mk-bd); }
+.label__tag {
+  flex: none;
+  padding: calc(3 * var(--p)) calc(10 * var(--p)) calc(2 * var(--p));
+  border-radius: calc(5 * var(--p));
+  background: var(--mk-bd);
+  color: var(--mk-white);
+  font: 800 calc(20 * var(--p))/1 var(--mk-display);
+  letter-spacing: 0.08em;
+}
+
+.label__count {
+  border-left: calc(2 * var(--p)) solid var(--mk-ink);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: calc(4 * var(--p)) 0 calc(18 * var(--p));
+}
+.label__n { font: 900 calc(96 * var(--p))/0.9 var(--mk-display); color: var(--mk-bd); letter-spacing: -0.01em; white-space: nowrap; }
+.label__n-total { font: 800 calc(48 * var(--p))/1 var(--mk-display); color: var(--mk-ink); }
+.label__cap { margin-top: calc(6 * var(--p)); font: 700 calc(21 * var(--p))/1 var(--mk-text); letter-spacing: 0.05em; }
+.label__count.is-tic .label__n { animation: mk-tic 0.6s ease-out; }
+.label.is-complet .label__n { color: var(--mk-ink); }
+@keyframes mk-tic {
+  0%   { transform: scale(1.22); }
+  100% { transform: scale(1); }
+}
+
+/* Jauge : un cran par spot, grand tant qu'il reste, petit et bordeaux une fois vendu. */
+.label__gauge {
+  position: absolute;
+  left: calc(150 * var(--p));
+  right: 0;
+  bottom: 0;
+  height: calc(16 * var(--p));
+  display: flex;
+  gap: calc(3 * var(--p));
+  padding-left: calc(22 * var(--p));
+  background: var(--mk-white);
+  border-top: calc(2 * var(--p)) solid var(--mk-ink);
+}
+.label__gauge i { flex: 1; background: var(--mk-ink); height: 100%; }
+.label__gauge i.is-vendu { background: rgba(152, 69, 82, 0.3); height: 45%; margin-top: auto; }
+.label__gauge.is-barre { padding-left: 0; gap: 0; }
+.label__gauge.is-barre i { flex: none; background: var(--mk-bd); }
+.label.is-sans-compteur .label__gauge { display: none; }
+
+/* --- grille des spots ------------------------------------------------------- */
+.randoms {
+  --rnd-gap-col:   calc(6 * var(--p));
+  --rnd-gap-ligne: calc(6 * var(--p));
+  --tuile-reflet:  transparent;
+  --tuile-haut:    #fff;
+  --tuile-milieu:  #fff;
+  --tuile-bas:     #fff;
+  --tranche-haut:  transparent;
+  --tranche-bas:   transparent;
+}
+.randoms::before, .randoms::after { display: none; }
+.randoms__panel { padding: calc(4 * var(--p)) 0; }
+
+.rnd {
+  border: 0;
+  border-radius: calc(7 * var(--p));
+  background: var(--mk-white);
+  box-shadow: 0 0 0 calc(2 * var(--p)) var(--mk-ink), 0 calc(4 * var(--p)) calc(10 * var(--p)) rgba(0, 0, 0, 0.35);
+  overflow: hidden;
+}
+.rnd::after { display: none; }
+.rnd__sigle {
+  font: 800 calc(26 * var(--p))/1 var(--mk-display);
+  color: var(--mk-ink);
+  text-shadow: none;
+  letter-spacing: 0.04em;
+}
+.rnd__logo {
+  inset: 6% 6% 22% 6%;
+  width: 88%;
+  height: 72%;
+  filter: none;            /* le logo reste net sur blanc, sans ombre */
+}
+.randoms--portraits .rnd__logo { inset: 0; width: 100%; height: 100%; }
+/* Le sigle devient la legende basse de la carte, comme le numero d'une carte. */
+.rnd.has-logo .rnd__sigle {
+  display: block;
+  position: absolute;
+  left: 0; right: 0; bottom: 0;
+  padding: calc(2 * var(--p)) 0 calc(3 * var(--p));
+  background: var(--mk-ink);
+  color: var(--mk-white);
+  font-size: calc(14 * var(--p));
+  text-align: center;
+}
+.randoms--portraits .rnd.has-logo .rnd__sigle { display: none; }
+
+/* Vendu : la carte passe au bordeaux plein, le sigle seul reste lisible. */
+.rnd.is-pris {
+  top: 0;
+  background: var(--mk-bd);
+  box-shadow: 0 0 0 calc(2 * var(--p)) var(--mk-bd-2);
+}
+.rnd.is-pris .rnd__logo { opacity: 0; }
+.rnd.is-pris .rnd__sigle { background: var(--mk-bd-2); color: var(--mk-white); }
+.rnd.is-pris:not(.has-logo) .rnd__sigle { background: none; color: var(--mk-white); opacity: 0.55; }
+.rnd__vendu { inset: 0 0 calc(17 * var(--p)) 0; }
+.rnd__vendu b {
+  width: auto;
+  padding: 0;
+  transform: rotate(-18deg);
+  background: none;
+  box-shadow: none;
+  text-shadow: none;
+  color: var(--mk-white);
+  font: 900 calc(16 * var(--p))/1 var(--mk-display);
+  letter-spacing: 0.04em;
+}
+/* Le spot qui vient de partir : la carte reste blanche, saute, puis vire au bordeaux. */
+.rnd.is-selectionnee { animation: rnd-saut 4.2s linear calc(var(--t0, 0s) + var(--decal, 0s)) both; }
+.rnd.is-selectionnee.is-pris { animation: rnd-saut 4.2s linear calc(var(--t0, 0s) + var(--decal, 0s)) both, mk-vire 4.2s linear calc(var(--t0, 0s) + var(--decal, 0s)) both; }
+.rnd.is-selectionnee.is-pris .rnd__logo { opacity: 1; animation: mk-logo-off 4.2s linear calc(var(--t0, 0s) + var(--decal, 0s)) both; }
+.rnd.is-selectionnee .rnd__vendu b { animation: mk-vendu 4.2s linear calc(var(--t0, 0s) + var(--decal, 0s)) both; }
+.rnd.is-selectionnee::before {
+  inset: -10%;
+  border: calc(3 * var(--p)) solid var(--mk-bd);
+  border-radius: calc(10 * var(--p));
+  box-shadow: none;
+}
+@keyframes mk-vire {
+  0%, 80% { background-color: #fff; }
+  86%, 100% { background-color: var(--mk-bd); }
+}
+@keyframes mk-logo-off {
+  0%, 80% { opacity: 1; }
+  86%, 100% { opacity: 0; }
+}
+@keyframes mk-vendu {
+  0%, 80% { opacity: 0; transform: rotate(-18deg) scale(2.2); }
+  86%     { opacity: 1; transform: rotate(-18deg) scale(0.94); }
+  90%, 100% { opacity: 1; transform: rotate(-18deg) scale(1); }
+}
+
+/* --- fanion 2 POUR 1 : plus de neon, juste le reflet leger -------------------- */
+@keyframes fanion-neon { 0%, 100% { filter: none; } 50% { filter: none; } }
+@keyframes fanion-flash { 0%, 100% { filter: none; } }
+.fanion__reflet { mix-blend-mode: normal; opacity: 0.5; }
+
+/* --- fiche du break dans la camera du haut ------------------------------------ */
+.break-info {
+  left: calc(14 * var(--p));
+  right: calc(14 * var(--p));
+  bottom: calc(14 * var(--p));
+  min-height: 0;
+  padding: calc(10 * var(--p)) calc(16 * var(--p)) calc(12 * var(--p));
+  border: 0;
+  border-radius: calc(10 * var(--p));
+  background: var(--mk-white);
+  box-shadow: 0 0 0 calc(2 * var(--p)) var(--mk-ink), 0 calc(6 * var(--p)) calc(16 * var(--p)) rgba(0, 0, 0, 0.4);
+  color: var(--mk-ink);
+  font-family: var(--mk-text);
+}
+.break-info__top { gap: calc(4 * var(--p)) calc(12 * var(--p)); }
+.break-info__badge {
+  padding: calc(3 * var(--p)) calc(10 * var(--p)) calc(2 * var(--p));
+  border-radius: calc(5 * var(--p));
+  background: var(--mk-bd);
+  color: var(--mk-white);
+  font: 800 calc(18 * var(--p))/1 var(--mk-display);
+  letter-spacing: 0.08em;
+}
+.break-info__title { font: 700 calc(26 * var(--p))/1.1 var(--mk-text); letter-spacing: 0.01em; }
+.break-info__stats { color: var(--mk-ink); font: 700 calc(20 * var(--p))/1 var(--mk-text); }
+.break-info__stats b { color: var(--mk-bd); font: 900 calc(30 * var(--p))/1 var(--mk-display); }
+.break-info__track { height: calc(8 * var(--p)); margin-top: calc(8 * var(--p)); border-radius: 0; background: rgba(28, 26, 15, 0.14); }
+.break-info__fill { background: var(--mk-bd); box-shadow: none; border-radius: 0; }
+@keyframes break-sale {
+  0%   { transform: scale(1); }
+  30%  { transform: scale(1.03); }
+  100% { transform: scale(1); }
+}
+
+/* --- fiche PYP : coque blanche autour d'un coeur encre, bandeau bordeaux ---------------- */
+.pyp, .pyp-bandeau {
+  border: 0;
+  border-radius: calc(16 * var(--p));
+  background: var(--mk-ink);
+  box-shadow: 0 0 0 calc(3 * var(--p)) var(--mk-white), 0 0 0 calc(5 * var(--p)) var(--mk-ink), 0 calc(10 * var(--p)) calc(26 * var(--p)) rgba(0, 0, 0, 0.45);
+  color: var(--mk-white);
+  font-family: var(--mk-text);
+}
+.pyp-bandeau { background: var(--mk-bd); color: var(--mk-white); }
+.pyp__boites { background: var(--mk-bd); border-top: 0; color: var(--mk-white); font-family: var(--mk-display); }
+
+/* Definitions d'icones du cadre : jamais visibles. */
+.icon-defs { position: absolute; width: 0; height: 0; overflow: hidden; }

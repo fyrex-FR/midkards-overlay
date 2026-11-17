@@ -23,12 +23,13 @@ La base applique automatiquement `migrations/*.sql` au démarrage. Config vide e
 
 `WHATNOT_SELLER=midkards` active la synchro automatique des spots avec le live Whatnot du compte.
 
-## Charte graphique
+## Charte graphique : la carte gradée
 
-- Visuels: `public/assets/` (`logo.png` arbre seul, `wordmark.png` arbre + MIDKARDS, `terre.png` disque arbre, `bandeau*.png`, `arene.jpg`, `deux-pour-un.webp` recolorés en rouge depuis la charte Shaks).
-- Couleurs: `public/_moteur/tokens.css` (`--c-*`, `--n-*`) et variables `--sk-*` de `frame.css`.
-- Textes, réseaux, ticker: `public/config.js`.
-- Le `logo` du bandeau est en mode `static` (arbre dans le médaillon). Remettre `mode: "orbit"` pour le globe `terre.png`.
+- Palette (logo): bordeaux `#984552`, encre `#1C1A0F`, blanc. Définie dans `public/_moteur/slab.css` (`--mk-*`).
+- Habillage: `slab.css` (coques de caméras, étiquette, grille, fiche du break, fiche PYP), `label.js` (étiquette: ligne tournante, compteur, jauge), `spot-anims.js/css` (carte de vente).
+- Visuels: `public/assets/` (`arbre-blanc.png`, `arbre.png`, `wordmark.png`, `arene.jpg` fond, `deux-pour-un.webp` fanion). Logo source: `source-logo-midkards.jpeg`.
+- Textes et réseaux: `public/config.js` (`ticker.messages`, `social.items`). Placement: `layout` (étiquette à 24,5 %, caméras en 80 %).
+- Les unités de `slab.css` sont en `--p` (1 px d'un canvas 1080 de large).
 
 ## Déploiement
 

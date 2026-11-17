@@ -511,20 +511,6 @@
     return liste[h % liste.length];
   }
 
-  /* Nuages de poussiere a l'impact, partis du bas du logo vers l'exterieur.
-     [depart, trajet x, trajet y, echelle finale, taille, retard] : le depart
-     en fraction de la demi-largeur du logo (-1 = coin gauche), le trajet en
-     tailles de nuage, la taille en fraction de la largeur du logo. Cote
-     gauche ; le droit est son miroir. */
-  const NUAGES_GAUCHE = [
-    [-0.95, -1.6, -0.5, 1.8, 0.16, 0.59],
-    [-0.7, -1.2, -1.0, 1.6, 0.14, 0.6],
-    [-0.35, -0.8, -0.8, 1.5, 0.12, 0.6],
-    [-1.0, -2.6, -0.2, 1.4, 0.1, 0.62],
-    [-0.85, -0.9, -1.6, 1.3, 0.09, 0.64],
-  ];
-  const NUAGES = NUAGES_GAUCHE.flatMap((n) => [n, [-n[0], -n[1], ...n.slice(2)]]);
-
   /* Une selection voyage dans la section randoms via le SSE deja en place.
      Trop ancienne, ou deja vue par cette source OBS, elle ne se rejoue pas.
      Renvoie true seulement quand l'animation part vraiment : la case de la
@@ -562,6 +548,8 @@
       nom,
       src: logoDe(cfg, sigle, logoDirect),
       phrase: punchline(selection.id),
+      // Pseudo Whatnot de l'acheteur, si la synchro l'a lu (randoms.acheteurs).
+      acheteur: String(((cfg.acheteurs || {})[sigle]) || "").trim(),
       // Le logo de l'equipe, ou son sigle si l'image ne charge pas.
       logo(classe) {
         const visuel = document.createElement("div");
@@ -593,11 +581,11 @@
      la meme deux fois de suite. Chacune rend { el, duree, impact, secousse } :
      impact = le moment (ms) ou le logo apparait, sur lequel la case de la
      grille saute ; secousse = la grille tremble avec.
-     Les autres que le catcheur vivent dans spot-anims.js.
+     Elles vivent dans spot-anims.js (MidKards : la carte).
      La section animations de la config (reglages.html) retire une animation
      de la rotation (false) ; window.SHAKS_ANIM_FORCEE en impose une (demo). */
   function animations() {
-    return { catcheur: animCatcheur, ...(window.SHAKS_ANIMS_SPOT || {}) };
+    return { ...(window.SHAKS_ANIMS_SPOT || {}) };
   }
 
   function choisirAnimation(id) {
@@ -605,80 +593,13 @@
     if (window.SHAKS_ANIM_FORCEE && toutes[window.SHAKS_ANIM_FORCEE]) return window.SHAKS_ANIM_FORCEE;
     const reglage = (window.SHAKS_CONFIG && window.SHAKS_CONFIG.animations) || {};
     let dispo = Object.keys(toutes).filter((nomAnim) => reglage[nomAnim] !== false);
-    if (!dispo.length) dispo = ["catcheur"];
+    if (!dispo.length) dispo = Object.keys(toutes);
     let h = 7;
     for (const ch of String(id)) h = (h * 31 + ch.charCodeAt(0)) >>> 0;
     let i = h % dispo.length;
     if (dispo.length > 1 && dispo[i] === choisirAnimation.derniere) i = (i + 1) % dispo.length;
     choisirAnimation.derniere = dispo[i];
     return dispo[i];
-  }
-
-  /* L'entree du catcheur : le logo tombe, s'ecrase, le tampon VENDU s'abat. */
-  function animCatcheur(ctx) {
-    const scene = document.createElement("div");
-    scene.className = "spot-focus";
-
-    const carte = document.createElement("div");
-    carte.className = "spot-focus__carte";
-    const visuel = document.createElement("div");
-    visuel.className = "spot-focus__visuel";
-    const secours = document.createElement("span");
-    secours.className = "spot-focus__sigle";
-    secours.textContent = ctx.sigle;
-    visuel.append(secours);
-
-    if (ctx.src) {
-      const img = document.createElement("img");
-      img.className = "spot-focus__image";
-      img.alt = "";
-      img.addEventListener("load", () => secours.remove());
-      img.addEventListener("error", () => img.remove());
-      img.src = ctx.src;
-      visuel.append(img);
-    }
-
-    const tampon = document.createElement("div");
-    tampon.className = "spot-focus__tampon";
-    tampon.textContent = "VENDU !";
-
-    const chute = document.createElement("div");
-    chute.className = "spot-focus__chute";
-    chute.append(visuel, tampon);
-
-    const sol = document.createElement("div");
-    sol.className = "spot-focus__sol";
-    const onde = document.createElement("span");
-    onde.className = "spot-focus__onde";
-    sol.append(onde);
-    for (const [x0, dx, dy, s, taille, retard] of NUAGES) {
-      const nuage = document.createElement("span");
-      nuage.className = "spot-focus__nuage";
-      nuage.style.setProperty("--x0", String(x0));
-      nuage.style.setProperty("--dx", String(dx));
-      nuage.style.setProperty("--dy", String(dy));
-      nuage.style.setProperty("--s", String(s));
-      nuage.style.setProperty("--taille", String(taille));
-      nuage.style.setProperty("--retard", `${retard}s`);
-      sol.append(nuage);
-    }
-
-    const ring = document.createElement("div");
-    ring.className = "spot-focus__ring";
-    ring.append(sol, chute);
-
-    const titre = document.createElement("div");
-    titre.className = "spot-focus__nom";
-    titre.textContent = ctx.nom;
-    carte.append(ring, titre);
-    if (ctx.phrase) {
-      const punch = document.createElement("div");
-      punch.className = "spot-focus__punch";
-      punch.textContent = ctx.phrase;
-      carte.append(punch);
-    }
-    scene.append(carte);
-    return { el: scene, duree: 4300, impact: 590, secousse: true };
   }
 
   function rendre() {

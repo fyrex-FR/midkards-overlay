@@ -519,7 +519,7 @@
     const vide = $("whatnot-vide");
     vide.hidden = Boolean(zone.children.length);
     vide.textContent = !connecte
-      ? "Aucun live Whatnot connecté. Le live de Shaks se connecte tout seul dès qu'il est programmé (réglage dans la roue spot). Tu peux aussi marquer les ventes à la main."
+      ? "Aucun live Whatnot connecté. Le live de MidKards se connecte tout seul dès qu'il est programmé (réglage dans la roue spot). Tu peux aussi marquer les ventes à la main."
       : !breaks.length ? "Ce live n'a pas encore de break." : "Aucun autre break dans ce live.";
 
     const note = $("whatnot-note");

@@ -63,8 +63,8 @@
   let actuel = null;       // { id, nom, equipes: [[sigle, nom, c1, c2, logo?]] }
   let idOriginal = null;   // cle sous laquelle "actuel" est deja enregistre, ou null si nouveau
 
-  const COULEUR_DEFAUT_1 = "#3d2227";
-  const COULEUR_DEFAUT_2 = "#160a0c";
+  const COULEUR_DEFAUT_1 = "#403c2e";
+  const COULEUR_DEFAUT_2 = "#171611";
 
   function normaliserId(brut) {
     return String(brut || "").trim().toLowerCase()

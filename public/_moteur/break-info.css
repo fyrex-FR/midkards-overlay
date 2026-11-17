@@ -12,10 +12,10 @@
   border: 1px solid transparent;
   border-radius: calc(var(--vh) * 0.006);
   background:
-    linear-gradient(105deg, rgba(22,4,7, 0.95), rgba(53,15,20, 0.92)) padding-box,
+    linear-gradient(105deg, rgba(23,22,17, 0.95), rgba(56,53,40, 0.92)) padding-box,
     linear-gradient(100deg, var(--sk-magenta) 0%, var(--sk-bleu) 14%,
                             var(--sk-bleu) 86%, var(--sk-magenta) 100%) border-box;
-  box-shadow: 0 0 calc(var(--vh) * 0.018) rgba(235,14,55, 0.35), inset 0 1px rgba(255,255,255,0.1);
+  box-shadow: 0 0 calc(var(--vh) * 0.018) rgba(206,103,119, 0.35), inset 0 1px rgba(255,255,255,0.1);
   color: #f7fbff;
   font-family: "Barlow", sans-serif;
   opacity: 1;
@@ -51,7 +51,7 @@
 .break-info__track { height: calc(var(--vh) * 0.0025); margin-top: calc(var(--vh) * 0.003); border-radius: 999px; background: rgba(255,255,255,.13); overflow: hidden; }
 .break-info__fill { height: 100%; border-radius: inherit; background: linear-gradient(90deg, var(--sk-bleu), var(--sk-magenta)); box-shadow: 0 0 calc(var(--vh) * .008) var(--sk-bleu); transition: width 550ms ease; }
 @keyframes break-sale {
-  0% { box-shadow: 0 0 0 rgba(235,14,55,0); }
-  35% { box-shadow: 0 0 calc(var(--vh) * .042) rgba(235,14,55,.9), inset 0 0 calc(var(--vh) * .018) rgba(224,22,49,.45); }
-  100% { box-shadow: 0 0 calc(var(--vh) * .018) rgba(235,14,55,.35); }
+  0% { box-shadow: 0 0 0 rgba(206,103,119,0); }
+  35% { box-shadow: 0 0 calc(var(--vh) * .042) rgba(206,103,119,.9), inset 0 0 calc(var(--vh) * .018) rgba(206,103,118,.45); }
+  100% { box-shadow: 0 0 calc(var(--vh) * .018) rgba(206,103,119,.35); }
 }

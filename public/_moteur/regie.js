@@ -57,7 +57,7 @@
   }
   function encre(hex) {
     const [r, v, b] = canaux(hex);
-    return (0.2126 * r + 0.7152 * v + 0.0722 * b) / 255 > 0.62 ? "#160b0d" : "#ffffff";
+    return (0.2126 * r + 0.7152 * v + 0.0722 * b) / 255 > 0.62 ? "#171611" : "#ffffff";
   }
   const teinte = (hex, a) => `rgba(${canaux(hex).join(",")},${a})`;
 
@@ -576,7 +576,7 @@
     const vide = $("whatnot-vide");
     if (!whatnotState.connected) {
       vide.hidden = false;
-      vide.textContent = "Aucun live Whatnot connecté. Le live de Shaks se connecte tout seul dès qu'il est programmé ; sinon, ouvre « Réglages du live Whatnot » ci-dessous. En attendant, tu peux cocher les spots à la main.";
+      vide.textContent = "Aucun live Whatnot connecté. Le live de MidKards se connecte tout seul dès qu'il est programmé ; sinon, ouvre « Réglages du live Whatnot » ci-dessous. En attendant, tu peux cocher les spots à la main.";
     } else if (!breaks.length) {
       vide.hidden = false;
       vide.textContent = "Ce live n'a pas encore de break. Ils apparaîtront ici dès qu'ils sont créés sur Whatnot.";

@@ -14,13 +14,13 @@
    PERF : on n'anime que transform et opacity.
    ========================================================================== */
 
-body { background: #0c0506; }
+body { background: #0d0c09; }
 
 .arena {
   position: absolute;
   inset: 0;
   overflow: hidden;
-  background: linear-gradient(180deg, #0c0506 0%, #160a0c 45%, #0e0607 100%);
+  background: linear-gradient(180deg, #0d0c09 0%, #171611 45%, #0f0e0b 100%);
 }
 
 /* --------------------------------------------------------------------------
@@ -75,14 +75,14 @@ body { background: #0c0506; }
   right: -14%;
   top: 26%;
   background: radial-gradient(closest-side ellipse,
-    rgba(255,72,114, 0.26), rgba(217,89,106, 0.08) 55%, transparent 80%);
+    rgba(206,103,119, 0.26), rgba(200,100,115, 0.08) 55%, transparent 80%);
   animation: bloom-drift-b 34s ease-in-out infinite;
 }
 .bloom--c {
   left: 12%;
   bottom: 2%;
   background: radial-gradient(closest-side ellipse,
-    rgba(217,89,106, 0.24), rgba(235,63,95, 0.07) 55%, transparent 80%);
+    rgba(200,100,115, 0.24), rgba(206,103,119, 0.07) 55%, transparent 80%);
   animation: bloom-drift-a 41s ease-in-out infinite reverse;
 }
 @keyframes bloom-drift-a {
@@ -108,9 +108,9 @@ body { background: #0c0506; }
   inset: 0;
   background:
     radial-gradient(135% 88% at 50% 46%, transparent 62%,
-      rgba(7,2,3, calc(0.30 * var(--vig, 1))) 100%),
-    linear-gradient(180deg, rgba(7,2,3, calc(0.42 * var(--vig, 1))) 0%, transparent 11%),
-    linear-gradient(0deg, rgba(7,2,3, calc(0.78 * var(--vig, 1))) 0%,
-                          rgba(7,2,3, calc(0.35 * var(--vig, 1))) 12%,
+      rgba(7,7,5, calc(0.30 * var(--vig, 1))) 100%),
+    linear-gradient(180deg, rgba(7,7,5, calc(0.42 * var(--vig, 1))) 0%, transparent 11%),
+    linear-gradient(0deg, rgba(7,7,5, calc(0.78 * var(--vig, 1))) 0%,
+                          rgba(7,7,5, calc(0.35 * var(--vig, 1))) 12%,
                           transparent 26%);
 }

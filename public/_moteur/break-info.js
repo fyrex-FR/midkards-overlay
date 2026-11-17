@@ -9,8 +9,13 @@
   let lastSelectedSold = null;
 
   /* Un break complet (tout vendu, ou clos par Whatnot) n'a plus rien a
-     vendre : il sort du defilement. Seul le break suivi par la roue reste
-     affiche, c'est celui qu'on est en train d'ouvrir. */
+     vendre : il sort du defilement.
+
+     Le break SUIVI par la roue n'est pas repete ici : l'etiquette
+     (label.js) porte deja son titre, son compteur et sa jauge. Cette fiche ne
+     montre donc que les AUTRES breaks du live, pour que le chat voie ce qui
+     se vend ensuite. Si aucun break n'est suivi, l'etiquette n'a pas de
+     compteur : tous les breaks restent alors affiches ici. */
   const CLOS = /complet|filled|sold.?out|closed|ended|done|finished/i;
   function termine(item) {
     const total = Number(item.total || 0);
@@ -19,9 +24,8 @@
 
   function orderedBreaks() {
     const all = (data && Array.isArray(data.breaks)) ? [...data.breaks] : [];
-    return all
-      .filter((item) => String(item.id) === String(data.breakId) || !termine(item))
-      .sort((a, b) => (a.id === data.breakId ? -1 : b.id === data.breakId ? 1 : 0));
+    const suivi = data && data.breakId != null ? String(data.breakId) : "";
+    return all.filter((item) => String(item.id) !== suivi && !termine(item));
   }
 
   function render(animate = false) {
@@ -38,10 +42,10 @@
       host.textContent = "";
       const top = document.createElement("div"); top.className = "break-info__top";
       const badge = document.createElement("span"); badge.className = "break-info__badge";
-      badge.textContent = selected ? "EN COURS" : `BREAK ${index + 1}/${breaks.length}`;
+      badge.textContent = breaks.length > 1 ? `AUSSI EN LIVE ${index + 1}/${breaks.length}` : "AUSSI EN LIVE";
       const title = document.createElement("span"); title.className = "break-info__title"; title.textContent = item.title || data.liveTitle || "Break Whatnot";
       const stats = document.createElement("span"); stats.className = "break-info__stats";
-      stats.innerHTML = `<b>${sold}/${total || "—"}</b> vendus · ${remaining} restants`;
+      stats.innerHTML = `<b>${sold}/${total || "—"}</b> vendus`;
       const track = document.createElement("div"); track.className = "break-info__track";
       const fill = document.createElement("div"); fill.className = "break-info__fill"; fill.style.width = `${percent}%`;
       track.append(fill); top.append(title, badge, stats); host.append(top, track);

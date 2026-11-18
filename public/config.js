@@ -218,10 +218,10 @@ window.SHAKS_CONFIG = {
     ecart: 1.4,          // % du canvas SOUS LA BARRE du bandeau. La grille
                          // se recale toute seule si tu bouges le bandeau :
                          // on mesure la barre, on ne devine pas un pourcentage
-    width: 70,           // % du canvas, au plus. La grille reste dans la
+    width: 75.5,           // % du canvas, au plus. La grille reste dans la
                          // partie visible au telephone (layout.safeSidePct)
                          // et a l'ecart des icones Whatnot (margeIcones)
-    margeIcones: 6,      // % du canvas laisse aux icones Whatnot (Plus,
+    margeIcones: 2,      // % du canvas laisse aux icones Whatnot (Plus,
                          // Mises en avant, Clip…), des deux cotes pour que
                          // la grille reste centree. 0 = pleine largeur
     hauteurCases: 1.2,   // hauteur d'une case / sa largeur. Au-dessus de 1,

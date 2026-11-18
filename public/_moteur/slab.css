@@ -106,6 +106,27 @@ body { font-family: var(--mk-text); }
     0 0 calc(54 * var(--p)) calc(8 * var(--p)) var(--mk-glow),
     0 calc(12 * var(--p)) calc(28 * var(--p)) var(--mk-shadow);
 }
+/* Spots lumineux aux deux bouts de l'etiquette (maquette de Mid) : halo rouge,
+   coeur clair et filet horizontal. Derriere l'etiquette, fixes. */
+.band::before, .band::after {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  top: 50%;
+  width: calc(340 * var(--p));
+  height: calc(300 * var(--p));
+  margin-top: calc(-160 * var(--p));
+  pointer-events: none;
+  background:
+    linear-gradient(90deg, transparent 0%, rgba(255, 190, 200, 0.95) 50%, transparent 100%) center / 100% calc(4 * var(--p)) no-repeat,
+    radial-gradient(closest-side, rgba(255, 235, 238, 1) 0 5%, rgba(255, 120, 145, 0.95) 13%, rgba(226, 29, 69, 0.6) 34%, rgba(226, 29, 69, 0.22) 62%, rgba(226, 29, 69, 0) 100%);
+}
+.band::before { left: calc(-186 * var(--p)); }
+.band::after  { right: calc(-186 * var(--p)); }
+body.mode-libre .band::before, body.mode-libre .band::after { width: calc(200 * var(--p)); height: calc(170 * var(--p)); margin-top: calc(-85 * var(--p)); }
+body.mode-libre .band::before { left: calc(-116 * var(--p)); }
+body.mode-libre .band::after  { right: calc(-116 * var(--p)); }
+
 /* Filet clair en biais le long du sceau. */
 .label::before {
   content: "";

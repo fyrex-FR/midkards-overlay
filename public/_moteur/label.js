@@ -32,16 +32,19 @@
 
   /* --- squelette ----------------------------------------------------------- */
   const logo = cfg.logo || {};
+  /* Meme raison que le fond (arena.js) : version sur les images de assets/. */
+  const ASSETS_V = "20261118-spots";
+  const versionne = (u) => (/^assets\//.test(u) ? `${u}${u.includes("?") ? "&" : "?"}v=${ASSETS_V}` : u);
   const sceau = el("div", "label__seal");
   const arbre = el("img");
   arbre.alt = "";
-  arbre.src = logo.src || "assets/arbre-blanc.png";
+  arbre.src = versionne(logo.src || "assets/arbre-blanc.png");
   sceau.append(arbre);
 
   const milieu = el("div", "label__mid");
   const mot = el("img", "label__word");
   mot.alt = "MidKards";
-  mot.src = logo.wordmark || "assets/wordmark.png";
+  mot.src = versionne(logo.wordmark || "assets/wordmark.png");
   const ligne = el("div", "label__line");
   const piste = el("div", "label__track");
   ligne.append(piste);

@@ -81,7 +81,11 @@ window.SHAKS_CONFIG = {
     // Depuis novembre 2026 : plus basse (397 px au lieu de 486) et remontee,
     // meme largeur. Plus du 16:9 : la camera se recadre dans OBS. La place
     // gagnee va a la camera break.
-    camTop:   { top: 3, height: 20.7, width: 80, ratio: "", decoupeFond: false },
+    // Largeurs revues ensuite (cameras 80 -> 72 %, etiquette 83 -> 75 %)
+    // d'apres une capture Whatnot : le telephone ne montre que 885 px sur
+    // 1080 (9 % rognes de chaque cote). A 80 %, les coques touchaient le bord
+    // de l'ecran et l'etiquette etait coupee des deux cotes.
+    camTop:   { top: 3, height: 20.7, width: 72, ratio: "", decoupeFond: false },
 
     // Fiche des autres breaks du live, en bas de la camera du haut (false = masquee).
     breakInfo: true,
@@ -89,7 +93,7 @@ window.SHAKS_CONFIG = {
     // L'etiquette centrale (carte gradee), a cheval entre les deux cameras :
     // elle commence sous la camera du haut et mord sur le haut de la camera
     // break. Un peu plus large que les cameras pour couvrir leurs coques.
-    banner:   { top: 24.5, height: 8.5, width: 83 },
+    banner:   { top: 24.5, height: 8.5, width: 75 },
 
     // Fenetre de la camera break : 2.5x plus haute que celle de l'animateur,
     // 3x en surface, en format quasi carre — le bon format pour des cartes
@@ -99,7 +103,7 @@ window.SHAKS_CONFIG = {
     // bord bas du canvas : les ornements de la fenetre passent hors champ.
     // Pas de ratio ici : recadrer une camera 16:9 en portrait est justement
     // ce qu'on veut pour la table, on garde le centre et on coupe les cotes.
-    camBreak: { top: 30, height: 70, width: 80, ratio: "", bare: false, decoupeFond: true },
+    camBreak: { top: 30, height: 70, width: 72, ratio: "", bare: false, decoupeFond: true },
 
     // Bras d'angle sur les fenetres camera. false par defaut : sur une camera
     // a fond clair ils perdent tout contraste, et on ne percoit alors plus les

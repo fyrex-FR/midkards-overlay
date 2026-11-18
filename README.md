@@ -25,7 +25,7 @@ La base applique automatiquement `migrations/*.sql` au démarrage. Config vide e
 
 ## Charte graphique : la carte gradée
 
-- Palette (logo): bordeaux `#984552`, encre `#1C1A0F`, blanc. Définie dans `public/_moteur/slab.css` (`--mk-*`).
+- Palette: rouge cramoisi `#C8233A` (bordeaux du logo ravivé), encre `#1C1A0F`, blanc, halo rouge fixe autour des coques. Définie dans `public/_moteur/slab.css` (`--mk-*`).
 - Habillage: `slab.css` (coques de caméras, étiquette, grille, fiche du break, fiche PYP), `label.js` (étiquette: ligne tournante, compteur, jauge), `spot-anims.js/css` (carte de vente).
 - Visuels: `public/assets/` (`arbre-blanc.png`, `arbre.png`, `wordmark.png`, `arene.jpg` fond, `deux-pour-un.webp` fanion). Logo source: `source-logo-midkards.jpeg`.
 - Textes et réseaux: `public/config.js` (`ticker.messages`, `social.items`). Placement: `layout` (étiquette à 24,5 %, caméras en 80 %).

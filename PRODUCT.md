@@ -50,8 +50,8 @@ Copie de shaks-overlay (fyrex-FR/shaks-overlay @ c918ae8) adaptée à la charte 
 
 - **Nom** : MidKards (Instagram @midkards, Whatnot @midkards, Voggt MidKards, liens sur taplink.cc/midkards).
 - **Ton** : à définir avec le breaker (les punchlines livrées viennent de Shaks). Punchlines à chaque spot, animations qui font réagir le chat.
-- **Couleurs** : bordeaux #984552, encre #1C1A0F, blanc, relevés sur le logo officiel. Rien d'autre : pas de néon, pas de lueurs, pas de dégradés.
-- **Direction artistique « carte gradée »** : chaque caméra est une coque blanche à fine bordure d'encre; le bandeau est une étiquette de carte (sceau bordeaux avec l'arbre, wordmark, ligne qui tourne, compteur géant, jauge d'un cran par spot); la grille est faite de cartes blanches qui virent au bordeaux une fois vendues; le spot attribué arrive sur une carte avec tampon VENDU. Typo : Big Shoulders Display (titres, chiffres) et Archivo Narrow (texte). Volontairement différente de l'overlay Shaks.
+- **Couleurs** : rouge cramoisi vif #C8233A (le bordeaux #984552 du logo a été ravivé après le premier retour de Mid, qui voulait « un peu plus pétant », sans aller jusqu'à sa maquette néon), encre #1C1A0F, blanc. Un halo rouge fixe autour des coques et une lueur rouge fixe dans le fond sont admis ; rien d'animé, pas de néon criard.
+- **Direction artistique « carte gradée »** : chaque caméra est une coque blanche à liseré rouge; le bandeau est une étiquette de carte (sceau bordeaux avec l'arbre, wordmark, ligne qui tourne, compteur géant, jauge d'un cran par spot); la grille est faite de cartes blanches qui virent au bordeaux une fois vendues; le spot attribué arrive sur une carte avec tampon VENDU. Typo : Big Shoulders Display (titres, chiffres) et Archivo Narrow (texte). Volontairement différente de l'overlay Shaks.
 - **Visuels fournis** : le bandeau « 2 pour 1 » vient du breaker (`public/assets/deux-pour-un.webp`). Les logos UNIV MEN, DEN/UW et MIL/COACH ont aussi été fournis.
 
 ## Evidence on Hand

@@ -89,9 +89,9 @@ body.card-on #randoms { opacity: 0 !important; }
   border-radius: 2.4cqh;
   background: #fff;
   backdrop-filter: none;
-  box-shadow: 0 0 0 0.9cqh #fff, 0 0 0 1.3cqh #1c1a0f;
+  box-shadow: 0 0 0 0.9cqh #fff, 0 0 0 1.3cqh #c8233a, 0 0 5cqh 0.6cqh rgba(232, 38, 64, 0.5);
   color: #1c1a0f;
-  --bd: #984552; --bd-2: #6c2a36; --bd-3: #b9707c; --ink: #1c1a0f; --paper: #f3f1ee;
+  --bd: #c8233a; --bd-2: #8b1426; --bd-3: #e36a7a; --ink: #1c1a0f; --paper: #f3f1ee;
 }
 
 .tc__head { display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 2.6cqw; min-width: 0; padding-bottom: 1.8cqh; border-bottom: 0.4cqh solid var(--ink); }

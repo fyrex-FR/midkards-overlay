@@ -5,7 +5,8 @@
    habillage (neon, lueurs, chevrons) par celui d'une carte sous coque.
    La structure (positions, grille, animations de saut) reste celle du moteur.
 
-   Palette relevee sur le logo : bordeaux, encre, blanc. Rien d'autre.
+   Palette : rouge cramoisi vif (retour de Mid : "plus petant"), encre, blanc.
+   Un halo rouge fixe autour des coques, jamais anime.
    Unite --p : 1 px d'un canvas de 1080 de large, quelle que soit la taille
    reelle de la source (apercu reduit, OBS en 1080).
 
@@ -16,9 +17,10 @@
 :root {
   --p: calc(100vw / 1080);
 
-  --mk-bd:    #984552;   /* bordeaux du logo */
-  --mk-bd-2:  #6c2a36;   /* bordeaux sombre : ombres, vendus */
-  --mk-bd-3:  #b9707c;   /* bordeaux clair : traits secondaires sur fond sombre */
+  --mk-bd:    #c8233a;   /* rouge cramoisi : sceau, chiffres, vendus */
+  --mk-bd-2:  #8b1426;   /* rouge sombre : ombres, sigle des vendus */
+  --mk-bd-3:  #e36a7a;   /* rouge clair : traits secondaires sur fond sombre */
+  --mk-glow:  rgba(232, 38, 64, 0.5);   /* halo des coques, fixe */
   --mk-ink:   #1c1a0f;   /* encre chaude du logo */
   --mk-white: #ffffff;
   --mk-paper: #f3f1ee;
@@ -27,10 +29,10 @@
   --mk-text:    "Archivo Narrow", "Barlow Condensed", "Arial Narrow", Arial, sans-serif;
 
   /* Variables historiques du moteur, rebranchees sur la palette. */
-  --sk-bleu:    #984552;
-  --sk-violet:  #6c2a36;
-  --sk-magenta: #984552;
-  --sk-rose:    #b9707c;
+  --sk-bleu:    #c8233a;
+  --sk-violet:  #8b1426;
+  --sk-magenta: #c8233a;
+  --sk-rose:    #e36a7a;
   --sk-ciel:    #1c1a0f;
 }
 
@@ -47,8 +49,9 @@ body { font-family: var(--mk-text); }
   border: calc(16 * var(--p)) solid var(--mk-white);
   border-radius: calc(26 * var(--p));
   box-shadow:
-    0 0 0 calc(2 * var(--p)) var(--mk-ink),
+    0 0 0 calc(3 * var(--p)) var(--mk-bd),
     inset 0 0 0 calc(2 * var(--p)) var(--mk-ink),
+    0 0 calc(44 * var(--p)) calc(4 * var(--p)) var(--mk-glow),
     0 calc(14 * var(--p)) calc(34 * var(--p)) rgba(0, 0, 0, 0.45);
   pointer-events: none;
 }
@@ -72,7 +75,8 @@ body { font-family: var(--mk-text); }
   background: var(--mk-white);
   border-radius: calc(14 * var(--p));
   box-shadow:
-    0 0 0 calc(2 * var(--p)) var(--mk-ink),
+    0 0 0 calc(3 * var(--p)) var(--mk-bd),
+    0 0 calc(36 * var(--p)) calc(2 * var(--p)) var(--mk-glow),
     0 calc(12 * var(--p)) calc(28 * var(--p)) rgba(0, 0, 0, 0.5);
   overflow: hidden;
   color: var(--mk-ink);
@@ -167,7 +171,7 @@ body { font-family: var(--mk-text); }
   border-top: calc(2 * var(--p)) solid var(--mk-ink);
 }
 .label__gauge i { flex: 1; background: var(--mk-ink); height: 100%; }
-.label__gauge i.is-vendu { background: rgba(152, 69, 82, 0.3); height: 45%; margin-top: auto; }
+.label__gauge i.is-vendu { background: rgba(200, 35, 58, 0.3); height: 45%; margin-top: auto; }
 .label__gauge.is-barre { padding-left: 0; gap: 0; }
 .label__gauge.is-barre i { flex: none; background: var(--mk-bd); }
 .label.is-sans-compteur .label__gauge { display: none; }

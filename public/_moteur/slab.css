@@ -431,7 +431,7 @@ body.mode-libre .label__mid::after { top: calc(-24 * var(--p)); left: calc(-80 *
   right: calc(10 * var(--p));
   bottom: calc(10 * var(--p));
   min-height: 0;
-  padding: calc(11 * var(--p)) calc(16 * var(--p)) calc(14 * var(--p)) calc(12 * var(--p));
+  padding: calc(9 * var(--p)) calc(15 * var(--p)) calc(12 * var(--p)) calc(11 * var(--p));
   border: 0;
   border-radius: calc(10 * var(--p));
   background: linear-gradient(90deg, rgba(47, 3, 14, 0.78) 0%, rgba(27, 4, 8, 0.62) 100%);
@@ -441,7 +441,7 @@ body.mode-libre .label__mid::after { top: calc(-24 * var(--p)); left: calc(-80 *
 }
 .break-info__top {
   grid-template-columns: auto minmax(0, 1fr) auto;
-  gap: calc(12 * var(--p));
+  gap: calc(11 * var(--p));
 }
 .break-info__badge {
   order: -1;
@@ -450,23 +450,23 @@ body.mode-libre .label__mid::after { top: calc(-24 * var(--p)); left: calc(-80 *
   background: linear-gradient(90deg, var(--mk-bd-2) 0%, var(--mk-bd-3) 100%);
   box-shadow: 0 0 calc(8 * var(--p)) rgba(226, 29, 69, 0.45);
   color: var(--mk-white);
-  font: 500 calc(19 * var(--p))/1 var(--mk-display);
+  font: 500 calc(17 * var(--p))/1 var(--mk-display);
   letter-spacing: 0.06em;
   white-space: nowrap;
 }
 .break-info__badge::after { content: "((\2022))"; margin-left: calc(8 * var(--p)); letter-spacing: -0.02em; }
 .break-info__title {
   grid-column: auto;
-  font: 500 calc(28 * var(--p))/1.1 var(--mk-display);
+  font: 500 calc(25 * var(--p))/1.1 var(--mk-display);
   letter-spacing: 0.01em;
   color: var(--mk-white);
   text-shadow: 0 calc(1 * var(--p)) calc(3 * var(--p)) rgba(27, 4, 8, 0.6);
 }
-.break-info__stats { color: rgba(252, 250, 249, 0.85); font: 500 calc(20 * var(--p))/1 var(--mk-display); white-space: nowrap; }
-.break-info__stats b { color: #ff6f8b; font: 700 calc(32 * var(--p))/1 var(--mk-display); }
+.break-info__stats { color: rgba(252, 250, 249, 0.85); font: 500 calc(18 * var(--p))/1 var(--mk-display); white-space: nowrap; }
+.break-info__stats b { color: #ff6f8b; font: 700 calc(28 * var(--p))/1 var(--mk-display); }
 .break-info__track {
   position: absolute; left: 0; right: 0; bottom: 0;
-  height: calc(5 * var(--p)); margin: 0; border-radius: 0;
+  height: calc(4 * var(--p)); margin: 0; border-radius: 0;
   background: rgba(252, 250, 249, 0.16);
 }
 .break-info__fill { background: linear-gradient(90deg, var(--mk-bd) 0%, var(--mk-bd-3) 100%); box-shadow: none; border-radius: 0; }

@@ -6,6 +6,7 @@
    droite, et dessous une jauge d'un cran par spot.
 
    Donnees :
+   - pas de grille (regie : « Afficher la grille » coupe), pas de compteur ni de jauge ;
    - le compteur et la jauge viennent de la roue choisie (randoms.ligue) et
      des spots vendus (randoms.pris), donc exactement ce que montre la grille ;
    - pour un break sans roue (PYP), ils reprennent les compteurs officiels du
@@ -129,6 +130,8 @@
 
   function etat() {
     const rnd = (window.SHAKS_CONFIG && window.SHAKS_CONFIG.randoms) || {};
+    // Grille coupee dans la regie = aucun break en vente : ni compteur ni jauge.
+    if (rnd.actif === false) return null;
     const ligue = (window.SHAKS_LIGUES || {})[String(rnd.ligue || "nba").toLowerCase()];
     if (ligue && !ligue.pyp && Array.isArray(ligue.equipes) && ligue.equipes.length) {
       const sigles = new Set(ligue.equipes.map(([s]) => String(s).toUpperCase()));

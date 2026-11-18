@@ -31,7 +31,8 @@
   --mk-rose:   #d3c4c4;   /* rose poudre : separateurs */
   --mk-gris:   #8c7c7e;   /* gris chaud : infos secondaires */
   --mk-champ:  #d6ad79;   /* or champagne : details premium */
-  --mk-glow:   rgba(226, 29, 69, 0.38);   /* legere lueur rouge, fixe */
+  --mk-glow:   rgba(226, 29, 69, 0.6);    /* lueur rouge (maquette de Mid), fixe */
+  --mk-glow-2: rgba(255, 92, 120, 0.55);  /* coeur clair de la lueur, pres du bord */
   --mk-shadow: rgba(27, 4, 8, 0.6);       /* ombres bordeaux noir */
 
   --mk-display: "Oswald", "Bebas Neue", "Arial Narrow", Impact, sans-serif;
@@ -58,9 +59,10 @@ body { font-family: var(--mk-text); }
   border: calc(16 * var(--p)) solid var(--mk-white);
   border-radius: calc(26 * var(--p));
   box-shadow:
-    0 0 0 calc(2 * var(--p)) rgba(226, 29, 69, 0.55),
+    0 0 0 calc(2 * var(--p)) rgba(255, 120, 140, 0.85),
     inset 0 0 0 calc(2 * var(--p)) var(--mk-rose),
-    0 0 calc(40 * var(--p)) calc(2 * var(--p)) var(--mk-glow),
+    0 0 calc(14 * var(--p)) calc(2 * var(--p)) var(--mk-glow-2),
+    0 0 calc(60 * var(--p)) calc(10 * var(--p)) var(--mk-glow),
     0 calc(14 * var(--p)) calc(34 * var(--p)) var(--mk-shadow);
   pointer-events: none;
 }
@@ -99,8 +101,9 @@ body { font-family: var(--mk-text); }
   border-radius: calc(16 * var(--p));
   background: linear-gradient(180deg, var(--mk-white) 0%, var(--mk-white) 45%, var(--mk-paper) 100%);
   box-shadow:
-    0 0 0 calc(2 * var(--p)) rgba(226, 29, 69, 0.55),
-    0 0 calc(34 * var(--p)) var(--mk-glow),
+    0 0 0 calc(2 * var(--p)) rgba(255, 120, 140, 0.85),
+    0 0 calc(12 * var(--p)) calc(2 * var(--p)) var(--mk-glow-2),
+    0 0 calc(54 * var(--p)) calc(8 * var(--p)) var(--mk-glow),
     0 calc(12 * var(--p)) calc(28 * var(--p)) var(--mk-shadow);
 }
 /* Filet clair en biais le long du sceau. */

@@ -36,7 +36,7 @@
   /* Cloudflare impose aux navigateurs (OBS compris) de garder les images 4 h :
      une image livree changee sous le meme nom resterait l'ancienne. On ajoute
      donc une version aux fichiers de assets/, a monter a chaque nouvelle image. */
-  const ASSETS_V = "20261118-spots";
+  const ASSETS_V = "20261118-logos";
   const versionne = (u) => (/^assets\//.test(u) ? `${u}${u.includes("?") ? "&" : "?"}v=${ASSETS_V}` : u);
   const src = versionne(cfg.image || cfg.backgroundImage || "");   // ancien nom tolere
   const LIVREE = versionne("assets/arene.jpg");

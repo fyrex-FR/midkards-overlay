@@ -166,7 +166,7 @@ body.mode-libre .band::after  { right: calc(-116 * var(--p)); }
   justify-content: center;
   gap: calc(8 * var(--p));
 }
-.label__word { height: calc(66 * var(--p)); width: auto; align-self: flex-start; display: block; }
+.label__word { height: calc(76 * var(--p)); width: auto; align-self: flex-start; display: block; }
 
 .label__line {
   position: relative;

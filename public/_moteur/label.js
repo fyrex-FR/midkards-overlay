@@ -33,7 +33,7 @@
   /* --- squelette ----------------------------------------------------------- */
   const logo = cfg.logo || {};
   /* Meme raison que le fond (arena.js) : version sur les images de assets/. */
-  const ASSETS_V = "20261118-spots";
+  const ASSETS_V = "20261118-logos";
   const versionne = (u) => (/^assets\//.test(u) ? `${u}${u.includes("?") ? "&" : "?"}v=${ASSETS_V}` : u);
   const sceau = el("div", "label__seal");
   const arbre = el("img");

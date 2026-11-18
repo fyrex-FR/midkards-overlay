@@ -96,7 +96,7 @@ window.SHAKS_CONFIG = {
     // bord bas du canvas : les ornements de la fenetre passent hors champ.
     // Pas de ratio ici : recadrer une camera 16:9 en portrait est justement
     // ce qu'on veut pour la table, on garde le centre et on coupe les cotes.
-    camBreak: { top: 30, height: 70, width: 80, ratio: "", bare: false, decoupeFond: false },
+    camBreak: { top: 30, height: 70, width: 80, ratio: "", bare: false, decoupeFond: true },
 
     // Bras d'angle sur les fenetres camera. false par defaut : sur une camera
     // a fond clair ils perdent tout contraste, et on ne percoit alors plus les

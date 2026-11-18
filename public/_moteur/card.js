@@ -144,6 +144,12 @@
     const titles = el("div", "tc__titles");
     const words = String(data.name || "").split(" ");
     const nick = words.length > 1 ? words.pop() : words[0];
+    if (data.spot) {
+      const badge = el("div", "tc__spot", "Spot restant ");
+      badge.append(el("b", "", `${data.spot.pos}/${data.spot.total}`));
+      if (data.spot.label) badge.append(el("span", "", data.spot.label));
+      titles.append(badge);
+    }
     titles.append(el("div", "tc__city", words.length ? words.join(" ") : ""), el("div", "tc__name", nick));
     const total = el("div", "tc__total");
     const n = el("div", "tc__n");
@@ -245,11 +251,10 @@
     return card;
   }
 
-  function show(active) {
+  function present(data) {
     clearTimeout(hideTimer);
-    shownId = active.id;
     layer.textContent = "";
-    const card = build(active);
+    const card = build(data);
     layer.append(card);
     layer.hidden = false;
     document.body.classList.add("card-on");
@@ -265,7 +270,77 @@
     }
   }
 
+  function show(active) {
+    stopRotation();
+    shownId = active.id;
+    present(active);
+  }
+
+  /* --- Rotation sur les spots restants d'un break ------------------------
+     Le serveur envoie une carte par equipe encore a prendre et retire les
+     spots vendus au fil du live : ici on fait juste defiler la liste. */
+  let rot = null;
+  let rotTimer = 0;
+  let swapTimer = 0;
+
+  function stopRotation() {
+    clearInterval(rotTimer);
+    clearTimeout(swapTimer);
+    rot = null;
+  }
+
+  function rotationData(index) {
+    const item = rot.items[index];
+    const spots = (item.spots || []).map((spot) => spot.title).filter(Boolean);
+    const plat = (t) => String(t || "").toLowerCase().replace(/[^a-z0-9]+/g, "");
+    // Le titre du spot n'apparait que s'il dit autre chose que le nom de l'equipe ("DEN/UW").
+    const autre = spots.filter((t) => plat(t) !== plat(item.card.name) && plat(t) !== plat(item.card.abbr));
+    return { ...item.card, kind: "team", spot: { pos: index + 1, total: rot.items.length, label: autre.join(" · ") } };
+  }
+
+  function presentRotation(swap) {
+    if (!rot || !rot.items.length) return;
+    const data = rotationData(rot.index);
+    const current = layer.firstElementChild;
+    if (swap && current) {
+      current.classList.remove("is-in");
+      clearTimeout(swapTimer);
+      swapTimer = setTimeout(() => { if (rot) present(data); }, 400);
+    } else present(data);
+  }
+
+  function showRotation(active) {
+    const items = Array.isArray(active.items) ? active.items.filter((item) => item && item.card) : [];
+    if (!items.length) return hide();
+    if (!rot || rot.id !== active.id) {
+      stopRotation();
+      shownId = active.id;
+      rot = { id: active.id, items, index: 0 };
+      presentRotation(false);
+      const ms = Math.min(60, Math.max(6, Number(active.interval) || 12)) * 1000;
+      rotTimer = setInterval(() => {
+        if (!rot || rot.items.length < 2) return;
+        rot.index = (rot.index + 1) % rot.items.length;
+        presentRotation(true);
+      }, ms);
+      return;
+    }
+    // Meme rotation, liste mise a jour (spots vendus) : on garde l'equipe affichee si elle reste.
+    const affichee = rot.items[rot.index] && rot.items[rot.index].team;
+    rot.items = items;
+    const i = items.findIndex((item) => item.team === affichee);
+    if (i >= 0) {
+      rot.index = i;
+      const pos = layer.querySelector(".tc__spot b");
+      if (pos) pos.textContent = `${i + 1}/${items.length}`;
+    } else {
+      rot.index = rot.index % items.length;
+      presentRotation(true);
+    }
+  }
+
   function hide() {
+    stopRotation();
     if (shownId === null) return;
     shownId = null;
     clearInterval(rollTimer);
@@ -278,6 +353,7 @@
   function sync() {
     const active = window.SHAKS_CONFIG && window.SHAKS_CONFIG.card && window.SHAKS_CONFIG.card.active;
     if (!active || !active.id || Date.now() - Number(active.at || 0) > MAX_AGE_MS) return hide();
+    if (active.kind === "rotation") return showRotation(active);
     if (active.id !== shownId) show(active);
   }
 

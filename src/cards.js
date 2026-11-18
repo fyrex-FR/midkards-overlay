@@ -230,6 +230,124 @@ export function buildPlayerCard(cards, playerName, productNames) {
   };
 }
 
+/* --- Spots d'un break Whatnot -> equipes NBA -------------------------------
+   Les titres de spots Whatnot ne suivent aucune regle : "Los Angeles Lakers",
+   "Lakers", "LAL", "BRK", "DEN/UW", "MIL / COACH"... On coupe les spots combines
+   puis on cherche dans chaque morceau le nom complet, le surnom, le sigle (et
+   ses variantes courantes) et, en dernier, la ville quand elle est unique. */
+const SIGLES_VARIANTES = {
+  BRK: 'BKN', BKLYN: 'BKN', PHO: 'PHX', GS: 'GSW', GSW: 'GSW', NO: 'NOP', NOLA: 'NOP', NOH: 'NOP',
+  SA: 'SAS', NY: 'NYK', UTAH: 'UTA', UTH: 'UTA', CHO: 'CHA', WSH: 'WAS', LAC: 'LAC', LAL: 'LAL',
+};
+const SURNOMS_VARIANTES = {
+  sixers: 'PHI', blazers: 'POR', cavs: 'CLE', mavs: 'DAL', wolves: 'MIN', pels: 'NOP', dubs: 'GSW', grizz: 'MEM',
+};
+const equipesNba = IDS.teams.map(([id, name, abbr, nickname]) => {
+  const full = fold(name);
+  const nick = fold(nickname);
+  return { id, name, abbr, full, nick, city: full.slice(0, Math.max(0, full.length - nick.length)).trim() };
+});
+const parSigle = new Map(equipesNba.map((team) => [team.abbr, team]));
+const villes = new Map();
+for (const team of equipesNba) villes.set(team.city, villes.has(team.city) ? null : team);
+
+function equipesDans(texte) {
+  const plat = fold(texte);
+  if (!plat) return [];
+  const t = ` ${plat} `;
+  const mots = plat.split(' ');
+  const trouvees = new Set();
+  for (const team of equipesNba) {
+    if (t.includes(` ${team.full} `) || t.includes(` ${team.nick} `)) trouvees.add(team);
+  }
+  for (const mot of mots) {
+    const haut = mot.toUpperCase();
+    // Les sigles de 2 lettres (NY, SA, GS, NO) ne valent que seuls : "no" ou "sa" sont aussi des mots.
+    if (haut.length < 3 && mots.length > 1) continue;
+    const team = parSigle.get(SIGLES_VARIANTES[haut] || haut);
+    if (team) trouvees.add(team);
+    if (SURNOMS_VARIANTES[mot]) trouvees.add(parSigle.get(SURNOMS_VARIANTES[mot]));
+  }
+  if (!trouvees.size) {
+    for (const [ville, team] of villes) if (team && ville && t.includes(` ${ville} `)) trouvees.add(team);
+  }
+  return [...trouvees];
+}
+
+/* Equipes NBA d'un titre de spot (noms complets), dans l'ordre du titre. */
+export function spotTeams(title) {
+  const morceaux = String(title || '').split(/\s*(?:\/|\+|&|,|\bet\b|\band\b)\s*/i).filter(Boolean);
+  const vues = new Map();
+  for (const morceau of morceaux.length > 1 ? morceaux : [title]) for (const team of equipesDans(morceau)) vues.set(team.name, team);
+  if (!vues.size && morceaux.length > 1) for (const team of equipesDans(title)) vues.set(team.name, team);
+  return [...vues.keys()];
+}
+
+export const lienCle = (title) => fold(title);
+export const NOMS_EQUIPES = equipesNba.map((team) => team.name).sort();
+
+/* Liens choisis a la main : { titre plie: [noms d'equipes] } ; [] = spot sans equipe. */
+export function cleanLinks(links) {
+  const out = {};
+  for (const [cle, valeur] of Object.entries(links && typeof links === 'object' ? links : {}).slice(0, 300)) {
+    const k = lienCle(cle);
+    if (!k || !Array.isArray(valeur)) continue;
+    out[k] = [...new Set(valeur.map((nom) => findTeam(nom)?.name).filter(Boolean))].slice(0, 4);
+  }
+  return out;
+}
+
+/* Equipes d'un spot : le lien manuel s'il existe, sinon la detection. */
+export function teamsForSpot(title, links = {}) {
+  const k = lienCle(title);
+  return Object.hasOwn(links, k) ? { teams: links[k], manuel: true } : { teams: spotTeams(title), manuel: false };
+}
+
+const carteAllegee = (card) => ({
+  kind: card.kind, name: card.name, abbr: card.abbr, logo: card.logo,
+  stats: card.stats, tiers: card.tiers, chase: card.chase, best: (card.best || []).slice(0, 1),
+});
+
+/* Rotation sur les spots restants : une carte par equipe encore a prendre,
+   dans l'ordre des spots du break. Une equipe absente des produits est sautee. */
+export function buildRotation(cards, spots, links, productNames) {
+  const items = new Map();
+  const sansEquipe = [];
+  for (const spot of spots || []) {
+    if (spot.sold) continue;
+    const { teams } = teamsForSpot(spot.title, links);
+    if (!teams.length) { sansEquipe.push(spot.title); continue; }
+    for (const nom of teams) {
+      if (!items.has(nom)) items.set(nom, { team: nom, spots: [] });
+      items.get(nom).spots.push({ id: String(spot.id), title: spot.title });
+    }
+  }
+  const sautees = [];
+  const prets = [];
+  for (const item of items.values()) {
+    try {
+      prets.push({ ...item, card: carteAllegee(buildTeamCard(cards, item.team, productNames)) });
+    } catch (error) {
+      if (!(error instanceof CardError)) throw error;
+      sautees.push(item.team);
+    }
+  }
+  return { items: prets, skipped: sautees, unmatched: [...new Set(sansEquipe)] };
+}
+
+/* Retire des items les spots vendus depuis ; null si rien n'a change. */
+export function pruneRotation(items, spots) {
+  const vendus = new Set((spots || []).filter((spot) => spot.sold).map((spot) => String(spot.id)));
+  let change = false;
+  const next = [];
+  for (const item of items || []) {
+    const restants = item.spots.filter((spot) => !vendus.has(String(spot.id)));
+    if (restants.length !== item.spots.length) change = true;
+    if (restants.length) next.push(restants.length === item.spots.length ? item : { ...item, spots: restants });
+  }
+  return change ? next : null;
+}
+
 export class CardsService {
   constructor({ fetchImpl = fetch, now = () => Date.now() } = {}) {
     this.fetch = fetchImpl;

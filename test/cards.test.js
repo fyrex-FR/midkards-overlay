@@ -124,3 +124,53 @@ test('service : API checklist en erreur -> 502', async () => {
   const service = new CardsService({ fetchImpl: async () => ({ ok: false, status: 500 }) });
   await assert.rejects(service.index(['x']), (error) => error.status === 502);
 });
+
+test('spots Whatnot -> equipes : noms, surnoms, sigles, variantes, spots combines', async () => {
+  const { spotTeams } = await import('../src/cards.js');
+  const cas = {
+    'Los Angeles Lakers': ['Los Angeles Lakers'],
+    'Lakers': ['Los Angeles Lakers'],
+    'LAL': ['Los Angeles Lakers'],
+    'BRK': ['Brooklyn Nets'],
+    'Sixers': ['Philadelphia 76ers'],
+    'Portland Trailblazers': ['Portland Trail Blazers'],
+    'DEN/UW': ['Denver Nuggets'],
+    'MIL / COACH': ['Milwaukee Bucks'],
+    'New York Knicks + Brooklyn Nets': ['New York Knicks', 'Brooklyn Nets'],
+    'NY': ['New York Knicks'],
+    'UNIV MEN': [],
+    'Los Angeles': [],
+    'Spot 12': [],
+  };
+  for (const [titre, attendu] of Object.entries(cas)) assert.deepEqual(spotTeams(titre), attendu, titre);
+});
+
+test('liens manuels : prioritaires, nettoyes, [] = spot ignore', async () => {
+  const { cleanLinks, teamsForSpot } = await import('../src/cards.js');
+  const liens = cleanLinks({ 'UNIV MEN': ['Denver Nuggets', 'Pas une equipe'], 'Lakers': [] });
+  assert.deepEqual(liens, { 'univ men': ['Denver Nuggets'], lakers: [] });
+  assert.deepEqual(teamsForSpot('Univ Men', liens), { teams: ['Denver Nuggets'], manuel: true });
+  assert.deepEqual(teamsForSpot('Lakers', liens), { teams: [], manuel: true });
+  assert.deepEqual(teamsForSpot('BOS', liens), { teams: ['Boston Celtics'], manuel: false });
+});
+
+test('rotation : une carte par equipe des spots restants, vendus retires ensuite', async () => {
+  const { buildRotation, pruneRotation } = await import('../src/cards.js');
+  const spots = [
+    { id: '1', title: 'DAL', sold: false },
+    { id: '2', title: 'Atlanta Hawks', sold: false },
+    { id: '3', title: 'BOS', sold: false },        // pas de carte BOS dans ces produits
+    { id: '4', title: 'UNIV MEN', sold: false },   // pas d'equipe
+    { id: '5', title: 'Mavericks', sold: true },
+  ];
+  const { items, skipped, unmatched } = buildRotation(CARDS, spots, {}, NAMES);
+  assert.deepEqual(items.map((i) => i.team), ['Dallas Mavericks', 'Atlanta Hawks']);
+  assert.deepEqual(items[0].spots, [{ id: '1', title: 'DAL' }]);
+  assert.equal(items[0].card.name, 'Dallas Mavericks');
+  assert.ok(items[0].card.tiers && !items[0].card.products, 'carte allegee');
+  assert.deepEqual(skipped, ['Boston Celtics']);
+  assert.deepEqual(unmatched, ['UNIV MEN']);
+  assert.equal(pruneRotation(items, spots), null, 'rien de nouveau');
+  const apres = pruneRotation(items, spots.map((s) => (s.id === '1' ? { ...s, sold: true } : s)));
+  assert.deepEqual(apres.map((i) => i.team), ['Atlanta Hawks']);
+});

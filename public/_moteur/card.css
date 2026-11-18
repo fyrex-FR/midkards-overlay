@@ -97,6 +97,18 @@ body.card-on #randoms { opacity: 0 !important; }
 .tc__head { display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 2.6cqw; min-width: 0; padding-bottom: 1.8cqh; border-bottom: 0.4cqh solid var(--ink); }
 .tc__logo { width: 15cqh; height: 15cqh; object-fit: contain; }
 .tc__titles { min-width: 0; }
+/* Rotation sur les spots restants : badge "Spot restant 3/12" (rouge lumineux = appel). */
+.tc__spot {
+  display: inline-flex; align-items: baseline; gap: 1cqw; max-width: 100%;
+  margin-bottom: 0.9cqh; padding: 0.7cqh 1.4cqw 0.6cqh; border-radius: 1cqh;
+  background: linear-gradient(90deg, #6a0a1e 0%, #e21d45 100%);
+  box-shadow: 0 0 1.6cqh rgba(226, 29, 69, 0.45);
+  color: #fcfaf9; font: 500 2.9cqh/1 "Oswald", sans-serif; letter-spacing: 0.06em; text-transform: uppercase;
+  white-space: nowrap; overflow: hidden;
+}
+.tc__spot b { font-weight: 700; }
+.tc__spot span { overflow: hidden; text-overflow: ellipsis; opacity: 0.9; }
+.tc__spot span::before { content: "· "; }
 .tc__city { font: 800 4.4cqh/1 "Oswald", sans-serif; text-transform: uppercase; letter-spacing: 0.14em; color: var(--bd); }
 .tc__name { font: 900 10cqh/0.92 "Oswald", "Barlow Condensed", sans-serif; text-transform: uppercase; letter-spacing: 0.01em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .tc__total { text-align: right; }

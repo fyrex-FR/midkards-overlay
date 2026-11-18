@@ -78,8 +78,8 @@
   }
 
   /* ---- Carte equipe : l'echelle des hits ------------------------------------
-     Un palier par type de hit, du plus rare au plus courant. Chaque palier dit
-     en une phrase ce que c'est, combien il y en a et chez qui. */
+     Un palier par type de hit, du plus rare au plus courant : combien il y en a
+     et chez qui. */
   const SVG = (paths) => `<svg viewBox="0 0 24 24" aria-hidden="true">${paths}</svg>`;
   const ICONS = {
     pen: SVG('<path d="M4 20l1.2-4.6L15.6 5a2 2 0 0 1 2.8 0l.6.6a2 2 0 0 1 0 2.8L8.6 18.8z" fill="currentColor"/><path d="M3 21.5h9" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>'),
@@ -89,11 +89,11 @@
     crown: SVG('<path d="M3 18.5 2 7l5.5 4.5L12 4l4.5 7.5L22 7l-1 11.5z" fill="currentColor"/><path d="M3 21h18" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>'),
   };
   const TIER_INFO = {
-    logoman: { name: "Logoman", text: "Logo NBA du maillot", icon: "crown" },
-    case: { name: "Case hit", text: "± 1 par carton entier", icon: "star" },
-    autoMem: { name: "Auto patch", text: "Signée + maillot", icon: "both" },
-    auto: { name: "Auto", text: "Signée par le joueur", icon: "pen" },
-    mem: { name: "Patch", text: "Bout de maillot porté", icon: "shirt" },
+    logoman: { name: "Logoman", icon: "crown" },
+    case: { name: "Case hit", icon: "star" },
+    autoMem: { name: "Auto patch", icon: "both" },
+    auto: { name: "Auto", icon: "pen" },
+    mem: { name: "Patch", icon: "shirt" },
   };
   const TIER_ORDER = Object.keys(TIER_INFO);
 
@@ -112,7 +112,7 @@
     const icon = el("div", "tier__icon");
     icon.innerHTML = ICONS[info.icon];
     const label = el("div", "tier__label");
-    label.append(el("div", "tier__name", info.name), el("div", "tier__text", info.text));
+    label.append(el("div", "tier__name", info.name));
     const right = el("div", "tier__data");
     const meter = el("div", "tier__meter");
     const fill = el("i");
@@ -138,7 +138,7 @@
     const titles = el("div", "tc__titles");
     const words = String(data.name || "").split(" ");
     const nick = words.length > 1 ? words.pop() : words[0];
-    titles.append(el("div", "tc__city", words.length ? words.join(" ") : ""), el("div", "tc__name", nick), el("div", "tc__def", "Hit = carte signée ou avec un bout de maillot"));
+    titles.append(el("div", "tc__city", words.length ? words.join(" ") : ""), el("div", "tc__name", nick));
     const total = el("div", "tc__total");
     const n = el("div", "tc__n");
     n.append(el("b", "", String(stats.hits || 0)), el("span", "", "hits"));

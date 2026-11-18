@@ -99,7 +99,6 @@ body.card-on #randoms { opacity: 0 !important; }
 .tc__titles { min-width: 0; }
 .tc__city { font: 800 4.4cqh/1 "Big Shoulders Display", sans-serif; text-transform: uppercase; letter-spacing: 0.14em; color: var(--bd); }
 .tc__name { font: 900 10cqh/0.92 "Big Shoulders Display", "Barlow Condensed", sans-serif; text-transform: uppercase; letter-spacing: 0.01em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.tc__def { margin-top: 0.8cqh; font: 600 3.6cqh/1.1 "Archivo Narrow", sans-serif; color: var(--ink); }
 .tc__total { text-align: right; }
 .tc__n { display: flex; align-items: baseline; justify-content: flex-end; gap: 0.8cqw; }
 .tc__n b { font: 900 13cqh/0.85 "Big Shoulders Display", sans-serif; color: var(--bd); }
@@ -140,9 +139,8 @@ body.card-on #randoms { opacity: 0 !important; }
 .tier__icon { display: grid; place-items: center; width: 8.6cqh; height: 8.6cqh; border-radius: 50%; background: var(--t); color: #fff; }
 .tier__icon svg { width: 60%; height: 60%; }
 .tier__label { min-width: 0; }
-.tier__name { font: 900 6cqh/0.95 "Big Shoulders Display", sans-serif; text-transform: uppercase; letter-spacing: 0.02em; color: var(--t); white-space: nowrap; }
+.tier__name { font: 900 6.6cqh/0.95 "Big Shoulders Display", sans-serif; text-transform: uppercase; letter-spacing: 0.02em; color: var(--t); white-space: nowrap; }
 .is-auto .tier__name, .is-mem .tier__name { color: var(--ink); }
-.tier__text { margin-top: 0.4cqh; font: 600 3.6cqh/1.1 "Archivo Narrow", sans-serif; color: var(--ink); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .tier__data { display: grid; gap: 1.1cqh; min-width: 0; }
 .tier__meter { height: 2.6cqh; border-radius: 2cqh; background: rgba(28,26,15,0.1); overflow: hidden; }
 .tier__meter i { display: block; height: 100%; width: calc(var(--w, 0) * 100%); background: var(--t); border-radius: inherit; transform: scaleX(0); transform-origin: left; transition: transform 700ms cubic-bezier(.2,.8,.2,1); transition-delay: calc(420ms + var(--i, 0) * 110ms); }

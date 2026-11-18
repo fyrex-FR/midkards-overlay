@@ -90,6 +90,8 @@
       { path: "layout.camTop.top", type: "range", label: "Caméra animateur — position", min: 2, max: 30, step: 0.5, unit: " %" },
       { path: "layout.camTop.height", type: "range", label: "Caméra animateur — hauteur", min: 10, max: 32, step: 0.2, unit: " %" },
       { path: "layout.camTop.width", type: "range", label: "Caméra animateur — largeur", min: 50, max: 98, step: 1, unit: " %" },
+      { path: "layout.camTop.decoupeFond", type: "check", label: "Caméra animateur — trou dans le fond",
+        help: "Découpe un vrai vide dans le fond d'arène à l'emplacement de cette fenêtre : la caméra placée SOUS le fond dans OBS apparaît pile dans le cadre, quelle que soit sa taille. Sans caméra active, la case montre du vide." },
       { path: "layout.banner.top", type: "range", label: "Bandeau — position", min: 15, max: 55, step: 0.1, unit: " %" },
       { path: "layout.banner.height", type: "range", label: "Bandeau — hauteur", min: 8, max: 26, step: 0.1, unit: " %" },
       { path: "layout.banner.width", type: "range", label: "Bandeau — largeur", min: 60, max: 100, step: 1, unit: " %" },

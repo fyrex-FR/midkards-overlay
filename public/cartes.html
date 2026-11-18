@@ -7,7 +7,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=Barlow:wght@400;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="_moteur/regie.css?v=20261117-da">
+  <link rel="stylesheet" href="_moteur/regie.css?v=20261118-rotation">
 </head>
 <body>
   <nav class="nav-outils">
@@ -58,10 +58,30 @@
         <button type="button" id="cartes-masquer">Masquer</button>
       </div>
     </div>
+    <div class="cartes__etape is-off" id="cartes-etape3">
+      <div class="cartes__titre"><i>3</i><b>Spots restants d'un break</b><span id="cartes-spots-aide">après l'étape 1</span></div>
+      <div class="cartes__duo">
+        <select id="cartes-break" aria-label="Break Whatnot"></select>
+        <button type="button" id="cartes-lire">Lire les spots</button>
+      </div>
+      <div class="cartes__spots" id="cartes-spots" hidden></div>
+      <div class="cartes__tempo">
+        <span>Durée par équipe</span>
+        <div class="cartes__segments cartes__segments--3" id="cartes-tempo" role="group" aria-label="Durée par équipe">
+          <button type="button" data-s="8">8 s</button>
+          <button type="button" class="is-on" data-s="12">12 s</button>
+          <button type="button" data-s="20">20 s</button>
+        </div>
+      </div>
+      <div class="cartes__duo">
+        <button type="button" class="cartes__primaire" id="cartes-tourner">Faire tourner les spots restants</button>
+        <button type="button" id="cartes-masquer2">Masquer</button>
+      </div>
+    </div>
     <p class="whatnot__error" id="cartes-erreur" hidden></p>
   </section>
 
-  <script src="config.js?v=20261117-da"></script>
-  <script src="_moteur/cartes-regie.js?v=20261117-da"></script>
+  <script src="config.js?v=20261118-rognage"></script>
+  <script src="_moteur/cartes-regie.js?v=20261118-rotation"></script>
 </body>
 </html>

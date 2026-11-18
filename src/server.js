@@ -4,7 +4,7 @@ import { createServer } from 'node:http';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { MEDIA_ID, MEDIA_SLOTS, SECTIONS, isObject, normalizeName } from './config.js';
-import { CardError, CardsService } from './cards.js';
+import { CardError, CardsService, NOMS_EQUIPES, buildRotation, cleanLinks, pruneRotation, teamsForSpot } from './cards.js';
 import { EventHub } from './events.js';
 import { buildFromSpots, buildList, memeListe, parseBoites } from './pyp.js';
 import { readBody, readJson, sendJson } from './http.js';
@@ -132,6 +132,33 @@ async function importPyp(body, response) {
   }, { 'cache-control': 'no-store' });
 }
 
+async function lireSpots(breakId) {
+  try {
+    return await whatnotSync.breakSpots(breakId);
+  } catch (error) {
+    throw new CardError(error.message || 'Spots Whatnot illisibles', error.status || 502);
+  }
+}
+
+/* Pendant une rotation, on relit les spots du break toutes les 20 s : un spot
+   vendu sort de la rotation, et la rotation s'arrete quand tout est parti. */
+const ROTATION_MS = 20_000;
+async function suivreRotation() {
+  const current = (await store.getState())?.config?.card;
+  const active = current?.active;
+  if (!active || active.kind !== 'rotation') return;
+  const spots = await whatnotSync.breakSpots(active.breakId);
+  const items = pruneRotation(active.items, spots);
+  const vieille = Date.now() - Number(active.at || 0) > 3600_000;
+  if (!items && !vieille) return;
+  const next = items && !items.length ? null : { ...active, items: items || active.items, at: Date.now() };
+  const state = await store.replaceSection('card', { ...current, active: next });
+  if (state) events.publish(state, ['card']);
+}
+const rotationTimer = setInterval(() => {
+  suivreRotation().catch((error) => console.warn('[cartes] rotation :', error.message));
+}, ROTATION_MS);
+
 async function handleCards(request, response, url) {
   const noStore = { 'cache-control': 'no-store' };
   if (url.pathname === '/api/cards/checklists') {
@@ -160,6 +187,44 @@ async function handleCards(request, response, url) {
     if (!state) return sendJson(response, 409, { error: 'aucune configuration enregistree' });
     events.publish(state, ['card']);
     return sendJson(response, 200, { ok: true }, noStore);
+  }
+  /* Spots d'un break Whatnot du live suivi, relies aux equipes NBA. */
+  if (url.pathname === '/api/cards/spots') {
+    const live = await whatnotSync.state();
+    if (!live.connected) throw new CardError('Aucun live Whatnot suivi : connecte-le dans Roue spot');
+    const breaks = (live.breaks || []).map((item) => ({ id: String(item.id), title: item.title || 'Break', status: item.status || null }));
+    const breakId = String(body.breakId || live.breakId || breaks[0]?.id || '');
+    if (!breakId) throw new CardError('Aucun break dans ce live');
+    const spots = await lireSpots(breakId);
+    const links = current.liens || {};
+    const rows = spots.map((spot) => ({ id: spot.id, title: spot.title, sold: spot.sold, ...teamsForSpot(spot.title, links) }));
+    return sendJson(response, 200, { breakId, followed: live.breakId || null, breaks, rows, teams: NOMS_EQUIPES }, noStore);
+  }
+  /* Liens spot -> equipes corriges a la main, gardes d'un live a l'autre. */
+  if (url.pathname === '/api/cards/links') {
+    const liens = { ...(current.liens || {}), ...cleanLinks(body.links) };
+    const state = await store.replaceSection('card', { ...current, liens });
+    if (!state) return sendJson(response, 409, { error: 'aucune configuration enregistree' });
+    return sendJson(response, 200, { ok: true }, noStore);
+  }
+  /* Rotation : les cartes des equipes encore a prendre defilent dans l'overlay. */
+  if (url.pathname === '/api/cards/rotation') {
+    const breakId = String(body.breakId || '');
+    if (!breakId) throw new CardError('Choisis un break');
+    const liens = { ...(current.liens || {}), ...cleanLinks(body.links) };
+    const spots = await lireSpots(breakId);
+    const { cards: analysees, names } = await cards.analysis(body.ids);
+    const { items, skipped, unmatched } = buildRotation(analysees, spots, liens, names);
+    if (!items.length) throw new CardError('Aucun spot restant relié à une équipe de ces produits');
+    const interval = Math.min(60, Math.max(6, Math.round(Number(body.interval) || 12)));
+    const active = {
+      kind: 'rotation', id: `${Date.now().toString(36)}${randomBytes(3).toString('hex')}`, at: Date.now(),
+      breakId, interval, total: spots.length, items,
+    };
+    const state = await store.replaceSection('card', { ...current, ids: [...new Set(body.ids)], liens, active });
+    if (!state) return sendJson(response, 409, { error: 'aucune configuration enregistree' });
+    events.publish(state, ['card']);
+    return sendJson(response, 200, { ok: true, items: items.length, teams: items.map((item) => item.team), skipped, unmatched }, noStore);
   }
   if (url.pathname === '/api/cards/presets') {
     const list = Array.isArray(body.presets) ? body.presets.slice(0, 50) : null;
@@ -204,7 +269,7 @@ async function handleApi(request, response, url) {
     return handlePyp(request, response);
   }
 
-  const alias = /^\/api\/config\/cards(list|index|show|hide|presets)$/.exec(url.pathname);
+  const alias = /^\/api\/config\/cards(list|index|show|hide|presets|spots|links|rotation)$/.exec(url.pathname);
   if (alias) url = new URL(`/api/cards/${alias[1] === 'list' ? 'checklists' : alias[1]}`, url);
   if (url.pathname.startsWith('/api/cards/')) {
     if (!authorized(request, process.env.EDIT_TOKEN)) return sendJson(response, 401, { error: 'jeton invalide' });
@@ -442,6 +507,7 @@ server.listen(port, '0.0.0.0', () => console.log(`midkards-overlay listening on 
 async function shutdown() {
   server.close();
   whatnotSync.close();
+  clearInterval(rotationTimer);
   await store.close();
 }
 process.on('SIGTERM', shutdown);

@@ -172,6 +172,9 @@
       for (const nom of index.teams) $("cartes-equipe").append(new Option(nom, nom));
       joueurs = index.players;
       $("cartes-etape2").classList.remove("is-off");
+      $("cartes-etape3").classList.remove("is-off");
+      $("cartes-spots-aide").textContent = "live Whatnot suivi";
+      if (!spots.lu) lireSpots();
       $("cartes-aide").textContent = `${index.teams.length} équipe${index.teams.length > 1 ? "s" : ""} · ${index.players.length} joueur${index.players.length > 1 ? "s" : ""}`;
       majTypeCartes();
       $("cartes-etat").textContent = "prêt";
@@ -204,6 +207,129 @@
       erreurCartes("");
     } catch (error) { erreurCartes(error.message); }
   });
+
+  /* --- etape 3 : spots restants d'un break Whatnot ------------------------
+     Le serveur relie chaque titre de spot a une equipe NBA. Un lien faux ou
+     manquant se corrige ici ; il est garde pour les lives suivants. */
+  const spots = { lu: false, breakId: "", rows: [], teams: [], links: {}, tempo: 12 };
+  const SANS = "__aucune";
+
+  function optionsEquipes(select, row) {
+    select.textContent = "";
+    const auto = row.teams || [];
+    if (!auto.length) select.append(new Option("— à lier —", ""));
+    if (auto.length > 1) select.append(new Option(auto.join(" + "), auto.join("|")));
+    for (const nom of spots.teams) select.append(new Option(nom, nom));
+    select.append(new Option("Aucune équipe (ignorer ce spot)", SANS));
+    select.value = row.manuel && !auto.length ? SANS : auto.join("|");
+  }
+
+  function afficherSpots() {
+    const zone = $("cartes-spots");
+    zone.textContent = "";
+    zone.hidden = false;
+    const restants = spots.rows.filter((r) => !r.sold);
+    const aLier = restants.filter((r) => !r.teams.length && !r.manuel);
+    const tete = document.createElement("div");
+    tete.className = "cartes__spots-tete";
+    tete.innerHTML = `<span><b>${restants.length}</b> restant${restants.length > 1 ? "s" : ""} sur ${spots.rows.length}</span>`
+      + (aLier.length ? `<span><b>${aLier.length}</b> à lier</span>` : "<span>tous reliés</span>");
+    zone.append(tete);
+    if (!spots.rows.length) {
+      zone.append(Object.assign(document.createElement("div"), { className: "cartes__spots-tete", textContent: "Ce break n'expose pas encore ses spots (break aléatoire avant tirage ?)." }));
+      return;
+    }
+    const ligne = (row) => {
+      const div = document.createElement("div");
+      div.className = "cartes__spot";
+      div.classList.toggle("is-vendu", row.sold);
+      div.classList.toggle("is-manuel", row.manuel);
+      div.classList.toggle("is-alier", !row.sold && !row.teams.length && !row.manuel);
+      const titre = Object.assign(document.createElement("span"), { textContent: row.title, title: row.title });
+      const select = document.createElement("select");
+      select.setAttribute("aria-label", `Équipe du spot ${row.title}`);
+      optionsEquipes(select, row);
+      select.addEventListener("change", async () => {
+        const teams = select.value === SANS ? [] : select.value.split("|").filter(Boolean);
+        if (!select.value) return;
+        try {
+          await commandeCartes("links", { links: { [row.title]: teams } });
+          for (const r of spots.rows) if (r.title === row.title) { r.teams = teams; r.manuel = true; }
+          afficherSpots();
+          erreurCartes("");
+        } catch (error) { erreurCartes(error.message); }
+      });
+      const voir = Object.assign(document.createElement("button"), { type: "button", textContent: "Voir" });
+      voir.disabled = !row.teams.length;
+      voir.title = "Afficher tout de suite la carte de cette équipe";
+      voir.addEventListener("click", async () => {
+        try {
+          const res = await commandeCartes("show", { ids: [...cartes.ids], kind: "team", name: row.teams[0] });
+          $("cartes-etat").textContent = `en direct : ${res.name}`; $("cartes-etat").classList.add("is-live");
+          erreurCartes("");
+        } catch (error) { erreurCartes(error.message); }
+      });
+      div.append(titre, select, voir);
+      return div;
+    };
+    for (const row of restants) zone.append(ligne(row));
+    const vendus = spots.rows.filter((r) => r.sold);
+    if (vendus.length) {
+      const pli = document.createElement("details");
+      pli.className = "cartes__vendus";
+      pli.append(Object.assign(document.createElement("summary"), { textContent: `${vendus.length} spot${vendus.length > 1 ? "s" : ""} déjà vendu${vendus.length > 1 ? "s" : ""}` }));
+      for (const row of vendus) pli.append(ligne(row));
+      zone.append(pli);
+    }
+  }
+
+  async function lireSpots() {
+    const bouton = $("cartes-lire");
+    bouton.disabled = true;
+    try {
+      const data = await commandeCartes("spots", { breakId: $("cartes-break").value || spots.breakId || "" });
+      spots.lu = true;
+      spots.breakId = data.breakId;
+      spots.rows = data.rows;
+      spots.teams = data.teams;
+      const choix = $("cartes-break");
+      choix.textContent = "";
+      for (const b of data.breaks) choix.append(new Option(`${b.title}${b.id === data.followed ? " (suivi)" : ""}`, b.id));
+      choix.value = data.breakId;
+      afficherSpots();
+      erreurCartes("");
+    } catch (error) {
+      $("cartes-spots").hidden = true;
+      erreurCartes(error.message);
+    } finally { bouton.disabled = false; }
+  }
+  $("cartes-lire").addEventListener("click", lireSpots);
+  $("cartes-break").addEventListener("change", lireSpots);
+
+  for (const bouton of document.querySelectorAll("#cartes-tempo button")) {
+    bouton.addEventListener("click", () => {
+      spots.tempo = Number(bouton.dataset.s);
+      for (const autre of document.querySelectorAll("#cartes-tempo button")) autre.classList.toggle("is-on", autre === bouton);
+    });
+  }
+
+  $("cartes-tourner").addEventListener("click", async () => {
+    if (!spots.breakId) return erreurCartes("Lis d'abord les spots d'un break");
+    const bouton = $("cartes-tourner");
+    bouton.disabled = true;
+    try {
+      const res = await commandeCartes("rotation", { ids: [...cartes.ids], breakId: spots.breakId, interval: spots.tempo });
+      $("cartes-etat").textContent = `en direct : rotation de ${res.items} équipe${res.items > 1 ? "s" : ""}`;
+      $("cartes-etat").classList.add("is-live");
+      const notes = [];
+      if (res.skipped.length) notes.push(`sans carte dans ces produits : ${res.skipped.join(", ")}`);
+      if (res.unmatched.length) notes.push(`spots sans équipe : ${res.unmatched.join(", ")}`);
+      erreurCartes(notes.length ? `Rotation lancée. ${notes.join(" · ")}` : "");
+    } catch (error) { erreurCartes(error.message); }
+    finally { bouton.disabled = false; }
+  });
+
+  $("cartes-masquer2").addEventListener("click", () => $("cartes-masquer").click());
 
   async function demarrer() {
     try {

@@ -595,7 +595,8 @@ body.est-masquee .jauge { opacity: 0.55; }
 .cartes__spot > span { font-size: 14px; font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .cartes__spot select { min-height: 38px; }
 .cartes__spot button { min-height: 38px; padding: 0 12px; }
-.cartes__spot.is-alier { background: rgba(255, 196, 110, 0.12); box-shadow: inset 3px 0 0 #ffc46e; }
+.cartes__spot.is-alier { background: rgba(255, 196, 110, 0.12); }
+.cartes__spot.is-alier select { border-color: #ffc46e; }
 .cartes__spot.is-manuel > span::after { content: " · lien manuel"; color: var(--dim); font-weight: 400; font-size: 12px; }
 .cartes__spot.is-vendu { opacity: 0.4; }
 .cartes__spot.is-vendu > span { text-decoration: line-through; }

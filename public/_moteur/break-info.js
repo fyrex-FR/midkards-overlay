@@ -30,7 +30,7 @@
 
   function render(animate = false) {
     const breaks = orderedBreaks();
-    if (!data?.connected || !breaks.length) { masquer(); return; }
+    if (coupee() || !data?.connected || !breaks.length) { masquer(); return; }
     index %= breaks.length;
     const item = breaks[index];
     const total = Math.max(0, Number(item.total || 0));
@@ -56,6 +56,13 @@
   }
 
   function masquer() { host.hidden = true; }
+
+  /* Coupee dans Reglages (layout.breakInfo = false) : la fiche ne s'affiche plus. */
+  function coupee() {
+    const layout = (window.SHAKS_CONFIG && window.SHAKS_CONFIG.layout) || {};
+    return layout.breakInfo === false;
+  }
+  window.addEventListener("shaks:config", () => render());
 
   async function refresh() {
     try {

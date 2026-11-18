@@ -83,6 +83,9 @@ window.SHAKS_CONFIG = {
     // gagnee va a la camera break.
     camTop:   { top: 3, height: 20.7, width: 80, ratio: "", decoupeFond: false },
 
+    // Fiche des autres breaks du live, en bas de la camera du haut (false = masquee).
+    breakInfo: true,
+
     // L'etiquette centrale (carte gradee), a cheval entre les deux cameras :
     // elle commence sous la camera du haut et mord sur le haut de la camera
     // break. Un peu plus large que les cameras pour couvrir leurs coques.

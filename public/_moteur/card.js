@@ -105,6 +105,13 @@
     return TIER_ORDER.filter((key) => counts[key] > 0).map((key) => ({ key, count: counts[key], players: [] }));
   }
 
+  // Carte calculee avant la mise a jour (sans "short") : meme forme "J. Tatum".
+  const initiale = (nom) => {
+    const mots = String(nom || "").trim().split(/\s+/);
+    const last = mots.pop() || "";
+    return mots.length ? `${mots[0][0].toUpperCase()}. ${last}` : last;
+  };
+
   function tierRow(tier, max, index) {
     const info = TIER_INFO[tier.key];
     const row = el("div", `tier is-${tier.key}`);
@@ -119,7 +126,7 @@
     const track = el("div", "who-track");
     for (const p of tier.players || []) {
       const chip = el("span", "who");
-      chip.append(document.createTextNode(p.short || p.name.split(" ").slice(-1)[0]));
+      chip.append(document.createTextNode(p.short || initiale(p.name)));
       if (p.n > 1) chip.append(el("b", "", `×${p.n}`));
       track.append(chip);
     }

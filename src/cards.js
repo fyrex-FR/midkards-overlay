@@ -83,20 +83,15 @@ const lastName = (name) => {
 // Tous les joueurs de chaque palier : l'overlay les fait defiler par pages.
 export const MAX_TIER_PLAYERS = 40;
 
-// Nom court affiche : le nom de famille, avec l'initiale du prenom quand deux
-// joueurs de l'equipe ont le meme ("G. Williams", "R. Williams").
-function shortNames(cards) {
-  const players = [...new Set(cards.map((card) => card.Player).filter(Boolean))];
-  const byLast = new Map();
-  for (const name of players) byLast.set(lastName(name), (byLast.get(lastName(name)) || 0) + 1);
-  return new Map(players.map((name) => {
-    const last = lastName(name);
-    return [name, byLast.get(last) > 1 ? `${name.trim()[0]}. ${last}` : last];
-  }));
+// Nom court affiche : l'initiale du prenom et le nom de famille ("J. Tatum").
+function shortName(name) {
+  const clean = String(name || '').trim();
+  const last = lastName(clean);
+  const first = clean.slice(0, Math.max(0, clean.length - last.length)).trim();
+  return first ? `${first[0].toUpperCase()}. ${last}` : last;
 }
 
 function hitTiers(cards) {
-  const short = shortNames(cards.filter((card) => tierOf(card)));
   const tiers = new Map(TIERS.map((tier) => [tier.key, { key: tier.key, count: 0, players: new Map() }]));
   for (const card of cards) {
     const entry = tiers.get(tierOf(card));
@@ -109,7 +104,7 @@ function hitTiers(cards) {
     count: tier.count,
     players: [...tier.players.entries()]
       .sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0])).slice(0, MAX_TIER_PLAYERS)
-      .map(([name, n]) => ({ name, short: short.get(name), n })),
+      .map(([name, n]) => ({ name, short: shortName(name), n })),
   }));
 }
 

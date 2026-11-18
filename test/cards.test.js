@@ -61,7 +61,7 @@ test('carte equipe : paliers de hits du plus rare au plus courant, carte a chass
   const data = buildTeamCard(cards, 'Dallas Mavericks', NAMES);
   assert.deepEqual(data.tiers.map((t) => [t.key, t.count]), [['logoman', 2], ['autoMem', 1], ['auto', 3], ['mem', 1]]);
   assert.equal(data.tiers.reduce((n, t) => n + t.count, 0), data.stats.hits);
-  assert.deepEqual(data.tiers[2].players[0], { name: 'Cooper Flagg', short: 'Flagg', n: 2 });
+  assert.deepEqual(data.tiers[2].players[0], { name: 'Cooper Flagg', short: 'C. Flagg', n: 2 });
   // "nan" et "RC" ne sont pas des numerotations.
   assert.equal(data.stats.numbered, 2);
   // A score egal, le /1 passe devant le /5.
@@ -74,11 +74,11 @@ test('carte equipe : paliers de hits du plus rare au plus courant, carte a chass
   ]);
 });
 
-test('carte equipe : tous les joueurs du palier, initiale si deux noms identiques', () => {
+test('carte equipe : tous les joueurs du palier, initiale du prenom et nom', () => {
   const autos = ['Grant Williams', 'Robert Williams', 'Al Horford', 'Jrue Holiday', 'Derrick White']
     .map((Player) => card({ Player, Category: '✍️ Auto', 'Hit Type': 'auto', Score: 20 }));
   const data = buildTeamCard(autos, 'Dallas Mavericks', NAMES);
-  assert.deepEqual(data.tiers[0].players.map((p) => p.short), ['Horford', 'White', 'G. Williams', 'Holiday', 'R. Williams']);
+  assert.deepEqual(data.tiers[0].players.map((p) => p.short), ['A. Horford', 'D. White', 'G. Williams', 'J. Holiday', 'R. Williams']);
 });
 
 test('carte equipe : sans logoman ni case hit, on chasse les auto patch', () => {

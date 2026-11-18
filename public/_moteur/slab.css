@@ -119,10 +119,11 @@ body { font-family: var(--mk-text); }
   color: var(--mk-ink);
   opacity: 1;
   transform: translateY(0);
-  transition: opacity var(--label-fade, 420ms) ease, transform var(--label-fade, 420ms) ease;
+  /* Le nouveau message attend que l'ancien soit presque parti : jamais deux textes superposes. */
+  transition: opacity var(--label-fade, 420ms) ease calc(var(--label-fade, 420ms) * 0.6), transform var(--label-fade, 420ms) ease calc(var(--label-fade, 420ms) * 0.6);
 }
 .label__item.is-in  { opacity: 0; transform: translateY(40%); }
-.label__item.is-out { opacity: 0; transform: translateY(-40%); }
+.label__item.is-out { opacity: 0; transform: translateY(-40%); transition-delay: 0s; }
 .label__icon { width: calc(27 * var(--p)); height: calc(27 * var(--p)); flex: none; color: var(--mk-bd); }
 .label__tag {
   flex: none;

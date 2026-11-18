@@ -804,7 +804,7 @@
      couvre qu'une petite zone et s'arrete avec le 2 POUR 1. Le reste de la
      grille reste fixe pour ne pas peser sur l'encodage du flux.
      -------------------------------------------------------------------- */
-  const IMAGE_FANION = "assets/deux-pour-un.webp?v=2";
+  const IMAGE_FANION = "assets/deux-pour-un.webp?v=3";
   let fanion = null;
   let fanionActif = false;
   let fanionMinuteur = 0;

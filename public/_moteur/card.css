@@ -115,13 +115,15 @@ body.card-on #randoms { opacity: 0 !important; }
 .tc__rows { display: grid; grid-auto-rows: minmax(0, 1fr); gap: 1.1cqh; min-height: 0; max-height: 100%; align-content: center; }
 .tier {
   --t: var(--ink);
+  position: relative;
+  overflow: hidden;
   display: grid;
-  grid-template-columns: 8.6cqh 30% 1fr auto;
+  grid-template-columns: 8.6cqh 24% 1fr auto;
   align-items: center;
   gap: 2cqw;
   min-height: 0;
-  max-height: 17cqh;
-  padding: 0.9cqh 2cqw 0.9cqh 1.2cqw;
+  max-height: 19cqh;
+  padding: 0.9cqh 2cqw 1.5cqh 1.2cqw;
   border-radius: 1.6cqh;
   background: var(--paper);
   border-left: 1.2cqh solid var(--t);
@@ -139,15 +141,21 @@ body.card-on #randoms { opacity: 0 !important; }
 .tier__icon { display: grid; place-items: center; width: 8.6cqh; height: 8.6cqh; border-radius: 50%; background: var(--t); color: #fff; }
 .tier__icon svg { width: 60%; height: 60%; }
 .tier__label { min-width: 0; }
-.tier__name { font: 900 6.6cqh/0.95 "Big Shoulders Display", sans-serif; text-transform: uppercase; letter-spacing: 0.02em; color: var(--t); white-space: nowrap; }
+.tier__name { font: 900 5.4cqh/0.95 "Big Shoulders Display", sans-serif; text-transform: uppercase; letter-spacing: 0.01em; color: var(--t); white-space: nowrap; }
 .is-auto .tier__name, .is-mem .tier__name { color: var(--ink); }
-.tier__data { display: grid; gap: 1.1cqh; min-width: 0; }
-.tier__meter { height: 2.6cqh; border-radius: 2cqh; background: rgba(28,26,15,0.1); overflow: hidden; }
+.tier__data { min-width: 0; }
+.tier__meter { position: absolute; left: 0; right: 0; bottom: 0; height: 0.7cqh; background: rgba(28,26,15,0.08); }
 .tier__meter i { display: block; height: 100%; width: calc(var(--w, 0) * 100%); background: var(--t); border-radius: inherit; transform: scaleX(0); transform-origin: left; transition: transform 700ms cubic-bezier(.2,.8,.2,1); transition-delay: calc(420ms + var(--i, 0) * 110ms); }
-.tier__who { display: flex; flex-wrap: nowrap; gap: 1.6cqw; overflow: hidden; font: 700 3.6cqh/1 "Archivo Narrow", sans-serif; white-space: nowrap; }
+.tier__who { position: relative; height: 8.9cqh; overflow: hidden; transition: opacity 240ms ease; }
+.tier__who.is-swap { opacity: 0; }
+.who-track { display: flex; flex-wrap: wrap; align-content: flex-start; gap: 0.6cqh 1.8cqw; font: 700 3.6cqh/1.15 "Archivo Narrow", sans-serif; white-space: nowrap; }
+.who { flex: none; }
+.tier__page { font: 700 2.6cqh/1 "Archivo Narrow", sans-serif; color: rgba(28,26,15,0.55); letter-spacing: 0.04em; }
+.tier__page:empty { display: none; }
 .who b { margin-left: 0.4cqw; color: var(--bd); }
-.tier__count { min-width: 9cqh; text-align: right; font: 900 9cqh/0.9 "Big Shoulders Display", sans-serif; color: var(--t); }
-.is-auto .tier__count, .is-mem .tier__count { color: var(--ink); }
+.tier__count { display: flex; flex-direction: row-reverse; align-items: baseline; gap: 1cqw; min-width: 9cqh; }
+.tier__count b { font: 900 9cqh/0.9 "Big Shoulders Display", sans-serif; color: var(--t); }
+.is-auto .tier__count b, .is-mem .tier__count b { color: var(--ink); }
 
 .tc__chase {
   display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 2.4cqw;

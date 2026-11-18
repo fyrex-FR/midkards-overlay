@@ -80,7 +80,23 @@ const lastName = (name) => {
   return /^(jr\.?|sr\.?|ii|iii|iv|v)$/i.test(last) && parts.length ? `${parts.pop()} ${last}` : last;
 };
 
+// Tous les joueurs de chaque palier : l'overlay les fait defiler par pages.
+export const MAX_TIER_PLAYERS = 40;
+
+// Nom court affiche : le nom de famille, avec l'initiale du prenom quand deux
+// joueurs de l'equipe ont le meme ("G. Williams", "R. Williams").
+function shortNames(cards) {
+  const players = [...new Set(cards.map((card) => card.Player).filter(Boolean))];
+  const byLast = new Map();
+  for (const name of players) byLast.set(lastName(name), (byLast.get(lastName(name)) || 0) + 1);
+  return new Map(players.map((name) => {
+    const last = lastName(name);
+    return [name, byLast.get(last) > 1 ? `${name.trim()[0]}. ${last}` : last];
+  }));
+}
+
 function hitTiers(cards) {
+  const short = shortNames(cards.filter((card) => tierOf(card)));
   const tiers = new Map(TIERS.map((tier) => [tier.key, { key: tier.key, count: 0, players: new Map() }]));
   for (const card of cards) {
     const entry = tiers.get(tierOf(card));
@@ -92,8 +108,8 @@ function hitTiers(cards) {
     key: tier.key,
     count: tier.count,
     players: [...tier.players.entries()]
-      .sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0])).slice(0, 3)
-      .map(([name, n]) => ({ name, short: lastName(name), n })),
+      .sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0])).slice(0, MAX_TIER_PLAYERS)
+      .map(([name, n]) => ({ name, short: short.get(name), n })),
   }));
 }
 

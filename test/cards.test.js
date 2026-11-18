@@ -74,6 +74,13 @@ test('carte equipe : paliers de hits du plus rare au plus courant, carte a chass
   ]);
 });
 
+test('carte equipe : tous les joueurs du palier, initiale si deux noms identiques', () => {
+  const autos = ['Grant Williams', 'Robert Williams', 'Al Horford', 'Jrue Holiday', 'Derrick White']
+    .map((Player) => card({ Player, Category: '✍️ Auto', 'Hit Type': 'auto', Score: 20 }));
+  const data = buildTeamCard(autos, 'Dallas Mavericks', NAMES);
+  assert.deepEqual(data.tiers[0].players.map((p) => p.short), ['Horford', 'White', 'G. Williams', 'Holiday', 'R. Williams']);
+});
+
 test('carte equipe : sans logoman ni case hit, on chasse les auto patch', () => {
   const data = buildTeamCard(CARDS.slice(0, 2).concat([
     card({ Player: 'Luka Doncic', 'Box Type': 'Marks', Category: '💎 Auto/Mem', 'Hit Type': 'auto_mem', Score: 30 }),

@@ -114,19 +114,25 @@
     const label = el("div", "tier__label");
     label.append(el("div", "tier__name", info.name));
     const right = el("div", "tier__data");
-    const meter = el("div", "tier__meter");
-    const fill = el("i");
-    fill.style.setProperty("--w", String(Math.max(0.04, tier.count / max)));
-    meter.append(fill);
+    // Noms sur deux lignes : s'il y en a plus, ils passent par pages (voir pageNames).
     const who = el("div", "tier__who");
+    const track = el("div", "who-track");
     for (const p of tier.players || []) {
       const chip = el("span", "who");
       chip.append(document.createTextNode(p.short || p.name.split(" ").slice(-1)[0]));
       if (p.n > 1) chip.append(el("b", "", `×${p.n}`));
-      who.append(chip);
+      track.append(chip);
     }
-    right.append(meter, who);
-    row.append(icon, label, right, el("div", "tier__count", String(tier.count)));
+    who.append(track);
+    right.append(who);
+    // La part du palier : un trait au pied de la ligne.
+    const meter = el("div", "tier__meter");
+    const fill = el("i");
+    fill.style.setProperty("--w", String(Math.max(0.04, tier.count / max)));
+    meter.append(fill);
+    const count = el("div", "tier__count");
+    count.append(el("b", "", String(tier.count)), el("span", "tier__page"));
+    row.append(icon, label, right, count, meter);
     return row;
   }
 
@@ -178,34 +184,51 @@
     return card;
   }
 
-  /* Defilement des cartes a chasser : une toutes les ROLL_MS, petite surface. */
-  const ROLL_MS = 3200;
+  /* Pages des noms : chaque palier montre deux lignes de joueurs. S'il y en a
+     plus, la liste est decoupee en pages de deux lignes (sans couper un nom). */
+  function pageNames(card) {
+    for (const who of card.querySelectorAll(".tier__who")) {
+      const track = who.firstElementChild;
+      track.style.transform = "";
+      const tops = [...new Set([...track.children].map((chip) => chip.offsetTop))].sort((a, b) => a - b);
+      who._pages = tops.filter((_, i) => i % 2 === 0);
+      who._at = 0;
+      const page = who.closest(".tier").querySelector(".tier__page");
+      page.textContent = who._pages.length > 1 ? `1/${who._pages.length}` : "";
+    }
+  }
+
+  /* Un seul battement pour tout ce qui defile (cartes a chasser, pages de noms) :
+     changements ponctuels, petites surfaces. */
+  const ROLL_MS = 4000;
   let rollTimer = 0;
-  function startRoll(card) {
-    clearInterval(rollTimer);
+  function tick(card) {
     const items = [...card.querySelectorAll(".tc__chase-what")];
-    const pos = card.querySelector(".tc__pos");
-    if (items.length < 2) return;
-    let at = 0;
-    rollTimer = setInterval(() => {
+    if (items.length > 1) {
+      const at = items.findIndex((item) => item.classList.contains("is-on"));
       const prev = items[at];
-      at = (at + 1) % items.length;
+      const next = (at + 1) % items.length;
       prev.classList.remove("is-on");
       prev.classList.add("is-out");
       setTimeout(() => prev.classList.remove("is-out"), 500);
-      items[at].classList.add("is-on");
-      if (pos) pos.textContent = `${at + 1}/${items.length}`;
-    }, ROLL_MS);
-  }
-
-  /* Noms des joueurs : on retire ceux de la fin tant que la ligne deborde,
-     plutot que de couper un nom au milieu. */
-  function fitNames(card) {
-    for (const who of card.querySelectorAll(".tier__who")) {
-      [...who.children].forEach((chip) => { chip.hidden = false; });
-      const chips = [...who.children];
-      for (let i = chips.length - 1; i > 0 && who.scrollWidth > who.clientWidth + 1; i--) chips[i].hidden = true;
+      items[next].classList.add("is-on");
+      const pos = card.querySelector(".tc__pos");
+      if (pos) pos.textContent = `${next + 1}/${items.length}`;
     }
+    for (const who of card.querySelectorAll(".tier__who")) {
+      if (!who._pages || who._pages.length < 2) continue;
+      who._at = (who._at + 1) % who._pages.length;
+      who.classList.add("is-swap");
+      setTimeout(() => {
+        who.firstElementChild.style.transform = `translateY(${-who._pages[who._at]}px)`;
+        who.closest(".tier").querySelector(".tier__page").textContent = `${who._at + 1}/${who._pages.length}`;
+        who.classList.remove("is-swap");
+      }, 260);
+    }
+  }
+  function startRoll(card) {
+    clearInterval(rollTimer);
+    rollTimer = setInterval(() => tick(card), ROLL_MS);
   }
 
   function build(data) {
@@ -233,9 +256,9 @@
     void card.offsetWidth;
     card.classList.add("is-in");
     if (card.classList.contains("card--team")) {
-      fitNames(card);
+      pageNames(card);
       // Les polices peuvent arriver apres : on remesure une fois chargees.
-      if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => { if (card.isConnected) fitNames(card); });
+      if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => { if (card.isConnected) pageNames(card); });
       startRoll(card);
     } else {
       clearInterval(rollTimer);

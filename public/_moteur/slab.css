@@ -318,3 +318,29 @@ body { font-family: var(--mk-text); }
 
 /* Definitions d'icones du cadre : jamais visibles. */
 .icon-defs { position: absolute; width: 0; height: 0; overflow: hidden; }
+
+/* --- design sans grille : bandeau fin ------------------------------------------
+   Active par label.js quand la grille est coupee dans la regie. Les cameras ne
+   bougent pas (leur place est reglee dans OBS) : seule l'etiquette maigrit, et
+   la camera du bas, que la grille couvrait, est entierement visible.
+   top / height sont poses en inline par frame.js, d'ou !important. */
+.band {
+  transition: top 0.45s ease, height 0.45s ease;
+}
+body.mode-libre .band {
+  top: 26.1% !important;
+  height: calc(100 * var(--p)) !important;
+}
+body.mode-libre .label,
+body.mode-libre .label.is-sans-compteur { grid-template-columns: calc(100 * var(--p)) minmax(0, 1fr); }
+body.mode-libre .label__seal { padding-bottom: 0; }
+body.mode-libre .label__seal img { width: calc(68 * var(--p)); }
+body.mode-libre .label__mid {
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  gap: calc(26 * var(--p));
+  padding: 0 calc(26 * var(--p));
+}
+body.mode-libre .label__word { height: calc(46 * var(--p)); flex: none; align-self: center; }
+body.mode-libre .label__line { flex: 1; min-width: 0; height: calc(34 * var(--p)); }

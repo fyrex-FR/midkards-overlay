@@ -144,8 +144,16 @@
     return null;
   }
 
+  /* Design sans grille : la regie a coupe la grille, l'etiquette se reduit en
+     bandeau fin (slab.css, body.mode-libre) et la camera est degagee. */
+  function modeLibre() {
+    const rnd = (window.SHAKS_CONFIG && window.SHAKS_CONFIG.randoms) || {};
+    document.body.classList.toggle("mode-libre", rnd.actif === false);
+  }
+
   let dernier = "";
   function dessiner() {
+    modeLibre();
     const e = etat();
     if (!e) {
       compteur.hidden = true;

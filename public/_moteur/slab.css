@@ -151,9 +151,9 @@ body.mode-libre .band::after  { right: calc(-116 * var(--p)); }
   clip-path: polygon(0 0, 100% 0, calc(100% - 36 * var(--p)) 100%, 0 100%);
   display: grid;
   place-items: center;
-  padding-right: calc(30 * var(--p));
+  padding-right: calc(18 * var(--p));
 }
-.label__seal img { width: calc(128 * var(--p)); height: auto; display: block; }
+.label__seal img { width: calc(132 * var(--p)); height: auto; display: block; }
 
 .label__mid {
   position: relative;
@@ -227,7 +227,7 @@ body.mode-libre .band::after  { right: calc(-116 * var(--p)); }
 }
 
 /* Jauge : un cran fin par spot, sous l'etiquette, sur le fond bordeaux.
-   Gris chaud tant que le spot reste, rouge une fois vendu. */
+   Blanc tant que le spot reste, rouge vif une fois vendu. */
 .label__gauge {
   position: absolute;
   left: calc(214 * var(--p));
@@ -237,13 +237,13 @@ body.mode-libre .band::after  { right: calc(-116 * var(--p)); }
   display: flex;
   gap: 0;
   padding: calc(6 * var(--p)) 0 0;
-  background: none;
+  background: linear-gradient(180deg, rgba(106, 10, 30, 0.9) 0%, rgba(71, 9, 23, 0.55) 70%, rgba(47, 3, 14, 0) 100%);
   border: 0;
 }
 .label__gauge i {
   flex: 1;
   height: 100%;
-  background: linear-gradient(90deg, transparent calc(50% - 1 * var(--p)), var(--mk-gris) calc(50% - 1 * var(--p)), var(--mk-gris) calc(50% + 1 * var(--p)), transparent calc(50% + 1 * var(--p)));
+  background: linear-gradient(90deg, transparent calc(50% - 1 * var(--p)), rgba(252, 250, 249, 0.8) calc(50% - 1 * var(--p)), rgba(252, 250, 249, 0.8) calc(50% + 1 * var(--p)), transparent calc(50% + 1 * var(--p)));
 }
 .label__gauge i.is-vendu {
   height: 60%;
@@ -252,6 +252,75 @@ body.mode-libre .band::after  { right: calc(-116 * var(--p)); }
 }
 .label__gauge.is-barre i { flex: none; background: var(--mk-bd-3); height: calc(6 * var(--p)); margin-top: auto; }
 .label.is-sans-compteur .label__gauge { display: none; }
+
+/* --- lumieres interieures de l'etiquette (gros plan de la maquette) ---------
+   Un trait clair le long de la coupe du sceau, un liseré rouge lumineux sous
+   le panneau blanc, et trois eclats : haut de la coupe, bas de la coupe, et
+   sur le liseré a droite. Tout est fixe. */
+.mk-eclat, .label__mid::after, .label__gauge::after, .label__count::after {
+  background:
+    linear-gradient(90deg, transparent 0%, rgba(255, 205, 215, 0.95) 50%, transparent 100%) center / 100% calc(3 * var(--p)) no-repeat,
+    radial-gradient(closest-side, rgba(255, 244, 246, 1) 0 7%, rgba(255, 130, 152, 0.92) 20%, rgba(226, 29, 69, 0.45) 48%, rgba(226, 29, 69, 0) 100%);
+}
+/* Trait clair sur la coupe : du haut (x 196) au bas (x 160) du sceau. */
+.label__mid::before {
+  content: "";
+  position: absolute;
+  z-index: 2;
+  top: 0;
+  bottom: 0;
+  left: calc(-40 * var(--p));
+  width: calc(44 * var(--p));
+  pointer-events: none;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.95) 0%, rgba(255, 170, 185, 0.9) 60%, rgba(255, 110, 135, 0.95) 100%);
+  clip-path: polygon(calc(38 * var(--p)) 0, calc(42.5 * var(--p)) 0, calc(6.5 * var(--p)) 100%, calc(2 * var(--p)) 100%);
+}
+/* Eclat 1 : haut de la coupe. */
+.label__mid::after {
+  content: "";
+  position: absolute;
+  z-index: 3;
+  top: calc(-34 * var(--p));
+  left: calc(-110 * var(--p));
+  width: calc(150 * var(--p));
+  height: calc(68 * var(--p));
+  pointer-events: none;
+}
+/* Liseré rouge lumineux sous le panneau. */
+.label__gauge::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: calc(-214 * var(--p));
+  right: calc(-18 * var(--p));
+  height: calc(3 * var(--p));
+  background: linear-gradient(90deg, rgba(226, 29, 69, 0.2) 0%, #e21d45 12%, #ff6f8b 45%, #e21d45 80%, rgba(226, 29, 69, 0.2) 100%);
+  box-shadow: 0 0 calc(10 * var(--p)) calc(2 * var(--p)) rgba(226, 29, 69, 0.75);
+  pointer-events: none;
+}
+/* Eclat 2 : bas de la coupe, sur le liseré. */
+.label__gauge::after {
+  content: "";
+  position: absolute;
+  top: calc(-38 * var(--p));
+  left: calc(-140 * var(--p));
+  width: calc(180 * var(--p));
+  height: calc(78 * var(--p));
+  pointer-events: none;
+}
+/* Eclat 3 : sur le liseré, sous la ligne qui tourne. */
+.label__count::after {
+  content: "";
+  position: absolute;
+  bottom: calc(-18 * var(--p) - 34 * var(--p));
+  left: calc(-250 * var(--p));
+  width: calc(160 * var(--p));
+  height: calc(68 * var(--p));
+  pointer-events: none;
+}
+.label.is-sans-compteur .label__count::after { display: none; }
+body.mode-libre .label__mid::before { left: calc(-22 * var(--p)); width: calc(24 * var(--p)); clip-path: polygon(calc(18 * var(--p)) 0, calc(22 * var(--p)) 0, calc(4 * var(--p)) 100%, 0 100%); }
+body.mode-libre .label__mid::after { top: calc(-24 * var(--p)); left: calc(-80 * var(--p)); width: calc(110 * var(--p)); height: calc(48 * var(--p)); }
 
 /* --- grille des spots ------------------------------------------------------- */
 .randoms {

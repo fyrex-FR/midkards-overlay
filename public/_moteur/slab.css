@@ -79,6 +79,9 @@ body { font-family: var(--mk-text); }
   --gauge-h: calc(20 * var(--p));
   position: relative;
   z-index: 0;
+  /* Aussi large que les coques (bordure blanche comprise). flex: none, sinon la
+     bande (flex) la rabote a 100 % et le decalage gauche la fait deborder d'un seul cote. */
+  flex: none;
   width: calc(100% + 32 * var(--p));
   margin-left: calc(-16 * var(--p));
   height: 100%;

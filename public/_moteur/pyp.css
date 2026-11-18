@@ -28,7 +28,7 @@
     0 0.37vw 0 #65323a,
     0 0.74vw 0 #403c2e,
     0 1.6vw 2.8vw rgba(0, 0, 0, 0.6);
-  font-family: "Barlow Condensed", sans-serif;
+  font-family: "Big Shoulders Display", "Barlow Condensed", sans-serif;
   color: #f2f6ff;
 }
 
@@ -88,7 +88,7 @@
   left: 1.1vw;
   padding: 0.35vw 1vw 0.25vw;
   border-radius: 0.7vw;
-  font: 800 2.6vw/1 "Barlow Condensed", sans-serif;
+  font: 800 2.6vw/1 "Big Shoulders Display", "Barlow Condensed", sans-serif;
   letter-spacing: 0.06em;
   color: #1a0d00;
   background: linear-gradient(180deg, #fff3a6, #ffd23d 45%, #f08a00);
@@ -109,7 +109,7 @@
   border-radius: 99vw;
   border: 0.18vw solid #ffa4b0;
   background: rgba(25,24,18, 0.78);
-  font: 700 1.9vw/1 "Barlow Condensed", sans-serif;
+  font: 700 1.9vw/1 "Big Shoulders Display", "Barlow Condensed", sans-serif;
   letter-spacing: 0.08em;
   text-transform: uppercase;
   white-space: nowrap;
@@ -117,7 +117,7 @@
 .pyp__depart b { color: #ffa4b0; }
 .pyp__prenom {
   display: block;
-  font: 700 2.9vw/1 "Barlow Condensed", sans-serif;
+  font: 700 2.9vw/1 "Big Shoulders Display", "Barlow Condensed", sans-serif;
   letter-spacing: 0.1em;
   text-transform: uppercase;
   color: var(--sk-ciel);
@@ -126,7 +126,7 @@
   display: block;
   overflow: hidden;
   white-space: nowrap;
-  font: 800 7.2vw/0.95 "Barlow Condensed", sans-serif;   /* reduit par pyp.js si le nom deborde */
+  font: 800 7.2vw/0.95 "Big Shoulders Display", "Barlow Condensed", sans-serif;   /* reduit par pyp.js si le nom deborde */
   letter-spacing: 0.01em;
   text-transform: uppercase;
   text-shadow: 0 0 1.7vw rgba(206,103,118, 0.55), 0 0.28vw 0 #65323a, 0 0.55vw 1.3vw rgba(0, 0, 0, 0.8);
@@ -138,7 +138,7 @@
   margin: 0.7vw 0 0;
   overflow: hidden;
   white-space: nowrap;
-  font: 600 2.1vw/1 "Barlow Condensed", sans-serif;
+  font: 600 2.1vw/1 "Big Shoulders Display", "Barlow Condensed", sans-serif;
   letter-spacing: 0.08em;
   text-transform: uppercase;
   color: #d6c6c9;
@@ -146,7 +146,7 @@
 .pyp__equipe img { width: 3vw; height: 3vw; object-fit: contain; flex: none; }
 .pyp__total {
   margin: 1.1vw 0 0;
-  font: 700 2.3vw/1 "Barlow Condensed", sans-serif;
+  font: 700 2.3vw/1 "Big Shoulders Display", "Barlow Condensed", sans-serif;
   letter-spacing: 0.06em;
   text-transform: uppercase;
 }
@@ -171,7 +171,7 @@
 }
 .pyp__stat b {
   display: block;
-  font: 800 5.2vw/0.95 "Barlow Condensed", sans-serif;
+  font: 800 5.2vw/0.95 "Big Shoulders Display", "Barlow Condensed", sans-serif;
   color: #ffffff;
   font-variant-numeric: tabular-nums;
 }
@@ -179,7 +179,7 @@
   display: block;
   margin-top: 0.4vw;
   white-space: nowrap;
-  font: 700 1.8vw/1 "Barlow Condensed", sans-serif;
+  font: 700 1.8vw/1 "Big Shoulders Display", "Barlow Condensed", sans-serif;
   letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--k);
@@ -219,7 +219,7 @@
   white-space: nowrap;
   background: linear-gradient(90deg, rgba(206,103,118, 0.55), rgba(206,103,118, 0.45));
   border-top: 0.2vw solid rgba(255, 255, 255, 0.18);
-  font: 700 2.4vw/1 "Barlow Condensed", sans-serif;
+  font: 700 2.4vw/1 "Big Shoulders Display", "Barlow Condensed", sans-serif;
   letter-spacing: 0.05em;
   text-transform: uppercase;
 }
@@ -246,7 +246,7 @@
   border-radius: 99vw;
   border: 0.18vw solid rgba(255,164,176, 0.35);
   background: rgba(25,24,18, 0.6);
-  font-family: "Barlow Condensed", sans-serif;
+  font-family: "Big Shoulders Display", "Barlow Condensed", sans-serif;
   text-transform: uppercase;
 }
 .pyp__suite-label {
@@ -255,7 +255,7 @@
   border-radius: 99vw;
   background: #ffa4b0;
   color: #191812;
-  font: 800 1.7vw/1 "Barlow Condensed", sans-serif;
+  font: 800 1.7vw/1 "Big Shoulders Display", "Barlow Condensed", sans-serif;
   letter-spacing: 0.08em;
 }
 .pyp__suite-avatar {
@@ -273,13 +273,13 @@
   min-width: 0;
   overflow: hidden;
   text-overflow: ellipsis;
-  font: 700 2.6vw/1 "Barlow Condensed", sans-serif;
+  font: 700 2.6vw/1 "Big Shoulders Display", "Barlow Condensed", sans-serif;
   letter-spacing: 0.03em;
   color: #f2f6ff;
 }
 .pyp__suite-equipe {
   flex: none;
-  font: 600 1.9vw/1 "Barlow Condensed", sans-serif;
+  font: 600 1.9vw/1 "Big Shoulders Display", "Barlow Condensed", sans-serif;
   letter-spacing: 0.06em;
   color: #d6c6c9;
 }
@@ -306,13 +306,13 @@
 }
 .pyp__vendu b {
   display: block;
-  font: 800 8vw/0.9 "Barlow Condensed", sans-serif;
+  font: 800 8vw/0.9 "Big Shoulders Display", "Barlow Condensed", sans-serif;
   letter-spacing: 0.14em;
 }
 .pyp__vendu span {
   display: block;
   margin-top: 0.5vw;
-  font: 700 3.2vw/1 "Barlow Condensed", sans-serif;
+  font: 700 3.2vw/1 "Big Shoulders Display", "Barlow Condensed", sans-serif;
   letter-spacing: 0.04em;
 }
 

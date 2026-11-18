@@ -347,3 +347,5 @@ body.mode-libre .label__mid {
 }
 body.mode-libre .label__word { height: calc(38 * var(--p)); flex: none; align-self: center; }
 body.mode-libre .label__line { flex: 1; min-width: 0; height: calc(30 * var(--p)); }
+body.mode-libre .label__count,
+body.mode-libre .label__gauge { display: none; }

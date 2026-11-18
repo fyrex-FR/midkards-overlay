@@ -6,7 +6,7 @@
    droite, et dessous une jauge d'un cran par spot.
 
    Donnees :
-   - pas de grille (regie : « Afficher la grille » coupe), pas de compteur ni de jauge ;
+   - pas de grille (regie : « Afficher la grille » coupe) ou carte affichee : bandeau fin, pas de compteur ni de jauge ;
    - le compteur et la jauge viennent de la roue choisie (randoms.ligue) et
      des spots vendus (randoms.pris), donc exactement ce que montre la grille ;
    - pour un break sans roue (PYP), ils reprennent les compteurs officiels du
@@ -148,8 +148,12 @@
      bandeau fin (slab.css, body.mode-libre) et la camera est degagee. */
   function modeLibre() {
     const rnd = (window.SHAKS_CONFIG && window.SHAKS_CONFIG.randoms) || {};
-    document.body.classList.toggle("mode-libre", rnd.actif === false);
+    // Une carte equipe/joueur (card.js) s'affiche dans la camera du bas, sous
+    // l'etiquette : en etiquette complete elle serait rognee, donc bandeau fin.
+    const veut = rnd.actif === false || document.body.classList.contains("card-on");
+    if (document.body.classList.contains("mode-libre") !== veut) document.body.classList.toggle("mode-libre", veut);
   }
+  new MutationObserver(modeLibre).observe(document.body, { attributes: true, attributeFilter: ["class"] });
 
   let dernier = "";
   function dessiner() {

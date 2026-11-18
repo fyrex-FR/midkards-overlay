@@ -17,7 +17,7 @@
                             var(--sk-bleu) 86%, var(--sk-magenta) 100%) border-box;
   box-shadow: 0 0 calc(var(--vh) * 0.018) rgba(206,103,119, 0.35), inset 0 1px rgba(255,255,255,0.1);
   color: #f7fbff;
-  font-family: "Barlow", sans-serif;
+  font-family: "Archivo Narrow", "Barlow", sans-serif;
   opacity: 1;
   transform: translateY(0);
   transition: opacity 220ms ease, transform 220ms ease;
@@ -34,7 +34,7 @@
 .break-info__badge {
   flex: 0 0 auto; padding: calc(var(--vh) * 0.0015) calc(var(--vh) * 0.005);
   border-radius: 999px; background: linear-gradient(90deg, var(--sk-violet), var(--sk-magenta));
-  color: #ffffff; font-family: "Barlow Condensed", sans-serif; font-weight: 800;
+  color: #ffffff; font-family: "Big Shoulders Display", "Barlow Condensed", sans-serif; font-weight: 800;
   font-size: calc(var(--vh) * 0.010); letter-spacing: .08em;
 }
 .break-info__title {
@@ -43,7 +43,7 @@
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
-  font-family: "Barlow Condensed", sans-serif; font-weight: 700;
+  font-family: "Big Shoulders Display", "Barlow Condensed", sans-serif; font-weight: 700;
   font-size: calc(var(--vh) * 0.0155); letter-spacing: .025em;
 }
 .break-info__stats { justify-self: end; color: #dcecff; font-size: calc(var(--vh) * 0.0105); font-weight: 700; }

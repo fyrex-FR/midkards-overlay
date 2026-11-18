@@ -25,7 +25,7 @@
   backdrop-filter: blur(6px);
   box-shadow: 0 0 4cqh rgba(255,164,176, 0.22), inset 0 1px rgba(255, 255, 255, 0.08);
   color: #f7fbff;
-  font-family: "Barlow", sans-serif;
+  font-family: "Archivo Narrow", "Barlow", sans-serif;
   opacity: 0;
   transform: translateY(6cqh) scale(0.985);
   transition: opacity 380ms ease, transform 380ms ease;
@@ -37,12 +37,12 @@
 .card__photo { height: 16cqh; width: 22cqh; object-fit: cover; object-position: top; border-radius: 2cqh; flex: none; background: rgba(255,255,255,0.06); }
 .card__titles { min-width: 0; flex: 1; }
 .card__title {
-  font: 700 13cqh/1 "Barlow Condensed", sans-serif;
+  font: 700 13cqh/1 "Big Shoulders Display", "Barlow Condensed", sans-serif;
   letter-spacing: 0.02em; text-transform: uppercase;
   white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
 }
 .card__sub { font-size: 6.4cqh; color: #eed2d7; margin-top: 1cqh; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.card__first { font: 600 7cqh/1 "Barlow Condensed", sans-serif; letter-spacing: 0.12em; text-transform: uppercase; color: #eed2d7; }
+.card__first { font: 600 7cqh/1 "Big Shoulders Display", "Barlow Condensed", sans-serif; letter-spacing: 0.12em; text-transform: uppercase; color: #eed2d7; }
 .card--player .card__title { font-size: 11cqh; }
 .card__total { color: #fff; margin-top: 0.4cqh; }
 .card--player { grid-template-rows: none; grid-template-columns: 30cqw 1fr; gap: 3cqw; }
@@ -54,7 +54,7 @@
 
 .card__hits { display: flex; align-items: center; gap: 3cqw; }
 .hits__big { display: flex; align-items: baseline; gap: 1cqw; flex: none; }
-.hits__big b { font: 700 15cqh/1 "Barlow Condensed", sans-serif; color: #fff; }
+.hits__big b { font: 700 15cqh/1 "Big Shoulders Display", "Barlow Condensed", sans-serif; color: #fff; }
 .hits__big span { font-size: 5cqh; text-transform: uppercase; letter-spacing: 0.1em; color: #eed2d7; }
 .hits__detail { flex: 1; min-width: 0; display: grid; gap: 1.2cqh; }
 .hits__bar { display: flex; height: 3.2cqh; gap: 0.4cqw; border-radius: 2cqh; overflow: hidden; }

@@ -57,6 +57,45 @@ export const playerPhoto = (player) => (player ? `https://cdn.nba.com/headshots/
 
 const teamsOf = (card) => String(card.Team || '').split('/').map((part) => part.trim()).filter(Boolean);
 const isHit = (card) => !String(card.Category || '').includes('Base/Autre');
+// Numerotation reelle seulement ("/99", "/1") : l'API renvoie aussi "nan" et "RC".
+const serial = (value) => (/^\/\d+$/.test(String(value || '').trim()) ? String(value).trim() : '');
+
+// Paliers de hits, du plus rare au plus courant. Une carte n'est que dans un palier
+// (sa categorie), "Auto/Mem" teste avant "Auto".
+export const TIERS = [
+  { key: 'logoman', match: 'Logoman' },
+  { key: 'case', match: 'Case Hit' },
+  { key: 'autoMem', match: 'Auto/Mem' },
+  { key: 'auto', match: 'Auto' },
+  { key: 'mem', match: 'Memo' },
+];
+export function tierOf(card) {
+  const category = String(card.Category || '');
+  return TIERS.find((tier) => category.includes(tier.match))?.key || null;
+}
+
+const lastName = (name) => {
+  const parts = String(name || '').trim().split(/\s+/);
+  const last = parts.pop() || '';
+  return /^(jr\.?|sr\.?|ii|iii|iv|v)$/i.test(last) && parts.length ? `${parts.pop()} ${last}` : last;
+};
+
+function hitTiers(cards) {
+  const tiers = new Map(TIERS.map((tier) => [tier.key, { key: tier.key, count: 0, players: new Map() }]));
+  for (const card of cards) {
+    const entry = tiers.get(tierOf(card));
+    if (!entry) continue;
+    entry.count += 1;
+    if (card.Player) entry.players.set(card.Player, (entry.players.get(card.Player) || 0) + 1);
+  }
+  return [...tiers.values()].filter((tier) => tier.count).map((tier) => ({
+    key: tier.key,
+    count: tier.count,
+    players: [...tier.players.entries()]
+      .sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0])).slice(0, 3)
+      .map(([name, n]) => ({ name, short: lastName(name), n })),
+  }));
+}
 
 function shortProduct(name) {
   return String(name || '').replace(/\s+Basketball$/i, '').trim();
@@ -73,8 +112,8 @@ function summarize(cards, productNames) {
     else if (card['Hit Type'] === 'auto_mem') stats.autoMem += 1;
     if (String(card.Category).includes('Case Hit')) stats.caseHit += 1;
     if (String(card.Category).includes('Logoman')) stats.logoman += 1;
-    if (card.Numbering) stats.numbered += 1;
-    if (card.Numbering === '/1') stats.oneOfOne += 1;
+    if (serial(card.Numbering)) stats.numbered += 1;
+    if (serial(card.Numbering) === '/1') stats.oneOfOne += 1;
     const id = card.checklist_id;
     const entry = perProduct.get(id) || { name: productNames.get(id) || shortProduct(card.Product), cards: 0, hits: 0 };
     entry.cards += 1;
@@ -87,7 +126,10 @@ function summarize(cards, productNames) {
 function bestCards(cards, limit) {
   const seen = new Set();
   const out = [];
-  const ranked = cards.filter(isHit).sort((a, b) => (b.Score || 0) - (a.Score || 0) || String(a.Player).localeCompare(String(b.Player)));
+  // A score egal, la plus petite numerotation passe devant (/1 avant /99 avant rien).
+  const run = (card) => Number(serial(card.Numbering).slice(1)) || Infinity;
+  const ranked = cards.filter(isHit).sort((a, b) => (b.Score || 0) - (a.Score || 0)
+    || run(a) - run(b) || String(a.Player).localeCompare(String(b.Player)));
   for (const card of ranked) {
     const key = `${card.Player}|${card['Box Type']}|${card.Numbering}`;
     if (seen.has(key)) continue;
@@ -95,8 +137,9 @@ function bestCards(cards, limit) {
     out.push({
       player: card.Player,
       box: card['Box Type'],
-      numbering: card.Numbering || '',
+      numbering: serial(card.Numbering),
       case: String(card.Category).includes('Case Hit'),
+      tier: tierOf(card),
     });
     if (out.length >= limit) break;
   }
@@ -129,7 +172,7 @@ export function buildTeamCard(cards, teamName, productNames) {
     .map(([name, hits]) => ({ name, hits, photo: playerPhoto(findPlayer(name)) }));
   return {
     kind: 'team', name: team.name, abbr: team.abbr, logo: teamLogo(team),
-    stats, products, topPlayers, best: bestCards(mine, 4),
+    stats, products, topPlayers, tiers: hitTiers(mine), best: bestCards(mine, 4),
   };
 }
 

@@ -23,11 +23,11 @@ La base applique automatiquement `migrations/*.sql` au démarrage. Config vide e
 
 `WHATNOT_SELLER=midkards` active la synchro automatique des spots avec le live Whatnot du compte.
 
-## Charte graphique : la carte gradée
+## Charte graphique Midkards Break Live
 
-- Palette: rouge cramoisi `#C8233A` (bordeaux du logo ravivé), encre `#1C1A0F`, blanc, halo rouge fixe autour des coques. Définie dans `public/_moteur/slab.css` (`--mk-*`).
+- Charte: « Charte graphique Midkards Break Live » de Mid (bordeaux #2F030E, rouge Midkards #A8112D, rouge lumineux #E21D45 en accent, blancs, champagne #D6AD79), Oswald + Montserrat. Jetons `--mk-*` dans `public/_moteur/slab.css`.
 - Habillage: `slab.css` (coques de caméras, étiquette, grille, fiche du break, fiche PYP), `label.js` (étiquette: ligne tournante, compteur, jauge), `spot-anims.js/css` (carte de vente).
-- Visuels: `public/assets/` (`arbre-blanc.png`, `arbre.png`, `wordmark.png`, `arene.jpg` fond, `deux-pour-un.webp` fanion). Logo source: `source-logo-midkards.jpeg`.
+- Visuels: `public/assets/` (`arbre-blanc.png`, `arbre.png`, `wordmark.png`, `arene.jpg` fond bordeaux de la charte (arbre en filigrane, courbes rouges), `deux-pour-un.webp` fanion). Logo source: `source-logo-midkards.jpeg`.
 - Textes et réseaux: `public/config.js` (`ticker.messages`, `social.items`). Placement: `layout` (étiquette à 24,5 %, caméras en 80 %).
 - Les unités de `slab.css` sont en `--p` (1 px d'un canvas 1080 de large).
 

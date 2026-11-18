@@ -14,28 +14,15 @@
    PERF : on n'anime que transform et opacity.
    ========================================================================== */
 
-body { background: #0d0c09; }
+body { background: #1b0408; }
 
 .arena {
   position: absolute;
   inset: 0;
   overflow: hidden;
-  background: linear-gradient(180deg, #140406 0%, #2a070d 45%, #120305 100%);
+  background: linear-gradient(180deg, #1b0408 0%, #470917 42%, #2f030e 100%);
 }
 
-/* Lueur rouge FIXE posee sur le decor (retour de Mid : plus de couleur).
-   Deux nappes larges derriere les cameras, rien n'est anime : zero debit. */
-.arena::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  background:
-    radial-gradient(75% 30% at 50% 14%, rgba(214, 30, 52, 0.42), transparent 72%),
-    radial-gradient(85% 26% at 50% 33%, rgba(232, 40, 62, 0.38), transparent 70%),
-    radial-gradient(95% 45% at 50% 72%, rgba(190, 22, 42, 0.34), transparent 72%),
-    linear-gradient(180deg, rgba(120, 10, 24, 0.22), rgba(120, 10, 24, 0.22));
-}
 
 /* --------------------------------------------------------------------------
    L'image de decor

@@ -68,6 +68,18 @@ test('carte equipe : paliers de hits du plus rare au plus courant, carte a chass
   assert.equal(data.best[0].player, 'Dirk Nowitzki');
   assert.equal(data.best[0].numbering, '/1');
   assert.equal(data.best[0].tier, 'logoman');
+  // A chasser : toutes les cartes du palier le plus rare, /1 en tete.
+  assert.deepEqual(data.chase.map((c) => [c.player, c.numbering, c.tier]), [
+    ['Dirk Nowitzki', '/1', 'logoman'], ['Luka Doncic', '/5', 'logoman'],
+  ]);
+});
+
+test('carte equipe : sans logoman ni case hit, on chasse les auto patch', () => {
+  const data = buildTeamCard(CARDS.slice(0, 2).concat([
+    card({ Player: 'Luka Doncic', 'Box Type': 'Marks', Category: '💎 Auto/Mem', 'Hit Type': 'auto_mem', Score: 30 }),
+    card({ Player: 'Luka Doncic', 'Box Type': 'Marks', Category: '💎 Auto/Mem', 'Hit Type': 'auto_mem', Numbering: '/25', Score: 30 }),
+  ]), 'Dallas Mavericks', NAMES);
+  assert.deepEqual(data.chase, [{ player: 'Luka Doncic', box: 'Marks', numbering: '/25', tier: 'autoMem' }]);
 });
 
 test('carte joueur : equipe principale et photo', () => {

@@ -156,10 +156,19 @@ body.card-on #randoms { opacity: 0 !important; }
   transition: opacity 320ms ease, transform 420ms ease; transition-delay: calc(300ms + var(--i, 0) * 110ms);
 }
 .tc__tag { padding: 0.9cqh 1.4cqw; border: 0.4cqh solid #fff; border-radius: 1cqh; font: 900 4cqh/1 "Big Shoulders Display", sans-serif; text-transform: uppercase; letter-spacing: 0.08em; }
-.tc__chase-what { min-width: 0; display: grid; gap: 0.5cqh; }
+.tc__roll { position: relative; min-width: 0; height: 10cqh; overflow: hidden; }
+.tc__chase-what {
+  position: absolute; inset: 0; display: grid; align-content: center; gap: 0.5cqh; min-width: 0;
+  opacity: 0; transform: translateY(70%);
+  transition: opacity 360ms ease, transform 460ms cubic-bezier(.2,.8,.2,1);
+}
+.tc__chase-what.is-on { opacity: 1; transform: none; }
+.tc__chase-what.is-out { opacity: 0; transform: translateY(-70%); }
 .tc__chase-what b { font: 900 5.6cqh/1 "Big Shoulders Display", sans-serif; text-transform: uppercase; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .tc__chase-what span { font: 600 3.4cqh/1.1 "Archivo Narrow", sans-serif; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; opacity: 0.92; }
-.tc__chase-tier { padding: 0.9cqh 1.4cqw; border-radius: 1cqh; background: #fff; color: var(--bd); font: 900 3.8cqh/1 "Big Shoulders Display", sans-serif; text-transform: uppercase; white-space: nowrap; }
+.tc__chase-tier { display: grid; justify-items: center; gap: 0.4cqh; padding: 0.9cqh 1.4cqw; border-radius: 1cqh; background: #fff; color: var(--bd); font: 900 3.8cqh/1 "Big Shoulders Display", sans-serif; text-transform: uppercase; white-space: nowrap; }
+
+.tc__pos { font: 700 2.8cqh/1 "Archivo Narrow", sans-serif; color: var(--ink); letter-spacing: 0.04em; }
 
 .card--team.is-in .tier,
 .card--team.is-in .tc__chase { opacity: 1; transform: none; }

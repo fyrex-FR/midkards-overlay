@@ -155,17 +155,57 @@
     ladder.append(scale, rows);
     card.append(head, ladder);
 
-    const top = (data.best || [])[0];
-    if (top && top.player) {
+    // Toutes les cartes du palier le plus rare defilent ; une carte affichee avant
+    // la mise a jour n'a que "best" : on montre la premiere.
+    const list = (Array.isArray(data.chase) && data.chase.length ? data.chase : (data.best || []).slice(0, 1))
+      .filter((c) => c && c.player);
+    if (list.length) {
       const chase = el("div", "tc__chase");
       chase.style.setProperty("--i", String(tiers.length));
-      const what = el("div", "tc__chase-what");
-      what.append(el("b", "", top.player), el("span", "", [top.box, top.numbering].filter(Boolean).join(" · ")));
-      chase.append(el("div", "tc__tag", "À chasser"), what);
-      if (TIER_INFO[top.tier]) chase.append(el("div", "tc__chase-tier", TIER_INFO[top.tier].name));
+      const roll = el("div", "tc__roll");
+      list.forEach((c, i) => {
+        const what = el("div", `tc__chase-what${i === 0 ? " is-on" : ""}`);
+        what.append(el("b", "", c.player), el("span", "", [c.box, c.numbering].filter(Boolean).join(" · ")));
+        roll.append(what);
+      });
+      const side = el("div", "tc__chase-tier");
+      const tier = TIER_INFO[list[0].tier];
+      side.append(document.createTextNode(tier ? tier.name : ""));
+      if (list.length > 1) side.append(el("small", "tc__pos", `1/${list.length}`));
+      chase.append(el("div", "tc__tag", "À chasser"), roll, side);
       card.append(chase);
     }
     return card;
+  }
+
+  /* Defilement des cartes a chasser : une toutes les ROLL_MS, petite surface. */
+  const ROLL_MS = 3200;
+  let rollTimer = 0;
+  function startRoll(card) {
+    clearInterval(rollTimer);
+    const items = [...card.querySelectorAll(".tc__chase-what")];
+    const pos = card.querySelector(".tc__pos");
+    if (items.length < 2) return;
+    let at = 0;
+    rollTimer = setInterval(() => {
+      const prev = items[at];
+      at = (at + 1) % items.length;
+      prev.classList.remove("is-on");
+      prev.classList.add("is-out");
+      setTimeout(() => prev.classList.remove("is-out"), 500);
+      items[at].classList.add("is-on");
+      if (pos) pos.textContent = `${at + 1}/${items.length}`;
+    }, ROLL_MS);
+  }
+
+  /* Noms des joueurs : on retire ceux de la fin tant que la ligne deborde,
+     plutot que de couper un nom au milieu. */
+  function fitNames(card) {
+    for (const who of card.querySelectorAll(".tier__who")) {
+      [...who.children].forEach((chip) => { chip.hidden = false; });
+      const chips = [...who.children];
+      for (let i = chips.length - 1; i > 0 && who.scrollWidth > who.clientWidth + 1; i--) chips[i].hidden = true;
+    }
   }
 
   function build(data) {
@@ -192,11 +232,20 @@
     document.body.classList.add("card-on");
     void card.offsetWidth;
     card.classList.add("is-in");
+    if (card.classList.contains("card--team")) {
+      fitNames(card);
+      // Les polices peuvent arriver apres : on remesure une fois chargees.
+      if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => { if (card.isConnected) fitNames(card); });
+      startRoll(card);
+    } else {
+      clearInterval(rollTimer);
+    }
   }
 
   function hide() {
     if (shownId === null) return;
     shownId = null;
+    clearInterval(rollTimer);
     const card = layer.firstElementChild;
     if (card) card.classList.remove("is-in");
     document.body.classList.remove("card-on");

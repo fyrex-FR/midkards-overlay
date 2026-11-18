@@ -146,6 +146,28 @@ function bestCards(cards, limit) {
   return out;
 }
 
+// Cartes a chasser : toutes celles du palier le plus rare present (une par joueur et
+// par insert, sa plus petite numerotation), qui defilent sur la carte equipe.
+export const MAX_CHASE = 12;
+function chaseCards(cards) {
+  const rarest = TIERS.find((tier) => cards.some((card) => tierOf(card) === tier.key));
+  if (!rarest) return [];
+  const run = (numbering) => Number(numbering.slice(1)) || Infinity;
+  const byKey = new Map();
+  for (const card of cards) {
+    if (tierOf(card) !== rarest.key || !card.Player) continue;
+    const key = `${card.Player}|${card['Box Type']}`;
+    const numbering = serial(card.Numbering);
+    const known = byKey.get(key);
+    if (!known || run(numbering) < run(known.numbering)) {
+      byKey.set(key, { player: card.Player, box: card['Box Type'] || '', numbering, tier: rarest.key });
+    }
+  }
+  return [...byKey.values()]
+    .sort((a, b) => run(a.numbering) - run(b.numbering) || a.player.localeCompare(b.player) || a.box.localeCompare(b.box))
+    .slice(0, MAX_CHASE);
+}
+
 export function buildIndex(cards) {
   const teams = new Set();
   const players = new Set();
@@ -172,7 +194,7 @@ export function buildTeamCard(cards, teamName, productNames) {
     .map(([name, hits]) => ({ name, hits, photo: playerPhoto(findPlayer(name)) }));
   return {
     kind: 'team', name: team.name, abbr: team.abbr, logo: teamLogo(team),
-    stats, products, topPlayers, tiers: hitTiers(mine), best: bestCards(mine, 4),
+    stats, products, topPlayers, tiers: hitTiers(mine), chase: chaseCards(mine), best: bestCards(mine, 4),
   };
 }
 

@@ -206,8 +206,13 @@
       const d = await r.json();
       if (!d || !d.connected) { breakTitre = ""; officiel = null; dessiner(); return; }
       const choisi = (d.breaks || []).find((b) => String(b.id) === String(d.breakId));
-      breakTitre = choisi && choisi.title ? String(choisi.title) : (d.liveTitle || "");
-      const t = d.totals || (choisi ? { total: choisi.total, sold: choisi.sold } : null);
+      // « EN COURS » seulement pour un break suivi et pas terminé. Sans break suivi, ou une fois
+      // terminé (statut completed), on n'affiche plus ni titre ni compteur: le titre du live nomme
+      // souvent un ancien break (« Suite du live - Break PYT… ») et trompait le chat.
+      const termine = choisi && String(choisi.status || "").toLowerCase() === "completed";
+      const actif = Boolean(choisi) && !termine;
+      breakTitre = actif && choisi.title ? String(choisi.title) : "";
+      const t = actif ? (d.totals || { total: choisi.total, sold: choisi.sold }) : null;
       officiel = t ? { total: Number(t.total || 0), sold: Number(t.sold || 0) } : null;
       dessiner();
     } catch { /* on garde l'affichage courant pendant une coupure */ }
